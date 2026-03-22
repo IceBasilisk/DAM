@@ -58,7 +58,7 @@ class Cache<K : Any, V : Any> {
     fun transform(key: K, action: (V) -> V): Boolean {
         val cacheValue = get(key)
 
-        if (cacheValue != null){
+        if (cacheValue != null) {
             val newValue = action(cacheValue)
             put(key, newValue)
             return true
@@ -72,29 +72,42 @@ class Cache<K : Any, V : Any> {
 }
 
 fun main() {
-    var cache1 = Cache<Int, String>()
-    cache1.put(0, "kotlin")
-    cache1.put(1, "kotlin")
-    cache1.put(2, "kotlin")
-    var cache2 = Cache<String, Int>()
-    println(
-        "--- Word frequency cache ---" +
-                "\nSize: ${cache1.size()}" +
-                "\nFrequency of \"kotlin\": " +
-                "\ngetOrPut \"kotlin\": " +
-                "\ngetOrPut \"java\": " +
-                "\nSize after getOrPut: " +
-                "\nTransform \"kotlin\" (+1): " +
-                "\nTransform \"cobol\" (+1) " +
-                "\nSnapshot: {"
+    /**
+     * Word frequency counts
+     */
+    var cache1 = Cache<String, Int>()
+    cache1.put("kotlin", 1)
+    cache1.put("scala", 1)
+    cache1.put("haskell", 1)
+
+    println("--- Word frequency cache ---" +
+            "\nSize: ${cache1.size()}" +
+            "\nFrequency of \"kotlin\": ${cache1.get("kotlin")}" +
+            "\ngetOrPut \"kotlin\":  ${cache1.getOrPut("kotlin",{0})}" +
+            "\ngetOrPut \"java\":  ${cache1.getOrPut("java",{0})}" +
+            "\nSize after getOrPut: ${cache1.size()}" +
+            "\nTransform \"kotlin\" (+1): ${cache1.transform("kotlin",{it + 1})}" +
+            "\nTransform \"cobol\" (+1): ${cache1.transform("cobol", { it + 1 })}" +
+            "\nSnapshot: ${cache1.snapshot()}"
     )
+
     println()
+
+    /**
+     * Small id-to-name registry
+     */
+    var cache2 = Cache<Int, String>()
+    cache2.put(1, "Alice")
+    cache2.put(2, "Bob")
+
     println(
         "--- Id registry cache ---" +
-                "\nId 1 -> " +
-                "\nId 2 -> " +
-                "\nAfter evict id 1, size: " +
-                "\nId 1 after evict ->"
+                "\nId 1 -> ${cache2.get(1)}" +
+                "\nId 2 -> ${cache2.get(2)}")
+    cache2.evict(1)
+    println(
+                "After evict id 1, size: ${cache2.size()}" +
+                "\nId 1 after evict -> ${cache2.get(1)}"
     )
 
 }
