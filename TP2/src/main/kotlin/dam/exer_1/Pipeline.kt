@@ -5,20 +5,28 @@ package dam.exer_1
  * Each step is a List<String>
  */
 class Pipeline {
-    val steps = mutableListOf<Event>()
+    /**
+     * List of functions (steps)
+     */
+    val steps: List<(List<String>) -> List<String>> = mutableListOf()
+    //val stages = mutableListOf<(String, List<String>)>()
 
     /**
      * Appends a named stage to the pipeline
      */
     fun addStage(name: String, transform: (List<String>) -> List<String>) {
-
+        //stages.add(Stage(name, transform))
     }
 
     /**
      * Runs the input through every stage in order and returns the final result
      */
     fun execute(input: List<String>): List<String> {
-
+        val result = mutableListOf<String>()
+        /*for (stage in stages) {
+            stage(input)
+        }*/
+        return result
     }
 
     /**
@@ -32,12 +40,16 @@ class Pipeline {
 /**
  *
  */
-fun buildPipeline() {
-
+fun buildPipeline(steps: List<String>) {
+    val pipeline = Pipeline()
+    pipeline.addStage("Trim", { trim(steps) })
+    pipeline.addStage("Filter errors", { filter(steps) })
+    pipeline.addStage("Uppercase", { uppercase(steps) })
+    pipeline.addStage("Add index", { add_index(steps) })
 }
 
 fun main() {
-    val logs = listOf (
+    val logs = listOf(
         "INFO: server started",
         "ERROR: disk full",
         "DEBUG: checking config",
@@ -46,5 +58,41 @@ fun main() {
         "ERROR: connection timeout"
     )
 
+    val pipeline = buildPipeline(logs)
 
+    //pipeline.execute(logs)
+
+}
+
+fun trim(steps: List<String>): List<String> {
+    val result = mutableListOf<String>()
+    for (step in steps) {
+        result.add(step.trim())
+    }
+    return result
+}
+
+fun filter(steps: List<String>): List<String> {
+    val result = mutableListOf<String>()
+    for (step in steps) {
+        if (step.contains("ERROR"))
+            result.add(step)
+    }
+    return result
+}
+
+fun uppercase(steps: List<String>): List<String> {
+    val result = mutableListOf<String>()
+    for (step in steps) {
+        result.add(step.uppercase())
+    }
+    return result
+}
+
+fun add_index(steps: List<String>): List<String> {
+    val result = mutableListOf<String>()
+    for (i in 1..steps.size) {
+        result.add("$i. ${steps[i]}")
+    }
+    return result
 }
