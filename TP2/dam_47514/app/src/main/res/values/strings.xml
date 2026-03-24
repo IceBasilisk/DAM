@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Cool Weather APP</string>
+    <!-- App Labels -->
+    <string name="label_latitude">Latitude</string>
+    <string name="label_longitude">Longitude</string>
+    <string name="label_sea_level_pressure">Sea Level Pressure</string>
+    <string name="label_wind_direction">Wind Direction</string>
+    <string name="label_wind_speed">Wind Speed</string>
+    <string name="label_temperature">Temperature</string>
+    <string name="label_time">Time</string>
+    <string name="label_button">Update</string>
+    <!-- App Weather Values -->
+    <string name="value_latitude">Latitude</string>
+    <string name="value_longitude">Longitude</string>
+    <string name="value_sea_level_pressure">Sea Level Pressure</string>
+    <string name="value_wind_direction">Wind Direction</string>
+    <string name="value_wind_speed">Wind Speed</string>
+    <string name="value_temperature">Temperature</string>
+    <string name="value_time">Time</string>
 </resources>
