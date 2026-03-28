@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_vertical"
+    android:background="@drawable/background_light_vertical"
     tools:context=".MainActivity">
 
     <TextView
@@ -21,7 +21,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_horizontal">
+        android:background="@drawable/background_light_horizontal">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

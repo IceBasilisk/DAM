@@ -19,15 +19,15 @@
         <item name="android:textStyle">bold</item>
     </style>
     <style name="Theme.Day" parent="Theme.CoolWeatherAPP">
-        <item name="android:windowBackground">@drawable/sunny_bg</item>
+        <item name="android:windowBackground">@drawable/background_light_vertical</item>
     </style>
     <style name="Theme.Day.Land" parent ="Theme.CoolWeatherAPP">
-        <item name="android:windowBackground">@drawable/sunny_bg_land</item>
+        <item name="android:windowBackground">@drawable/background_light_horizontal</item>
     </style>
     <style name="Theme.Night" parent ="Theme.CoolWeatherAPP">
-        <item name="android:windowBackground">@drawable/night_bg</item>
+        <item name="android:windowBackground">@drawable/background_dark_vertical</item>
     </style>
     <style name="Theme.Night.Land" parent ="Theme.CoolWeatherAPP">
-        <item name ="android:windowBackground">@drawable/night_bg_land</item>
+        <item name ="android:windowBackground">@drawable/background_dark_horizontal</item>
     </style>
 </resources>

@@ -8,8 +8,7 @@ class Pipeline {
     /**
      * List of functions (steps)
      */
-    val steps: List<(List<String>) -> List<String>> = mutableListOf()
-    //val stages = mutableListOf<(String, List<String>)>()
+    val steps = mutableListOf<(List<String>) -> List<String>>()
 
     /**
      * Appends a named stage to the pipeline

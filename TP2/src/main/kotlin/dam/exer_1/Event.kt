@@ -96,8 +96,8 @@ fun main() {
     println("=================================================")
     processEvents(events, ::describe)
     println()
-    println("Total spent by alice : \$${String.format("%.2f", events.totalSpent("alice"))}")
-    println("Total spent by bob : \$${String.format("%.2f", events.totalSpent("bob"))}")
+    println("Total spent by alice : $${String.format("%.2f", events.totalSpent("alice"))}")
+    println("Total spent by bob : $${String.format("%.2f", events.totalSpent("bob"))}")
     println()
     println("Events for alice:")
     for (event in events.filterByUser(username = "alice")) {
