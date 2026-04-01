@@ -1,5 +1,7 @@
 package dam.exer_1
 
+import com.sun.org.apache.xml.internal.serialize.Printer
+
 /**
  * Internally stores an ordered list of transformation steps
  * Each step is a List<String>
@@ -22,77 +24,59 @@ class Pipeline {
      */
     fun execute(input: List<String>): List<String> {
 
-        var result: List<String> = mutableListOf()
+        var result = input
         for (stage in stages.values) {
-            result = stage(input)
+            result = stage(result)
         }
         return result
+
+
     }
 
     /**
      * Prints the name of each stage in order
      */
     fun describe() {
-        println(stages.keys)
+        var index = 0
+        println("Pipeline stages:")
+        stages.forEach(
+            { println("   ${++index}. ${it.key}") }
+        )
     }
 }
 
 /**
  *
  */
-fun buildPipeline(steps: List<String>) {
+fun buildPipeline(transform: Pipeline.() -> Unit): Pipeline {
     val pipeline = Pipeline()
-    pipeline.addStage("Trim", { trim(steps) })
-    pipeline.addStage("Filter errors", { filter(steps) })
-    pipeline.addStage("Uppercase", { uppercase(steps) })
-    pipeline.addStage("Add index", { add_index(steps) })
+    pipeline.transform()
+    return pipeline
 }
 
 fun main() {
     val logs = listOf(
-        "INFO: server started",
-        "ERROR: disk full",
-        "DEBUG: checking config",
-        "ERROR: out of memory",
-        "INFO: request received",
-        "ERROR: connection timeout"
+        " INFO: server started ",
+        " ERROR: disk full ",
+        " DEBUG: checking config ",
+        " ERROR: out of memory ",
+        " INFO: request received ",
+        " ERROR: connection timeout "
     )
 
-    val pipeline = buildPipeline(logs)
-
-    //pipeline.execute(logs)
-
-}
-
-fun trim(steps: List<String>): List<String> {
-    val result = mutableListOf<String>()
-    for (step in steps) {
-        result.add(step.trim())
+    val pipeline = buildPipeline {
+        addStage("Trim") { it.map { it.trim() } }
+        addStage("Filter errors") { it.filter { "ERROR" in it } }
+        addStage("Uppercase") { it.map { it.uppercase() } }
+        addStage("Add index") {
+            var index = 0
+            it.map { "${++index}. $it" }
+        }
     }
-    return result
-}
 
-fun filter(steps: List<String>): List<String> {
-    val result = mutableListOf<String>()
-    for (step in steps) {
-        if (step.contains("ERROR"))
-            result.add(step)
+    pipeline.describe()
+    println("\nResult: ")
+    pipeline.execute(logs).forEach {
+        println("   $it")
     }
-    return result
-}
-
-fun uppercase(steps: List<String>): List<String> {
-    val result = mutableListOf<String>()
-    for (step in steps) {
-        result.add(step.uppercase())
-    }
-    return result
-}
-
-fun add_index(steps: List<String>): List<String> {
-    val result = mutableListOf<String>()
-    for (i in 1..steps.size) {
-        result.add("$i. ${steps[i]}")
-    }
-    return result
 }
