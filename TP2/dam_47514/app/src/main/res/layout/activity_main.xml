@@ -33,23 +33,24 @@
         <Button
             android:id="@+id/buttonUpdate"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginStart="154dp"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="200dp"
             android:layout_marginEnd="151dp"
-            android:layout_marginBottom="120dp"
             android:text="@string/label_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTemperatureValue" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.873" />
 
         <TextView
             android:id="@+id/textViewLatitude"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="140dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="160dp"
             android:text="@string/label_latitude"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -57,14 +58,17 @@
         <EditText
             android:id="@+id/editTextLatitude"
             android:layout_width="178dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="70dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="28dp"
             android:ems="10"
             android:inputType="numberDecimal|numberSigned"
             android:text="@string/value_latitude"
             app:layout_constraintBottom_toBottomOf="@+id/textViewLatitude"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textViewLatitude"
-            app:layout_constraintTop_toTopOf="@+id/textViewLatitude" />
+            app:layout_constraintTop_toTopOf="@+id/textViewLatitude"
+            app:layout_constraintVertical_bias="0.476" />
 
         <TextView
             android:id="@+id/textViewLongitude"
@@ -79,7 +83,7 @@
         <EditText
             android:id="@+id/editTextLongitude"
             android:layout_width="178dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:ems="10"
             android:inputType="numberDecimal|numberSigned"
             android:text="@string/value_longitude"
@@ -173,7 +177,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:layout_marginBottom="163dp"
             android:text="@string/label_time"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/textViewTemperatureLabel"
             app:layout_constraintStart_toStartOf="@+id/textViewTemperatureLabel"
             app:layout_constraintTop_toBottomOf="@+id/textViewTemperatureLabel" />

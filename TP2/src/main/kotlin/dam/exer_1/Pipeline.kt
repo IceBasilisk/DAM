@@ -8,23 +8,24 @@ class Pipeline {
     /**
      * List of functions (steps)
      */
-    val steps = mutableListOf<(List<String>) -> List<String>>()
+    val stages: MutableMap<String, (List<String>) -> List<String>> = mutableMapOf()
 
     /**
      * Appends a named stage to the pipeline
      */
     fun addStage(name: String, transform: (List<String>) -> List<String>) {
-        //stages.add(Stage(name, transform))
+        stages[name] = transform
     }
 
     /**
      * Runs the input through every stage in order and returns the final result
      */
     fun execute(input: List<String>): List<String> {
-        val result = mutableListOf<String>()
-        /*for (stage in stages) {
-            stage(input)
-        }*/
+
+        var result: List<String> = mutableListOf()
+        for (stage in stages.values) {
+            result = stage(input)
+        }
         return result
     }
 
@@ -32,7 +33,7 @@ class Pipeline {
      * Prints the name of each stage in order
      */
     fun describe() {
-
+        println(stages.keys)
     }
 }
 

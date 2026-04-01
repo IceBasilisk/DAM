@@ -20,20 +20,14 @@ class Cache<K : Any, V : Any> {
      * (return map[key] is enough)
      */
     fun get(key: K): V? {
-        if (map[key] != null) {
-            return map[key]
-        }
-        return null
+        return map[key]
     }
 
     /**
      * Remove entry from the cache
      */
     fun evict(key: K) {
-        if (map[key] != null)
-            map.remove(key)
-        else
-            println("Entry does not exist in cache.")
+        map.remove(key)
     }
 
     /**
