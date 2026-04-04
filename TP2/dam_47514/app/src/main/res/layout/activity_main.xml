@@ -11,8 +11,10 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="16dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageWeather"
@@ -22,6 +24,7 @@
             android:layout_marginTop="37dp"
             android:layout_marginEnd="194dp"
             android:layout_marginBottom="671dp"
+            android:contentDescription="@string/imageDescription"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.597"
@@ -68,7 +71,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textViewLatitude"
             app:layout_constraintTop_toTopOf="@+id/textViewLatitude"
-            app:layout_constraintVertical_bias="0.476" />
+            app:layout_constraintVertical_bias="0.476"
+            tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/textViewLongitude"
@@ -90,7 +94,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/textViewLongitude"
             app:layout_constraintEnd_toEndOf="@+id/editTextLatitude"
             app:layout_constraintStart_toStartOf="@+id/editTextLatitude"
-            app:layout_constraintTop_toTopOf="@+id/textViewLongitude" />
+            app:layout_constraintTop_toTopOf="@+id/textViewLongitude"
+            tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/textViewSeaLevelLabel"

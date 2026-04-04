@@ -3,6 +3,7 @@ package dam_47514.coolweatherapp
 import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -30,9 +31,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val updateButton = findViewById<Button>(R.id.buttonUpdate)
-        updateButton.setOnClickListener {
 
+        val updateButton = findViewById<Button>(R.id.buttonUpdate)
+        updateButton.setOnClickListener() {
+            val lat = findViewById<EditText>(R.id.editTextLatitude).text.toString().toFloat()
+            val long = findViewById<EditText>(R.id.editTextLongitude).text.toString().toFloat()
+            fetchWeatherData(lat, long).start()
         }
     }
 
@@ -59,6 +63,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUI(request: WeatherData) {
         runOnUiThread {
+            val latitude: TextView = findViewById(R.id.editTextLatitude)
+            val longitude: TextView = findViewById(R.id.editTextLongitude)
             val weatherImage: ImageView = findViewById(R.id.imageWeather)
             val pressure: TextView = findViewById(R.id.textViewSeaLevelValue)
             val direction: TextView = findViewById(R.id.textViewWindDirectionValue)
@@ -66,6 +72,8 @@ class MainActivity : AppCompatActivity() {
             val temperature: TextView = findViewById(R.id.textViewTemperatureValue)
             val time: TextView = findViewById(R.id.textViewTimeValue)
 // TODO ...
+            latitude.text = request.latitude
+            longitude.text = request.longitude
             pressure.text = request.hourly.pressure_msl.get(12).toString() + " hPa"
             direction.text = request.current_weather.winddirection.toString()
             speed.text = request.current_weather.windspeed.toString() + " km/h"
@@ -78,13 +86,13 @@ class MainActivity : AppCompatActivity() {
                 WMO_WeatherCode.CLEAR_SKY,
                 WMO_WeatherCode.MAINLY_CLEAR,
                 WMO_WeatherCode.PARTLY_CLOUDY -> if (day) wCode?.image + "day" else
-                    wCode?.image + " night "
+                    wCode?.image + "night"
 
                 else -> wCode?.image
             }
             val res = getResources()
             weatherImage.setImageResource(R.drawable.fog)
-            val resID = res.getIdentifier(wImage, "drawable", getPackageName());
+            val resID = res.getIdentifier(wImage, "drawable", packageName);
             val drawable = this.getDrawable(resID);
             weatherImage.setImageDrawable(drawable);
 // TODO ...

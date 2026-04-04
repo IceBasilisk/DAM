@@ -17,4 +17,5 @@
     <string name="value_wind_speed">Wind Speed</string>
     <string name="value_temperature">Temperature</string>
     <string name="value_time">Time</string>
+    <string name="imageDescription">Imagem coincidente com o tempo</string>
 </resources>
