@@ -16,5 +16,6 @@
     <string name="value_wind_speed">VV</string>
     <string name="value_temperature">Temp</string>
     <string name="value_time">Tempo</string>
+    <string name="value_timezone">Zona"</string>
     <string name="imageDescription">Imagem coincidente com o tempo</string>
 </resources>

@@ -22,7 +22,7 @@
         <item name="android:textColor">@color/WeatherLabelDay</item>
     </style>
     <style name="Theme.Day.Land" parent="Theme.CoolWeatherAPP">
-        <item name="android:windowBackground">@drawable/background_dark_horizontal</item>
+        <item name="android:windowBackground">@drawable/background_light_horizontal</item>
         <item name="android:textColor">@color/WeatherLabelDay</item>
     </style>
     <style name="Theme.Night" parent ="Theme.CoolWeatherAPP">

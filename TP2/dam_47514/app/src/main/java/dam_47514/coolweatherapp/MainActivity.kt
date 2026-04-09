@@ -45,7 +45,8 @@ class MainActivity : AppCompatActivity() {
             append("https://api.open-meteo.com/v1/forecast?")
             append("latitude=${lat}&longitude=${long}&")
             append("current_weather=true&")
-            append("hourly=temperature_2m,weathercode,pressure_msl,windspeed_10m")
+            append("hourly=temperature_2m,weathercode,pressure_msl,windspeed_10m&")
+            append("timezone=auto")
         }
         val url = URL(reqString);
         url.openStream().use {
@@ -71,6 +72,7 @@ class MainActivity : AppCompatActivity() {
             val speed: TextView = findViewById(R.id.textViewWindSpeedValue)
             val temperature: TextView = findViewById(R.id.textViewTemperatureValue)
             val time: TextView = findViewById(R.id.textViewTimeValue)
+            val timezone: TextView = findViewById(R.id.textViewTimezone)
 // TODO ...
             latitude.text = request.latitude
             longitude.text = request.longitude
@@ -79,6 +81,7 @@ class MainActivity : AppCompatActivity() {
             speed.text = request.current_weather.windspeed.toString() + " km/h"
             temperature.text = request.hourly.temperature_2m.get(12).toString() + " ºC"
             time.text = request.current_weather.time
+            timezone.text = request.timezone
 // TODO ...
             val mapt = getWeatherCodeMap();
             val wCode = mapt.get(request.current_weather.weathercode)

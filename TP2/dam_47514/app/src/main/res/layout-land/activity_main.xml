@@ -16,18 +16,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/textViewTimezone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/value_timezone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.306"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.153" />
+
         <ImageView
             android:id="@+id/imageWeather"
-            android:layout_width="106dp"
-            android:layout_height="103dp"
-            android:layout_marginStart="423dp"
-            android:layout_marginEnd="26dp"
-            android:layout_marginBottom="224dp"
+            android:layout_width="149dp"
+            android:layout_height="145dp"
             android:contentDescription="@string/imageDescription"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textViewSeaLevelLabel"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.056"
             app:srcCompat="@drawable/clear_day" />
 
         <TextView
@@ -35,180 +46,148 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/value_wind_direction"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewWindDirectionLabel"
-            app:layout_constraintEnd_toEndOf="@+id/textViewSeaLevelValue"
-            app:layout_constraintStart_toStartOf="@+id/textViewSeaLevelValue"
-            app:layout_constraintTop_toTopOf="@+id/textViewWindDirectionLabel"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.235"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.441" />
 
         <TextView
             android:id="@+id/textViewWindSpeedValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/value_wind_speed"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewWindSpeedLabel"
-            app:layout_constraintEnd_toEndOf="@+id/textViewWindDirectionValue"
-            app:layout_constraintHorizontal_bias="0.478"
-            app:layout_constraintStart_toStartOf="@+id/textViewWindDirectionValue"
-            app:layout_constraintTop_toTopOf="@+id/textViewWindSpeedLabel"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.072"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.652" />
 
         <TextView
             android:id="@+id/textViewWindDirectionLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
             android:text="@string/label_wind_direction"
-            app:layout_constraintEnd_toEndOf="@+id/textViewSeaLevelLabel"
-            app:layout_constraintStart_toStartOf="@+id/textViewSeaLevelLabel"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSeaLevelLabel" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.076"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.439" />
 
         <TextView
             android:id="@+id/textViewSeaLevelValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/value_sea_level_pressure"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewSeaLevelLabel"
-            app:layout_constraintEnd_toEndOf="@+id/editTextLongitude"
-            app:layout_constraintHorizontal_bias="0.48"
-            app:layout_constraintStart_toStartOf="@+id/editTextLongitude"
-            app:layout_constraintTop_toTopOf="@+id/textViewSeaLevelLabel"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.911"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.65" />
 
         <TextView
             android:id="@+id/textViewSeaLevelLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="42dp"
             android:text="@string/label_sea_level_pressure"
-            app:layout_constraintEnd_toEndOf="@+id/textViewLongitude"
-            app:layout_constraintHorizontal_bias="0.506"
-            app:layout_constraintStart_toStartOf="@+id/textViewLongitude"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLongitude" />
-
-        <TextView
-            android:id="@+id/textViewLongitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="56dp"
-            android:text="@string/label_longitude"
-            app:layout_constraintEnd_toEndOf="@+id/textViewLatitude"
-            app:layout_constraintStart_toStartOf="@+id/textViewLatitude"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLatitude" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.685"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.65" />
 
         <EditText
             android:id="@+id/editTextLongitude"
             android:layout_width="178dp"
             android:layout_height="48dp"
             android:ems="10"
+            android:gravity="center"
             android:inputType="numberDecimal|numberSigned"
             android:text="@string/value_longitude"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewLongitude"
-            app:layout_constraintEnd_toEndOf="@+id/editTextLatitude"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/editTextLatitude"
-            app:layout_constraintTop_toTopOf="@+id/textViewLongitude"
-            app:layout_constraintVertical_bias="0.458"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.667"
             tools:ignore="LabelFor" />
 
         <EditText
             android:id="@+id/editTextLatitude"
             android:layout_width="178dp"
             android:layout_height="48dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginEnd="28dp"
             android:ems="10"
+            android:gravity="center"
             android:inputType="numberDecimal|numberSigned"
             android:text="@string/value_latitude"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewLatitude"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.25"
-            app:layout_constraintStart_toEndOf="@+id/textViewLatitude"
-            app:layout_constraintTop_toTopOf="@+id/textViewLatitude"
-            app:layout_constraintVertical_bias="0.458"
-            tools:ignore="LabelFor" />
-
-        <TextView
-            android:id="@+id/textViewLatitude"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_marginStart="600dp"
-            android:layout_marginTop="48dp"
-            android:text="@string/label_latitude"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/textViewTemperatureLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
             android:text="@string/label_temperature"
-            app:layout_constraintEnd_toEndOf="@+id/textViewWindSpeedLabel"
-            app:layout_constraintStart_toStartOf="@+id/textViewWindSpeedLabel"
-            app:layout_constraintTop_toBottomOf="@+id/textViewWindSpeedLabel" />
-
-        <TextView
-            android:id="@+id/textViewTimeLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="163dp"
-            android:text="@string/label_time"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textViewTemperatureLabel"
-            app:layout_constraintHorizontal_bias="0.303"
-            app:layout_constraintStart_toStartOf="@+id/textViewTemperatureLabel"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTemperatureLabel"
-            app:layout_constraintVertical_bias="0.444" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.744"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.441" />
 
         <TextView
             android:id="@+id/textViewTimeValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/value_time"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewTimeLabel"
-            app:layout_constraintEnd_toEndOf="@+id/textViewTemperatureValue"
-            app:layout_constraintHorizontal_bias="0.294"
-            app:layout_constraintStart_toStartOf="@+id/textViewTemperatureValue"
-            app:layout_constraintTop_toTopOf="@+id/textViewTimeLabel"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.073"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.153" />
 
         <TextView
             android:id="@+id/textViewTemperatureValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/value_temperature"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewTemperatureLabel"
-            app:layout_constraintEnd_toEndOf="@+id/textViewWindSpeedValue"
-            app:layout_constraintHorizontal_bias="0.375"
-            app:layout_constraintStart_toStartOf="@+id/textViewWindSpeedValue"
-            app:layout_constraintTop_toTopOf="@+id/textViewTemperatureLabel"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.926"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.441" />
 
         <Button
             android:id="@+id/buttonUpdate"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginStart="422dp"
-            android:layout_marginTop="27dp"
-            android:layout_marginEnd="44dp"
-            android:layout_marginBottom="149dp"
+            android:layout_width="156dp"
+            android:layout_height="62dp"
             android:text="@string/label_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textViewWindDirectionLabel"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageWeather" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.895" />
 
         <TextView
             android:id="@+id/textViewWindSpeedLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
             android:text="@string/label_wind_speed"
-            app:layout_constraintEnd_toEndOf="@+id/textViewWindDirectionLabel"
-            app:layout_constraintStart_toStartOf="@+id/textViewWindDirectionLabel"
-            app:layout_constraintTop_toBottomOf="@+id/textViewWindDirectionLabel" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.241"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.652" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
