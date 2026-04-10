@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
                 else setTheme(R.style.Theme_Night_Land)
             }
         }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
