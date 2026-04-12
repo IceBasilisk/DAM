@@ -1,44 +1,21 @@
-<resources xmlns:tools ="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme . -->
-    <style name="Theme.CoolWeatherAPP"
-        parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.CoolWeatherAPP" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color . -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color . -->
-        <item name="colorSecondary">@color/teal_200</item >
-        <item name="colorSecondaryVariant">@color/teal_700</item >
-        <item name="colorOnSecondary">@color/black</item >
-        <!-- Status bar color . -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item >
         <!-- Customize your theme here . -->
-        <item name="android:windowBackground">@color/viewBG</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="Theme.Day" parent="Theme.CoolWeatherAPP">
         <item name="android:windowBackground">@drawable/background_light_vertical</item>
         <item name="android:textColor">@color/white</item>
     </style>
-    <style name="Theme.CoolWeatherAPP.Land">
-        parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color . -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color . -->
-        <item name="colorSecondary">@color/teal_200</item >
-        <item name="colorSecondaryVariant">@color/teal_700</item >
-        <item name="colorOnSecondary">@color/black</item >
-        <!-- Status bar color . -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item >
-        <!-- Customize your theme here . -->
-        <item name="android:windowBackground">@color/viewBG</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-    <style name="Theme.Day.Land" parent="Theme.CoolWeatherAPP.Land">
+
+    <style name="Theme.Day.Land" parent="Theme.CoolWeatherAPP">
         <item name="android:windowBackground">@drawable/background_light_horizontal</item>
         <item name="android:textColor">@color/white</item>
     </style>
