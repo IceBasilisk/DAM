@@ -1,3 +1,4 @@
+package com.example.app
 import annotations.Greeting
 
 open class MyClass {
