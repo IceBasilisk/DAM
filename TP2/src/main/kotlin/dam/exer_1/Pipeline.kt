@@ -1,7 +1,5 @@
 package dam.exer_1
 
-import com.sun.org.apache.xml.internal.serialize.Printer
-
 /**
  * Internally stores an ordered list of transformation steps
  * Each step is a List<String>
@@ -45,9 +43,6 @@ class Pipeline {
     }
 }
 
-/**
- *
- */
 fun buildPipeline(transform: Pipeline.() -> Unit): Pipeline {
     val pipeline = Pipeline()
     pipeline.transform()
