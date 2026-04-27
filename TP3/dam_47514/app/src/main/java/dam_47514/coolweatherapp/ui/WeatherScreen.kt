@@ -7,6 +7,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dam_47514.coolweatherapp.data.WMO_WeatherCode
 import dam_47514.coolweatherapp.data.getWeatherCodeMap
+import dam_47514.coolweatherapp.viewmodel.WeatherViewModel
+import dam_47514.coolweatherapp.viewmodel.WeatherUIState
 
 @Composable
 fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
