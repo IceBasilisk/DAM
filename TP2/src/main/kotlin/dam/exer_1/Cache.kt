@@ -16,10 +16,11 @@ class Cache<K : Any, V : Any> {
     }
 
     /**
-     * Retrieve a value by key, null if key is not present
-     * (return map[key] is enough)
+     * Retrieve a value by key
      */
     fun get(key: K): V? {
+        // key exists -> return key
+        // key does not exist -> return null
         return map[key]
     }
 
@@ -27,6 +28,8 @@ class Cache<K : Any, V : Any> {
      * Remove entry from the cache
      */
     fun evict(key: K) {
+        // key exists -> remove key
+        // key does not exist -> return null
         map.remove(key)
     }
 
@@ -37,7 +40,11 @@ class Cache<K : Any, V : Any> {
         return map.size
     }
 
+    /**
+     * Return value of key, or sets default value if there is none
+     */
     fun getOrPut(key: K, default: () -> V): V {
+        // Get key value
         val cacheValue = get(key)
 
         if (cacheValue != null)
@@ -49,6 +56,10 @@ class Cache<K : Any, V : Any> {
         }
     }
 
+    /**
+     * Use action handler to alter key's value
+     * @return True if value was altered, False if value is null
+     */
     fun transform(key: K, action: (V) -> V): Boolean {
         val cacheValue = get(key)
 
@@ -60,6 +71,9 @@ class Cache<K : Any, V : Any> {
         return false
     }
 
+    /**
+     * Returns copy of map variable
+     */
     fun snapshot(): Map<K, V> {
         return map.toMap()
     }
