@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cool Weather APP TP3</string>
+    <string name="app_name">Jetpack Cool Weather App</string>
     <!-- App Labels -->
     <string name="label_latitude">Latitude</string>
     <string name="label_longitude">Longitude</string>

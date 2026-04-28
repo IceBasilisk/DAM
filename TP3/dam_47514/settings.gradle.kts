@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Cool Weather APP TP3"
+rootProject.name = "Jetpack Cool Weather App"
 include(":app")
