@@ -3,17 +3,26 @@ package dam_47514.weathercompose.ui
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import dam_47514.weathercompose.viewmodel.WeatherViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.weathercompose.R
 import dam_47514.weathercompose.data.WMO_WeatherCode
 import dam_47514.weathercompose.data.getWeatherCodeMap
 
@@ -115,24 +124,56 @@ fun PortraitWeatherUI(
     onUpdateButtonClick: () -> Unit,
 ) {
     Column() {
-        Row() {
-            Card() {
+        Card() {
+            Column() {
+                Text(
+                    text = stringResource(R.string.coordinates_label),
+                    style = typography.labelLarge,
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+
                 OutlinedTextField(
                     value = "",
                     onValueChange = {},
                     label = { Text("Latitude") }
                 )
-            }
-        }
-    }
-    Column() {
-        Row() {
-            Card() {
+
                 OutlinedTextField(
                     value = "",
                     onValueChange = {},
                     label = { Text("Longitude") }
                 )
+
+            }
+        }
+
+        Card() {
+            Column() {
+                Row() {
+                    Text(stringResource(R.string.sea_level_label), style = typography.labelSmall, textAlign = TextAlign.Left)
+                    Text(stringResource(R.string.sea_level_label), style = typography.labelSmall, textAlign = TextAlign.Right)
+                }
+                Row() {
+                    Text(stringResource(R.string.wind_direction_label), style = typography.labelSmall, textAlign = TextAlign.Left)
+                    Text(stringResource(R.string.wind_direction_label), style = typography.labelSmall, textAlign = TextAlign.Right)
+                }
+                Row() {
+                    Text(stringResource(R.string.wind_speed_label), style = typography.labelSmall, textAlign = TextAlign.Left)
+                    Text(stringResource(R.string.wind_speed_label), style = typography.labelSmall, textAlign = TextAlign.Right)
+                }
+                Row() {
+                    Text(stringResource(R.string.temperature_label), style = typography.labelSmall, textAlign = TextAlign.Left)
+                    Text(stringResource(R.string.temperature_label), style = typography.labelSmall, textAlign = TextAlign.Right)
+                }
+                Row() {
+                    Text(stringResource(R.string.time_label), style = typography.labelSmall, textAlign = TextAlign.Left)
+                    Text(stringResource(R.string.time_label), style = typography.labelSmall, textAlign = TextAlign.Right)
+                }
+                Row() {
+                }
+            }
+            Column() {
+
             }
         }
     }
