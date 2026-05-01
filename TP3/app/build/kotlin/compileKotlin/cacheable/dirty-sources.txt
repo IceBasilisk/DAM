@@ -1,0 +1,3 @@
+C:\Users\luiss\Documents\GitHub\DAM\TP3\app\build\generated\source\kaptKotlin\main\unnamed package\MyClassWrapper.kt
+C:\Users\luiss\Documents\GitHub\DAM\TP3\app\src\main\kotlin\MyClass.kt
+C:\Users\luiss\Documents\GitHub\DAM\TP3\app\src\main\kotlin\Main.kt
