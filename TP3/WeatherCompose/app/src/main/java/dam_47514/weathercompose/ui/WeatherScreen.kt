@@ -1,10 +1,15 @@
 package dam_47514.weathercompose.ui
 
 import android.content.res.Configuration
+import android.inputmethodservice.Keyboard
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
@@ -17,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -124,58 +130,142 @@ fun PortraitWeatherUI(
     onUpdateButtonClick: () -> Unit,
 ) {
     Column() {
-        Card() {
+        Card(modifier = Modifier
+            .padding()
+            .fillMaxWidth()) {
             Column() {
                 Text(
                     text = stringResource(R.string.coordinates_label),
-                    style = typography.labelLarge,
+                    style = typography.labelLarge
                 )
                 Spacer(modifier = Modifier.height(20.dp))
 
                 OutlinedTextField(
                     value = "",
                     onValueChange = {},
-                    label = { Text("Latitude") }
+                    label = { Text("Latitude") },
+                    modifier = Modifier
+                        .padding()
+                        .fillMaxWidth()
                 )
 
                 OutlinedTextField(
                     value = "",
                     onValueChange = {},
-                    label = { Text("Longitude") }
+                    label = { Text("Longitude") },
+                    modifier = Modifier
+                        .padding()
+                        .fillMaxWidth()
                 )
 
             }
         }
 
-        Card() {
+        Card(modifier = Modifier
+            .padding()
+            .fillMaxWidth()) {
             Column() {
-                Row() {
-                    Text(stringResource(R.string.sea_level_label), style = typography.labelSmall, textAlign = TextAlign.Left)
-                    Text(stringResource(R.string.sea_level_label), style = typography.labelSmall, textAlign = TextAlign.Right)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        stringResource(R.string.sea_level_label),
+                        style = typography.labelSmall,
+                        textAlign = TextAlign.Left,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        stringResource(R.string.sea_level_label),
+                        style = typography.labelSmall,
+                        textAlign = TextAlign.Right,
+                        fontWeight = FontWeight.Light
+                    )
                 }
-                Row() {
-                    Text(stringResource(R.string.wind_direction_label), style = typography.labelSmall, textAlign = TextAlign.Left)
-                    Text(stringResource(R.string.wind_direction_label), style = typography.labelSmall, textAlign = TextAlign.Right)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        stringResource(R.string.wind_direction_label),
+                        style = typography.labelSmall,
+                        textAlign = TextAlign.Left,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        stringResource(R.string.wind_direction_label),
+                        style = typography.labelSmall,
+                        textAlign = TextAlign.Right,
+                        fontWeight = FontWeight.Light
+                    )
                 }
-                Row() {
-                    Text(stringResource(R.string.wind_speed_label), style = typography.labelSmall, textAlign = TextAlign.Left)
-                    Text(stringResource(R.string.wind_speed_label), style = typography.labelSmall, textAlign = TextAlign.Right)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        stringResource(R.string.wind_speed_label),
+                        style = typography.labelSmall,
+                        textAlign = TextAlign.Left,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        stringResource(R.string.wind_speed_label),
+                        style = typography.labelSmall,
+                        textAlign = TextAlign.Right,
+                        fontWeight = FontWeight.Light
+                    )
                 }
-                Row() {
-                    Text(stringResource(R.string.temperature_label), style = typography.labelSmall, textAlign = TextAlign.Left)
-                    Text(stringResource(R.string.temperature_label), style = typography.labelSmall, textAlign = TextAlign.Right)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        stringResource(R.string.temperature_label),
+                        style = typography.labelSmall,
+                        textAlign = TextAlign.Left,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        stringResource(R.string.temperature_label),
+                        style = typography.labelSmall,
+                        textAlign = TextAlign.Right,
+                        fontWeight = FontWeight.Light
+                    )
                 }
-                Row() {
-                    Text(stringResource(R.string.time_label), style = typography.labelSmall, textAlign = TextAlign.Left)
-                    Text(stringResource(R.string.time_label), style = typography.labelSmall, textAlign = TextAlign.Right)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        stringResource(R.string.time_label),
+                        style = typography.labelSmall,
+                        textAlign = TextAlign.Left,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        stringResource(R.string.time_label),
+                        style = typography.labelSmall,
+                        textAlign = TextAlign.Right,
+                        fontWeight = FontWeight.Light
+                    )
                 }
                 Row() {
                 }
             }
             Column() {
-
+                Button(onClick = { isPressed = !isPressed },) {
+                    Text(stringResource(R.string.button_label))
+                }
             }
         }
+    }
+}
+
+@Composable
+fun FilledButton(onClick: () -> Unit) {
+    Button(onClick = { onClick() }) {
+        Text("Filled")
     }
 }
 

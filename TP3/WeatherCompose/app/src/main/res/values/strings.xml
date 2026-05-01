@@ -8,4 +8,5 @@
     <string name="wind_speed_label">Wind Speed</string>
     <string name="temperature_label">Temperature</string>
     <string name="time_label">Time</string>
+    <string name="button_label">Update Weather</string>
 </resources>
