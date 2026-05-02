@@ -2,6 +2,8 @@ package dam_47514.weathercompose.ui
 
 import android.content.res.Configuration
 import android.inputmethodservice.Keyboard
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -18,9 +21,13 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,6 +37,7 @@ import dam_47514.weathercompose.viewmodel.WeatherViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.weathercompose.R
 import dam_47514.weathercompose.data.WMO_WeatherCode
+import dam_47514.weathercompose.data.WeatherApiClient.getWeather
 import dam_47514.weathercompose.data.getWeatherCodeMap
 
 @Preview
@@ -129,15 +137,32 @@ fun PortraitWeatherUI(
     onLongitudeChange: (String) -> Unit,
     onUpdateButtonClick: () -> Unit,
 ) {
-    Column() {
-        Card(modifier = Modifier
-            .padding()
-            .fillMaxWidth()) {
-            Column() {
+    Column(
+        modifier = Modifier
+            .background(colorResource(R.color.white))
+    ) {
+
+        /*Image(
+            painter = painterResource(R.drawable.cloudy),
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        )*/
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Card(
+            modifier = Modifier
+                .padding()
+                .fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = colorResource(R.color.purple)
+            )
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = stringResource(R.string.coordinates_label),
                     style = typography.labelLarge
                 )
+
                 Spacer(modifier = Modifier.height(20.dp))
 
                 OutlinedTextField(
@@ -160,11 +185,17 @@ fun PortraitWeatherUI(
 
             }
         }
+        Spacer(modifier = Modifier.height(20.dp))
 
-        Card(modifier = Modifier
-            .padding()
-            .fillMaxWidth()) {
-            Column() {
+        Card(
+            modifier = Modifier
+                .padding()
+                .fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = colorResource(R.color.purple)
+            )
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -249,23 +280,20 @@ fun PortraitWeatherUI(
                         textAlign = TextAlign.Right,
                         fontWeight = FontWeight.Light
                     )
-                }
-                Row() {
-                }
-            }
-            Column() {
-                Button(onClick = { isPressed = !isPressed },) {
-                    Text(stringResource(R.string.button_label))
                 }
             }
         }
-    }
-}
+        Spacer(modifier = Modifier.height(20.dp))
 
-@Composable
-fun FilledButton(onClick: () -> Unit) {
-    Button(onClick = { onClick() }) {
-        Text("Filled")
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(onClick = { }) {
+                Text("Update Weather")
+            }
+        }
     }
 }
 
