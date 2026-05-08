@@ -1,35 +1,43 @@
 package dam_47514.weathercompose.data
 
+import kotlinx.serialization.Serializable
+@Serializable
 data class WeatherData(
-    var latitude: String,
-    var longitude: String,
+    var latitude: Float,
+    var longitude: Float,
     var timezone: String,
-    var daily: Daily,
-    var daily_units: DailyUnits,
-    var current_weather: CurrentWeather
+    var current_weather: CurrentWeather,
+    var hourly: Hourly
 )
 
+@Serializable
 data class CurrentWeather(
-    var time: String,
     var temperature: Float,
-    var windspeed: Float
+    var windspeed: Float,
+    var winddirection: Int,
+    var weathercode: Int,
+    var time: String
 )
 
-data class DailyUnits(
-    var precipitation_probability_max: String,
-    var temperature_2m_min: String,
-    var wind_speed_10m_max: String
+@Serializable
+data class Hourly(
+    var time: ArrayList<String>,
+    var temperature_2m: ArrayList<Float>,
+    var weathercode: ArrayList<Int>,
+    var pressure_msl: ArrayList<Double>
 )
 
+@Serializable
 data class Daily(
     var precipitation_probability_max: ArrayList<Int>,
     var temperature_2m_min: ArrayList<Float>,
     var temperature_2m_max: ArrayList<Float>,
     var wind_speed_10m_max: ArrayList<Float>,
-    var weather_code: ArrayList<Int>,
+    var weathercode: ArrayList<Int>,
     var time: ArrayList<String>
 )
 
+@Serializable
 enum class WMO_WeatherCode(var code: Int, var image: String) {
     CLEAR_SKY(0, "clear_"),
     MAINLY_CLEAR(1, "mostly_clear_"),

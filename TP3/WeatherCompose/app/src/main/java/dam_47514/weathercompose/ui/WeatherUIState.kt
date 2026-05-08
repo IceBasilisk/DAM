@@ -1,9 +1,10 @@
 package dam_47514.weathercompose.ui
 
 data class WeatherUIState(
-    val latitude: Float = 38.7223f,
-    val longitude: Float = -9.1393f,
+    val latitude: String = "38.7223",
+    val longitude: String = "-9.1393",
     val temperature: Float = 0f,
+    val timezone: String = "GMT",
     val windspeed: Float = 0f,
     val winddirection: Int = 0,
     val weathercode: Int = 0,

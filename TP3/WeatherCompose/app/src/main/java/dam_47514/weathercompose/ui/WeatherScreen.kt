@@ -1,29 +1,29 @@
 package dam_47514.weathercompose.ui
 
 import android.content.res.Configuration
-import android.inputmethodservice.Keyboard
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -37,7 +37,6 @@ import dam_47514.weathercompose.viewmodel.WeatherViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.weathercompose.R
 import dam_47514.weathercompose.data.WMO_WeatherCode
-import dam_47514.weathercompose.data.WeatherApiClient.getWeather
 import dam_47514.weathercompose.data.getWeatherCodeMap
 
 @Preview
@@ -81,14 +80,10 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
             seaLevelPressure,
             time,
             onLatitudeChange = { newValue ->
-                newValue.toFloatOrNull()?.let {
-                    weatherViewModel.updateLatitude(it)
-                }
+                weatherViewModel.updateLatitude(newValue)
             },
             onLongitudeChange = { newValue ->
-                newValue.toFloatOrNull()?.let {
-                    weatherViewModel.updateLongitude(it)
-                }
+                weatherViewModel.updateLongitude(newValue)
             },
             onUpdateButtonClick = {
                 weatherViewModel.fetchWeather()
@@ -106,14 +101,10 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
             seaLevelPressure,
             time,
             onLatitudeChange = { newValue ->
-                newValue.toFloatOrNull()?.let {
-                    weatherViewModel.updateLatitude(it)
-                }
+                weatherViewModel.updateLatitude(newValue)
             },
             onLongitudeChange = { newValue ->
-                newValue.toFloatOrNull()?.let {
-                    weatherViewModel.updateLongitude(it)
-                }
+                weatherViewModel.updateLongitude(newValue)
             },
             onUpdateButtonClick = {
                 weatherViewModel.fetchWeather()
@@ -125,8 +116,8 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
 @Composable
 fun PortraitWeatherUI(
     wIcon: Int,
-    latitude: Float,
-    longitude: Float,
+    latitude: String,
+    longitude: String,
     temperature: Float,
     windSpeed: Float,
     windDirection: Int,
@@ -139,14 +130,20 @@ fun PortraitWeatherUI(
 ) {
     Column(
         modifier = Modifier
-            .background(colorResource(R.color.white))
+            .fillMaxSize()
+            .background(colorResource(R.color.blue)),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        /*Image(
-            painter = painterResource(R.drawable.cloudy),
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        )*/
+        Spacer(modifier = Modifier.height(50.dp))
+
+        Image(
+            painter = painterResource(id = wIcon),
+            contentDescription = "Weather Icon",
+            modifier = Modifier
+                .size(150.dp)
+                .padding(16.dp)
+        )
         Spacer(modifier = Modifier.height(20.dp))
 
         Card(
@@ -154,7 +151,7 @@ fun PortraitWeatherUI(
                 .padding()
                 .fillMaxWidth(),
             colors = CardDefaults.cardColors(
-                containerColor = colorResource(R.color.purple)
+                containerColor = colorResource(R.color.white)
             )
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -166,8 +163,8 @@ fun PortraitWeatherUI(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
+                    value = latitude,
+                    onValueChange = onLatitudeChange,
                     label = { Text("Latitude") },
                     modifier = Modifier
                         .padding()
@@ -175,8 +172,8 @@ fun PortraitWeatherUI(
                 )
 
                 OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
+                    value = longitude,
+                    onValueChange = onLongitudeChange,
                     label = { Text("Longitude") },
                     modifier = Modifier
                         .padding()
@@ -192,7 +189,7 @@ fun PortraitWeatherUI(
                 .padding()
                 .fillMaxWidth(),
             colors = CardDefaults.cardColors(
-                containerColor = colorResource(R.color.purple)
+                containerColor = colorResource(R.color.white)
             )
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -202,13 +199,13 @@ fun PortraitWeatherUI(
                 ) {
                     Text(
                         stringResource(R.string.sea_level_label),
-                        style = typography.labelSmall,
+                        style = typography.labelLarge,
                         textAlign = TextAlign.Left,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                     Text(
-                        stringResource(R.string.sea_level_label),
-                        style = typography.labelSmall,
+                        text = "$seaLevelPressure hPa",
+                        style = typography.labelMedium,
                         textAlign = TextAlign.Right,
                         fontWeight = FontWeight.Light
                     )
@@ -219,13 +216,13 @@ fun PortraitWeatherUI(
                 ) {
                     Text(
                         stringResource(R.string.wind_direction_label),
-                        style = typography.labelSmall,
+                        style = typography.labelLarge,
                         textAlign = TextAlign.Left,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        stringResource(R.string.wind_direction_label),
-                        style = typography.labelSmall,
+                        text = "$windDirection º",
+                        style = typography.labelMedium,
                         textAlign = TextAlign.Right,
                         fontWeight = FontWeight.Light
                     )
@@ -236,13 +233,13 @@ fun PortraitWeatherUI(
                 ) {
                     Text(
                         stringResource(R.string.wind_speed_label),
-                        style = typography.labelSmall,
+                        style = typography.labelLarge,
                         textAlign = TextAlign.Left,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        stringResource(R.string.wind_speed_label),
-                        style = typography.labelSmall,
+                        text = "$windSpeed km/h",
+                        style = typography.labelMedium,
                         textAlign = TextAlign.Right,
                         fontWeight = FontWeight.Light
                     )
@@ -253,13 +250,13 @@ fun PortraitWeatherUI(
                 ) {
                     Text(
                         stringResource(R.string.temperature_label),
-                        style = typography.labelSmall,
+                        style = typography.labelLarge,
                         textAlign = TextAlign.Left,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        stringResource(R.string.temperature_label),
-                        style = typography.labelSmall,
+                        text = "$temperature ºC",
+                        style = typography.labelMedium,
                         textAlign = TextAlign.Right,
                         fontWeight = FontWeight.Light
                     )
@@ -270,13 +267,13 @@ fun PortraitWeatherUI(
                 ) {
                     Text(
                         stringResource(R.string.time_label),
-                        style = typography.labelSmall,
+                        style = typography.labelLarge,
                         textAlign = TextAlign.Left,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        stringResource(R.string.time_label),
-                        style = typography.labelSmall,
+                        text = time,
+                        style = typography.labelMedium,
                         textAlign = TextAlign.Right,
                         fontWeight = FontWeight.Light
                     )
@@ -290,18 +287,20 @@ fun PortraitWeatherUI(
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(onClick = { }) {
-                Text("Update Weather")
+            Button(modifier = Modifier.fillMaxWidth(), onClick = onUpdateButtonClick) {
+                Text(stringResource(R.string.button_label))
             }
         }
+
+        Spacer(modifier = Modifier.height(50.dp))
     }
 }
 
 @Composable
 fun LandscapeWeatherUI(
     wIcon: Int,
-    latitude: Float,
-    longitude: Float,
+    latitude: String,
+    longitude: String,
     temperature: Float,
     windSpeed: Float,
     windDirection: Int,
@@ -312,5 +311,173 @@ fun LandscapeWeatherUI(
     onLongitudeChange: (String) -> Unit,
     onUpdateButtonClick: () -> Unit,
 ) {
-// ToDo
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(colorResource(R.color.blue))
+    ) {
+
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier.weight(0.5f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = wIcon),
+                    contentDescription = "Weather Icon",
+                    modifier = Modifier
+                        .size(150.dp)
+                )
+            }
+
+            Column(modifier = Modifier.weight(1.2f)) {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = colorResource(R.color.white)
+                    )
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = stringResource(R.string.coordinates_label),
+                            style = typography.labelLarge
+                        )
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        OutlinedTextField(
+                            value = latitude,
+                            onValueChange = onLatitudeChange,
+                            label = { Text("Latitude") },
+                            modifier = Modifier
+                                .padding()
+                        )
+
+                        OutlinedTextField(
+                            value = longitude,
+                            onValueChange = onLongitudeChange,
+                            label = { Text("Longitude") },
+                            modifier = Modifier
+                                .padding()
+                        )
+
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Card(
+                    modifier = Modifier
+                        .padding(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = colorResource(R.color.white)
+                    )
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                stringResource(R.string.sea_level_label),
+                                style = typography.labelLarge,
+                                textAlign = TextAlign.Left,
+                                fontWeight = FontWeight.Bold,
+                            )
+                            Text(
+                                text = "$seaLevelPressure hPa",
+                                style = typography.labelMedium,
+                                textAlign = TextAlign.Right,
+                                fontWeight = FontWeight.Light
+                            )
+                        }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                stringResource(R.string.wind_direction_label),
+                                style = typography.labelLarge,
+                                textAlign = TextAlign.Left,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "$windDirection º",
+                                style = typography.labelMedium,
+                                textAlign = TextAlign.Right,
+                                fontWeight = FontWeight.Light
+                            )
+                        }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                stringResource(R.string.wind_speed_label),
+                                style = typography.labelLarge,
+                                textAlign = TextAlign.Left,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "$windSpeed km/h",
+                                style = typography.labelMedium,
+                                textAlign = TextAlign.Right,
+                                fontWeight = FontWeight.Light
+                            )
+                        }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                stringResource(R.string.temperature_label),
+                                style = typography.labelLarge,
+                                textAlign = TextAlign.Left,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "$temperature ºC",
+                                style = typography.labelMedium,
+                                textAlign = TextAlign.Right,
+                                fontWeight = FontWeight.Light
+                            )
+                        }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                stringResource(R.string.time_label),
+                                style = typography.labelLarge,
+                                textAlign = TextAlign.Left,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = time,
+                                style = typography.labelMedium,
+                                textAlign = TextAlign.Right,
+                                fontWeight = FontWeight.Light
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Button(onClick = onUpdateButtonClick) {
+                Text(stringResource(R.string.button_label))
+            }
+        }
+    }
 }

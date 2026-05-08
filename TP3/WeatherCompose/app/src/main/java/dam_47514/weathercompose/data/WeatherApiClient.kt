@@ -18,13 +18,13 @@ object WeatherApiClient {
         }
     }
 
-    suspend fun getWeather(lat: Float, lon: Float): WeatherData? {
+    suspend fun getWeather(lat: String, lon: String): WeatherData? {
         val reqString = buildString {
-            //https://api.open-meteo.com/v1/forecast?latitude=38.7167&longitude=-9.1333&current_weather=true&hourly=temperature_2m,weathercode,pressure_msl,windspeed_10m
             append("https://api.open-meteo.com/v1/forecast?")
             append("latitude=${lat}&longitude=${lon}&")
             append("current_weather=true&")
-            append("hourly=temperature_2m,weathercode,pressure_msl,windspeed_10m")
+            append("hourly=temperature_2m,weathercode,pressure_msl,windspeed_10m&")
+            append("timezone=auto")
         }
         println("Getting URL: $reqString")
         return try {
