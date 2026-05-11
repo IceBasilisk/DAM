@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&amp;family=Lexend:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#4d4732",
+                        "on-secondary-fixed-variant": "#004c6b",
+                        "primary-fixed-dim": "#e9c400",
+                        "on-secondary-fixed": "#001e2d",
+                        "inverse-on-surface": "#faf0d5",
+                        "surface-container-highest": "#ebe2c8",
+                        "on-tertiary-fixed-variant": "#7f2b00",
+                        "surface-tint": "#705d00",
+                        "secondary": "#00658d",
+                        "primary-fixed": "#ffe16d",
+                        "inverse-primary": "#e9c400",
+                        "surface-dim": "#e2dabf",
+                        "on-tertiary-container": "#a83b00",
+                        "on-background": "#1f1c0b",
+                        "surface-container-low": "#fcf3d8",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#221b00",
+                        "background": "#fff9ed",
+                        "tertiary-fixed-dim": "#ffb599",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#705e00",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#ffdbce",
+                        "tertiary-container": "#ffd0bf",
+                        "secondary-fixed-dim": "#83cfff",
+                        "surface-variant": "#ebe2c8",
+                        "primary": "#705d00",
+                        "on-primary-fixed-variant": "#544600",
+                        "tertiary": "#a63b00",
+                        "surface-container": "#f7eed2",
+                        "surface": "#fff9ed",
+                        "secondary-fixed": "#c6e7ff",
+                        "on-tertiary-fixed": "#370e00",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#d0c6ab",
+                        "surface-bright": "#fff9ed",
+                        "surface-container-high": "#f1e8cd",
+                        "secondary-container": "#3dbeff",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1f1c0b",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#ffd700",
+                        "inverse-surface": "#35301e",
+                        "on-secondary-container": "#004a69",
+                        "outline": "#7e775f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "24px",
+                        "xs": "4px",
+                        "xl": "64px",
+                        "margin": "24px",
+                        "sm": "12px",
+                        "lg": "40px",
+                        "gutter": "20px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "label-sm": ["Lexend"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-bold": ["Lexend"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "800"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .block-shadow {
+            box-shadow: 0 6px 0 0 rgba(112, 93, 0, 0.3);
+        }
+        .block-shadow-active {
+            box-shadow: 0 2px 0 0 rgba(112, 93, 0, 0.3);
+            transform: translateY(4px);
+        }
+        .parchment-gradient {
+            background: linear-gradient(180deg, #F4EBD0 0%, #EBE2C8 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #B8860B;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body-md text-on-background min-h-screen">
+<!-- Top Navigation (Shell Implementation) -->
+<header class="fixed top-0 left-0 w-full z-50 h-16 flex items-center justify-between px-6 bg-[#F4EBD0] border-b-4 border-black/10 shadow-[0_4px_0_0_rgba(139,69,19,0.2)]">
+<div class="flex items-center gap-4">
+<div class="p-2 hover:bg-black/5 rounded-full transition-all active:translate-y-0.5">
+<span class="material-symbols-outlined text-[#8B4513]" data-icon="menu">menu</span>
+</div>
+<h1 class="font-['Plus_Jakarta_Sans'] font-extrabold tracking-tight text-xl text-[#8B4513] uppercase">Master Planner</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="p-2 hover:bg-black/5 rounded-full transition-all active:translate-y-0.5">
+<span class="material-symbols-outlined text-[#8B4513]" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Main Canvas (Roadmap Editor Background) -->
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Editor Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<span class="font-label-bold text-tertiary bg-tertiary-container px-4 py-1 rounded-full uppercase mb-2 inline-block">Active Voyage</span>
+<h2 class="font-headline-lg text-primary">Scurvy Dog's Treasure Map</h2>
+<p class="font-body-lg text-on-surface-variant">Plotting the course through the Caribbean reefs...</p>
+</div>
+<div class="flex gap-4">
+<button class="bg-secondary text-on-secondary px-6 py-3 rounded-xl font-label-bold block-shadow flex items-center gap-2 active:shadow-none active:translate-y-1 transition-all">
+<span class="material-symbols-outlined" data-icon="save">save</span>
+                    SAVE MAP
+                </button>
+</div>
+</div>
+<!-- Roadmap Grid (Visual Background) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 opacity-40 pointer-events-none">
+<div class="bg-surface-container border-4 border-dashed border-outline-variant rounded-[32px] p-8 h-64 flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-outline-variant text-4xl mb-2" data-icon="anchor">anchor</span>
+<p class="font-label-bold text-outline-variant">STARTING PORT</p>
+</div>
+<div class="bg-surface-container border-4 border-dashed border-outline-variant rounded-[32px] p-8 h-64 flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-outline-variant text-4xl mb-2" data-icon="sailing">sailing</span>
+<p class="font-label-bold text-outline-variant">VOYAGE POINT</p>
+</div>
+<div class="bg-surface-container border-4 border-dashed border-outline-variant rounded-[32px] p-8 h-64 flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-outline-variant text-4xl mb-2" data-icon="diamond">diamond</span>
+<p class="font-label-bold text-outline-variant">TREASURE CHEST</p>
+</div>
+</div>
+</main>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-[60] bg-on-background/60 backdrop-blur-sm flex items-center justify-center px-4">
+<!-- THE BOOTY BAG MODAL -->
+<div class="w-full max-w-4xl bg-[#F4EBD0] rounded-[40px] border-4 border-[#8B4513] shadow-[0_12px_0_0_#8B4513] overflow-hidden flex flex-col max-h-[751px]">
+<!-- Modal Header (Header Ribbon Style) -->
+<div class="bg-[#8B4513] px-8 py-6 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary-container rounded-2xl shadow-[0_4px_0_0_#B8860B] flex items-center justify-center">
+<span class="material-symbols-outlined text-[#8B4513] text-3xl" data-icon="inventory_2">inventory_2</span>
+</div>
+<div>
+<h3 class="font-headline-md text-white">The Booty Bag</h3>
+<p class="font-label-sm text-primary-fixed-dim">Drag tasks to your roadmap</p>
+</div>
+</div>
+<button class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-white" data-icon="close">close</span>
+</button>
+</div>
+<!-- Modal Content -->
+<div class="flex-1 overflow-hidden flex flex-col md:flex-row">
+<!-- Sidebar / Filters -->
+<div class="w-full md:w-64 bg-surface-container-high p-6 border-r-4 border-black/5">
+<div class="space-y-6">
+<div>
+<label class="font-label-bold text-on-surface-variant block mb-2">SEARCH BOOTY</label>
+<div class="relative">
+<input class="w-full bg-[#FFF9ED] border-2 border-[#8B4513]/20 rounded-xl px-4 py-3 focus:border-primary outline-none transition-all font-body-md" placeholder="Task name..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-3 text-outline" data-icon="search">search</span>
+</div>
+</div>
+<div>
+<label class="font-label-bold text-on-surface-variant block mb-2">CATEGORY</label>
+<div class="space-y-2">
+<button class="w-full text-left px-4 py-2 bg-primary-container text-[#8B4513] font-label-bold rounded-xl shadow-[0_3px_0_0_#B8860B]">All Items</button>
+<button class="w-full text-left px-4 py-2 hover:bg-black/5 text-on-surface-variant font-label-bold rounded-xl transition-all">Gold Tasks</button>
+<button class="w-full text-left px-4 py-2 hover:bg-black/5 text-on-surface-variant font-label-bold rounded-xl transition-all">Crew Duties</button>
+<button class="w-full text-left px-4 py-2 hover:bg-black/5 text-on-surface-variant font-label-bold rounded-xl transition-all">Exploration</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Task Grid Area -->
+<div class="flex-1 p-6 overflow-y-auto custom-scrollbar">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<!-- Task Card 1 -->
+<div class="group bg-white rounded-3xl border-2 border-outline-variant p-4 hover:border-primary hover:shadow-[0_6px_0_0_#FFD700] transition-all cursor-grab active:cursor-grabbing">
+<div class="flex items-start justify-between mb-3">
+<div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-blue-600" data-icon="skull">skull</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary" data-icon="drag_indicator">drag_indicator</span>
+</div>
+<h4 class="font-headline-md text-on-surface text-base mb-1">Scrub the Decks</h4>
+<p class="font-body-md text-on-surface-variant text-sm line-clamp-2">Ensure the main deck is sparkling before the Admiral arrives.</p>
+<div class="mt-4 flex items-center gap-2">
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-lg text-[10px] font-bold uppercase">Routine</span>
+<span class="flex items-center gap-1 text-[10px] text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 2H
+                                </span>
+</div>
+</div>
+<!-- Task Card 2 -->
+<div class="group bg-white rounded-3xl border-2 border-outline-variant p-4 hover:border-primary hover:shadow-[0_6px_0_0_#FFD700] transition-all cursor-grab active:cursor-grabbing">
+<div class="flex items-start justify-between mb-3">
+<div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-orange-600" data-icon="explore">explore</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary" data-icon="drag_indicator">drag_indicator</span>
+</div>
+<h4 class="font-headline-md text-on-surface text-base mb-1">Chart the Reefs</h4>
+<p class="font-body-md text-on-surface-variant text-sm line-clamp-2">Locate the safe passage through the Devil's Triangle.</p>
+<div class="mt-4 flex items-center gap-2">
+<span class="px-2 py-1 bg-tertiary-container text-on-tertiary-container rounded-lg text-[10px] font-bold uppercase">Critical</span>
+<span class="flex items-center gap-1 text-[10px] text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 4H
+                                </span>
+</div>
+</div>
+<!-- Task Card 3 -->
+<div class="group bg-white rounded-3xl border-2 border-outline-variant p-4 hover:border-primary hover:shadow-[0_6px_0_0_#FFD700] transition-all cursor-grab active:cursor-grabbing">
+<div class="flex items-start justify-between mb-3">
+<div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-yellow-600" data-icon="payments">payments</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary" data-icon="drag_indicator">drag_indicator</span>
+</div>
+<h4 class="font-headline-md text-on-surface text-base mb-1">Bury the Loot</h4>
+<p class="font-body-md text-on-surface-variant text-sm line-clamp-2">Find a secluded spot and hide the gold from the Governor.</p>
+<div class="mt-4 flex items-center gap-2">
+<span class="px-2 py-1 bg-primary-container text-on-primary-container rounded-lg text-[10px] font-bold uppercase">Gold</span>
+<span class="flex items-center gap-1 text-[10px] text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 1H
+                                </span>
+</div>
+</div>
+<!-- Task Card 4 -->
+<div class="group bg-white rounded-3xl border-2 border-outline-variant p-4 hover:border-primary hover:shadow-[0_6px_0_0_#FFD700] transition-all cursor-grab active:cursor-grabbing">
+<div class="flex items-start justify-between mb-3">
+<div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-red-600" data-icon="swords">swords</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary" data-icon="drag_indicator">drag_indicator</span>
+</div>
+<h4 class="font-headline-md text-on-surface text-base mb-1">Combat Drills</h4>
+<p class="font-body-md text-on-surface-variant text-sm line-clamp-2">Train the crew in advanced cutlass maneuvers.</p>
+<div class="mt-4 flex items-center gap-2">
+<span class="px-2 py-1 bg-error-container text-on-error-container rounded-lg text-[10px] font-bold uppercase">Drill</span>
+<span class="flex items-center gap-1 text-[10px] text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 3H
+                                </span>
+</div>
+</div>
+<!-- Task Card 5 -->
+<div class="group bg-white rounded-3xl border-2 border-outline-variant p-4 hover:border-primary hover:shadow-[0_6px_0_0_#FFD700] transition-all cursor-grab active:cursor-grabbing">
+<div class="flex items-start justify-between mb-3">
+<div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-purple-600" data-icon="restaurant">restaurant</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary" data-icon="drag_indicator">drag_indicator</span>
+</div>
+<h4 class="font-headline-md text-on-surface text-base mb-1">Cook the Grog</h4>
+<p class="font-body-md text-on-surface-variant text-sm line-clamp-2">Prepare the celebration feast for the crew.</p>
+<div class="mt-4 flex items-center gap-2">
+<span class="px-2 py-1 bg-surface-variant text-on-surface-variant rounded-lg text-[10px] font-bold uppercase">Social</span>
+<span class="flex items-center gap-1 text-[10px] text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 2H
+                                </span>
+</div>
+</div>
+<!-- Task Card 6 -->
+<div class="group bg-white rounded-3xl border-2 border-outline-variant p-4 hover:border-primary hover:shadow-[0_6px_0_0_#FFD700] transition-all cursor-grab active:cursor-grabbing">
+<div class="flex items-start justify-between mb-3">
+<div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-emerald-600" data-icon="local_shipping">local_shipping</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary" data-icon="drag_indicator">drag_indicator</span>
+</div>
+<h4 class="font-headline-md text-on-surface text-base mb-1">Restock Rum</h4>
+<p class="font-body-md text-on-surface-variant text-sm line-clamp-2">Head to the port market and refill the ship's reserves.</p>
+<div class="mt-4 flex items-center gap-2">
+<span class="px-2 py-1 bg-surface-container-highest text-on-surface-variant rounded-lg text-[10px] font-bold uppercase">Supply</span>
+<span class="flex items-center gap-1 text-[10px] text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 5H
+                                </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="p-6 border-t-4 border-black/5 bg-surface-container-low flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-label-bold text-[#8B4513]/60 italic">"One man's chore is another man's treasure!"</p>
+<div class="flex gap-4">
+<button class="px-6 py-3 rounded-xl border-2 border-[#8B4513]/20 font-label-bold text-[#8B4513] hover:bg-black/5 transition-all">CANCEL</button>
+<button class="px-8 py-3 rounded-xl bg-primary-container text-[#8B4513] font-label-bold shadow-[0_4px_0_0_#B8860B] active:shadow-none active:translate-y-1 transition-all">IMPORT SELECTED</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Navigation Shell (BottomNavBar Implementation) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-end pb-6 pt-3 px-4 bg-[#F4EBD0] rounded-t-[32px] border-t-4 border-[#8B4513]/20 shadow-[0_-4px_0_0_rgba(139,69,19,0.1)]">
+<a class="flex flex-col items-center justify-center bg-[#FFD700] text-[#8B4513] rounded-2xl px-5 py-1.5 shadow-[0_4px_0_0_#B8860B] translate-y-[-4px] transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-bold">Roadmaps</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#8B4513]/70 py-2 hover:text-[#8B4513] active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-bold">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#8B4513]/70 py-2 hover:text-[#8B4513] active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-bold">Settings</span>
+</a>
+</nav>
+<!-- Floating Action Button (FAB) -->
+<div class="fixed bottom-28 right-8 z-40">
+<button class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white shadow-[0_6px_0_0_#544600] active:shadow-none active:translate-y-1.5 transition-all">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+</div>
+</body></html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        }
+        .block-shadow-amber {
+            box-shadow: 0px 4px 0px 0px rgba(120, 60, 40, 1);
+        }
+        .block-shadow-sm {
+            box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .active-nav-shadow {
+            box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .dashed-path {
+            background-image: repeating-linear-gradient(0deg, #783c28, #783c28 10px, transparent 10px, transparent 20px);
+            width: 4px;
+        }
+        .parchment-texture {
+            background-color: #f7eed2;
+            background-image: radial-gradient(#ebe2c8 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#705d00",
+                      "on-tertiary-container": "#a83b00",
+                      "on-secondary-fixed-variant": "#004c6b",
+                      "surface-variant": "#ebe2c8",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed": "#ffe16d",
+                      "inverse-on-surface": "#faf0d5",
+                      "on-tertiary-fixed-variant": "#7f2b00",
+                      "tertiary-fixed": "#ffdbce",
+                      "surface-container-high": "#f1e8cd",
+                      "primary-fixed-dim": "#e9c400",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-fixed": "#370e00",
+                      "surface-container-low": "#fcf3d8",
+                      "on-primary-fixed": "#221b00",
+                      "error": "#ba1a1a",
+                      "on-surface": "#1f1c0b",
+                      "on-secondary-fixed": "#001e2d",
+                      "on-background": "#1f1c0b",
+                      "surface": "#fff9ed",
+                      "on-secondary-container": "#004a69",
+                      "on-error-container": "#93000a",
+                      "tertiary": "#a63b00",
+                      "surface-bright": "#fff9ed",
+                      "tertiary-fixed-dim": "#ffb599",
+                      "on-primary": "#ffffff",
+                      "secondary-container": "#3dbeff",
+                      "on-primary-container": "#705e00",
+                      "primary": "#705d00",
+                      "outline-variant": "#d0c6ab",
+                      "on-surface-variant": "#4d4732",
+                      "inverse-surface": "#35301e",
+                      "surface-dim": "#e2dabf",
+                      "on-tertiary": "#ffffff",
+                      "background": "#fff9ed",
+                      "surface-container-highest": "#ebe2c8",
+                      "surface-container": "#f7eed2",
+                      "on-secondary": "#ffffff",
+                      "secondary": "#00658d",
+                      "secondary-fixed": "#c6e7ff",
+                      "outline": "#7e775f",
+                      "primary-container": "#ffd700",
+                      "inverse-primary": "#e9c400",
+                      "on-error": "#ffffff",
+                      "secondary-fixed-dim": "#83cfff",
+                      "tertiary-container": "#ffd0bf",
+                      "on-primary-fixed-variant": "#544600"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sm": "12px",
+                      "md": "24px",
+                      "base": "8px",
+                      "xs": "4px",
+                      "xl": "64px",
+                      "lg": "40px",
+                      "margin": "24px",
+                      "gutter": "20px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "headline-xl": ["Plus Jakarta Sans"],
+                      "label-bold": ["Lexend"],
+                      "body-lg": ["Plus Jakarta Sans"],
+                      "label-sm": ["Lexend"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "800"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen font-body-md overflow-x-hidden parchment-texture">
+<!-- TopAppBar -->
+<header class="bg-[#F5E6D3] flex justify-between items-center w-full px-6 h-20 sticky top-0 z-50 border-b-4 border-amber-900 shadow-[0px_4px_0px_0px_rgba(120,60,40,1)]">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full border-2 border-amber-900 overflow-hidden bg-amber-200">
+<img alt="Pirate Captain Portrait" class="w-full h-full object-cover" data-alt="stylized vector portrait of a cartoon pirate captain with a tricorn hat and golden earring in a friendly mobile game style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZUunC1hVkOG-svOHhEOXI60o3ewVHK9pbzG_jgNKWXPIX_WowYEjIP0ovd5O2B_nY-Qx3aMw6bPkkzVRFs0yzoe_L_3zdRlflx5dIHk_efdJn0cXFSU2mwknFgCGFA9Nddn0Z-7trpdCOveG3-0l31-bujlBUCA4X5seTnKA4j2nZvMbP-vLDYPjpCd_kJHUW3IPD-MAZHmC6JvB9lt5ffWvYRvN13A99itJ3G25YQszIVBFanLKWGCfMDtVq8Uuaf8QuWZkX18Q"/>
+</div>
+<h1 class="font-['Plus_Jakarta_Sans'] font-black uppercase tracking-tighter text-xl text-amber-900 drop-shadow-sm">MASTER PLANNER</h1>
+</div>
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-amber-900 text-3xl cursor-pointer hover:scale-110 transition-transform">search</span>
+<span class="material-symbols-outlined text-amber-900 text-3xl cursor-pointer hover:scale-110 transition-transform">notifications</span>
+</div>
+</header>
+<main class="max-w-3xl mx-auto px-margin pt-lg pb-32">
+<!-- Breadcrumb / Context -->
+<div class="mb-lg flex flex-col items-center">
+<div class="bg-tertiary-container border-4 border-amber-900 px-6 py-2 rounded-xl mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -rotate-1">
+<span class="font-headline-md text-on-tertiary-container">WORK AT THE BAKERY</span>
+</div>
+<p class="text-on-surface-variant font-label-bold uppercase tracking-widest text-sm">Adventure Map Editor</p>
+</div>
+<!-- Roadmap Flow -->
+<div class="relative flex flex-col items-center gap-12">
+<!-- Connector Line Background -->
+<div class="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 dashed-path z-0"></div>
+<!-- Task 1 -->
+<div class="z-10 w-full flex justify-center group">
+<div class="bg-surface-container border-4 border-amber-900 p-md rounded-2xl w-full max-w-sm block-shadow-amber hover:-translate-y-1 transition-all flex items-center gap-4 cursor-pointer relative overflow-hidden">
+<div class="bg-secondary-container w-12 h-12 flex items-center justify-center rounded-xl border-2 border-amber-900 shadow-sm">
+<span class="material-symbols-outlined text-on-secondary-container text-3xl">login</span>
+</div>
+<div>
+<h3 class="font-headline-md text-amber-900">Enter bakery</h3>
+<p class="text-on-surface-variant font-label-sm uppercase">Step 01 • Prep</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-amber-800">edit</span>
+</div>
+</div>
+<!-- Task 2 -->
+<div class="z-10 w-full flex justify-center group">
+<div class="bg-surface-container border-4 border-amber-900 p-md rounded-2xl w-full max-w-sm block-shadow-amber hover:-translate-y-1 transition-all flex items-center gap-4 cursor-pointer relative overflow-hidden">
+<div class="bg-secondary-container w-12 h-12 flex items-center justify-center rounded-xl border-2 border-amber-900 shadow-sm">
+<span class="material-symbols-outlined text-on-secondary-container text-3xl">mode_fan</span>
+</div>
+<div>
+<h3 class="font-headline-md text-amber-900">Turn On ovens</h3>
+<p class="text-on-surface-variant font-label-sm uppercase">Step 02 • Setup</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-amber-800">edit</span>
+</div>
+</div>
+<!-- Task 3 -->
+<div class="z-10 w-full flex justify-center group relative">
+<div class="bg-surface-container border-4 border-amber-900 p-md rounded-2xl w-full max-w-sm block-shadow-amber hover:-translate-y-1 transition-all flex items-center gap-4 cursor-pointer overflow-hidden">
+<div class="bg-secondary-container w-12 h-12 flex items-center justify-center rounded-xl border-2 border-amber-900 shadow-sm">
+<span class="material-symbols-outlined text-on-secondary-container text-3xl">set_meal</span>
+</div>
+<div>
+<h3 class="font-headline-md text-amber-900">Put loaves in ovens</h3>
+<p class="text-on-surface-variant font-label-sm uppercase">Step 03 • Production</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-amber-800">edit</span>
+</div>
+</div>
+<!-- Sticker / Waiting State -->
+<div class="z-20 -my-6 rotate-3">
+<div class="bg-primary-container border-4 border-amber-900 px-4 py-1 rounded-full shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-900 text-xl" style="font-variation-settings: 'FILL' 1;">timer</span>
+<span class="font-headline-md text-on-primary-container text-sm">10/15 MIN</span>
+</div>
+</div>
+<!-- Task 4 -->
+<div class="z-10 w-full flex justify-center group">
+<div class="bg-surface-container border-4 border-amber-900 p-md rounded-2xl w-full max-w-sm block-shadow-amber hover:-translate-y-1 transition-all flex items-center gap-4 cursor-pointer overflow-hidden">
+<div class="bg-secondary-container w-12 h-12 flex items-center justify-center rounded-xl border-2 border-amber-900 shadow-sm">
+<span class="material-symbols-outlined text-on-secondary-container text-3xl">outdoor_grill</span>
+</div>
+<div>
+<h3 class="font-headline-md text-amber-900">Take out loaves</h3>
+<p class="text-on-surface-variant font-label-sm uppercase">Step 04 • Production</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-amber-800">edit</span>
+</div>
+</div>
+<!-- Task 5 -->
+<div class="z-10 w-full flex justify-center group">
+<div class="bg-surface-container border-4 border-amber-900 p-md rounded-2xl w-full max-w-sm block-shadow-amber hover:-translate-y-1 transition-all flex items-center gap-4 cursor-pointer overflow-hidden">
+<div class="bg-secondary-container w-12 h-12 flex items-center justify-center rounded-xl border-2 border-amber-900 shadow-sm">
+<span class="material-symbols-outlined text-on-secondary-container text-3xl">storefront</span>
+</div>
+<div>
+<h3 class="font-headline-md text-amber-900">Display loaves</h3>
+<p class="text-on-surface-variant font-label-sm uppercase">Step 05 • Sales</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-amber-800">edit</span>
+</div>
+</div>
+<!-- Task 6 -->
+<div class="z-10 w-full flex justify-center group">
+<div class="bg-surface-container border-4 border-amber-900 p-md rounded-2xl w-full max-w-sm block-shadow-amber hover:-translate-y-1 transition-all flex items-center gap-4 cursor-pointer overflow-hidden">
+<div class="bg-secondary-container w-12 h-12 flex items-center justify-center rounded-xl border-2 border-amber-900 shadow-sm">
+<span class="material-symbols-outlined text-on-secondary-container text-3xl">logout</span>
+</div>
+<div>
+<h3 class="font-headline-md text-amber-900">Leave bakery</h3>
+<p class="text-on-surface-variant font-label-sm uppercase">Step 06 • Final</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-amber-800">edit</span>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB and Context Menu -->
+<div class="fixed bottom-28 right-6 z-[60] flex flex-col items-end gap-3">
+<!-- Floating Options (Simulated Menu) -->
+<div class="flex flex-col gap-2 items-end mb-2">
+<button class="bg-surface-container border-2 border-amber-900 px-4 py-2 rounded-xl block-shadow-sm font-label-bold text-amber-900 flex items-center gap-2 hover:bg-amber-100 transition-colors">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+                Create New Task
+            </button>
+<button class="bg-surface-container border-2 border-amber-900 px-4 py-2 rounded-xl block-shadow-sm font-label-bold text-amber-900 flex items-center gap-2 hover:bg-amber-100 transition-colors">
+<span class="material-symbols-outlined text-sm">library_books</span>
+                Import from Library
+            </button>
+</div>
+<!-- Main FAB -->
+<button class="w-16 h-16 bg-primary-container border-4 border-amber-900 rounded-2xl flex items-center justify-center block-shadow-amber hover:translate-y-0.5 active:translate-y-1 transition-all">
+<span class="material-symbols-outlined text-4xl text-amber-900 font-bold">add</span>
+</button>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-[#F5E6D3] flex justify-around items-center px-4 pt-2 pb-6 rounded-t-[32px] border-t-4 border-amber-900 shadow-[0px_-4px_0px_0px_rgba(120,60,40,1)]">
+<!-- active: Roadmaps -->
+<a class="flex flex-col items-center justify-center bg-amber-400 text-amber-950 rounded-xl px-4 py-1 border-2 border-amber-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] group" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:scale-110" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-['Plus_Jakarta_Sans'] text-xs font-black uppercase">Roadmaps</span>
+</a>
+<!-- inactive: Library -->
+<a class="flex flex-col items-center justify-center text-amber-900/70 p-2 group transition-transform hover:scale-110" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-['Plus_Jakarta_Sans'] text-xs font-black uppercase">Library</span>
+</a>
+<!-- inactive: Settings -->
+<a class="flex flex-col items-center justify-center text-amber-900/70 p-2 group transition-transform hover:scale-110" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Plus_Jakarta_Sans'] text-xs font-black uppercase">Settings</span>
+</a>
+</nav>
+<!-- Decorative Corner Icons (Theme enrichment) -->
+<div class="fixed top-24 left-4 opacity-10 pointer-events-none select-none">
+<span class="material-symbols-outlined text-9xl">bakery_dining</span>
+</div>
+<div class="fixed bottom-32 right-12 opacity-10 pointer-events-none select-none rotate-12">
+<span class="material-symbols-outlined text-9xl">anchor</span>
+</div>
+</body></html>

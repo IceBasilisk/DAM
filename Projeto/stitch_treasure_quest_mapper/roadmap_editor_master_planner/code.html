@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#4d4732",
+                    "on-secondary-fixed-variant": "#004c6b",
+                    "primary-fixed-dim": "#e9c400",
+                    "on-secondary-fixed": "#001e2d",
+                    "inverse-on-surface": "#faf0d5",
+                    "surface-container-highest": "#ebe2c8",
+                    "on-tertiary-fixed-variant": "#7f2b00",
+                    "surface-tint": "#705d00",
+                    "secondary": "#00658d",
+                    "primary-fixed": "#ffe16d",
+                    "inverse-primary": "#e9c400",
+                    "surface-dim": "#e2dabf",
+                    "on-tertiary-container": "#a83b00",
+                    "on-background": "#1f1c0b",
+                    "surface-container-low": "#fcf3d8",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#221b00",
+                    "background": "#fff9ed",
+                    "tertiary-fixed-dim": "#ffb599",
+                    "on-error": "#ffffff",
+                    "on-primary-container": "#705e00",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#ffdbce",
+                    "tertiary-container": "#ffd0bf",
+                    "secondary-fixed-dim": "#83cfff",
+                    "surface-variant": "#ebe2c8",
+                    "primary": "#705d00",
+                    "on-primary-fixed-variant": "#544600",
+                    "tertiary": "#a63b00",
+                    "surface-container": "#f7eed2",
+                    "surface": "#fff9ed",
+                    "secondary-fixed": "#c6e7ff",
+                    "on-tertiary-fixed": "#370e00",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#d0c6ab",
+                    "surface-bright": "#fff9ed",
+                    "surface-container-high": "#f1e8cd",
+                    "secondary-container": "#3dbeff",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#1f1c0b",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#ffd700",
+                    "inverse-surface": "#35301e",
+                    "on-secondary-container": "#004a69",
+                    "outline": "#7e775f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "24px",
+                    "xs": "4px",
+                    "xl": "64px",
+                    "margin": "24px",
+                    "sm": "12px",
+                    "lg": "40px",
+                    "gutter": "20px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "label-sm": ["Lexend"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-bold": ["Lexend"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "800"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.block-shadow {
+    box-shadow: 0 6px 0 0 rgba(139, 69, 19, 0.3)
+    }
+.active-push:active {
+    transform: translatey(4px);
+    box-shadow: 0 2px 0 0 rgba(139, 69, 19, 0.3)
+    }
+.parchment-texture {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuC5j6R0Kifo2g5QFujaUKKKbrk3OApDpARh3ayDAbWrAi4LQJYQSX0suGVD7FwYaX03-FLLnCOPWNNSR7myBhxSGy0BADSDAjQ-D4VgT6LSou9cCCc6IqVB7jI6f4mye43tQTNiM-Bp0Kk5mvLF3x1tekBaIdQ2F4AE_HZKtoyjcsvGhpPzXCdBVw3VTVQqVZdIp-iUFKy9uW7TJDNY5oLqBhR65GQXHV89YErt7RZilxrkSKv-oUPH-pSbhpsJ9_nWVzvQuIJKwvU)
+    }
+.path-arrow {
+    stroke-dasharray: 8, 8
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body-md text-on-background parchment-texture">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 h-16 flex items-center justify-between px-6 bg-[#F4EBD0] dark:bg-slate-900 border-b-4 border-[#8B4513]/20 shadow-[0_4px_0_0_rgba(139,69,19,0.2)]">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#B8860B] dark:text-[#FFD700] hover:bg-black/5 p-2 rounded-full transition-all">menu</button>
+<h1 class="font-['Plus_Jakarta_Sans'] font-extrabold tracking-tight text-xl font-black text-[#8B4513] dark:text-[#FFD700] uppercase">Master Planner</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#B8860B] dark:text-[#FFD700] hover:bg-black/5 p-2 rounded-full transition-all">account_circle</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin max-w-5xl mx-auto min-h-screen">
+<!-- Editor Header -->
+<div class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<span class="inline-block bg-tertiary-container text-on-tertiary-container px-4 py-1 rounded-full text-label-bold mb-xs border-2 border-on-tertiary-fixed-variant">QUEST LOG</span>
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight">Work at the Bakery</h2>
+</div>
+<div class="flex gap-sm">
+<button class="bg-surface-container-high border-2 border-outline px-4 py-2 rounded-xl font-label-bold flex items-center gap-2 block-shadow active-push transition-all">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                    PREVIEW
+                </button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-xl font-label-bold flex items-center gap-2 block-shadow active-push transition-all">
+<span class="material-symbols-outlined text-sm">save</span>
+                    SAVE FLOW
+                </button>
+</div>
+</div>
+<!-- Canvas Area -->
+<div class="relative bg-surface-container-low border-4 border-dashed border-outline-variant rounded-[40px] p-lg min-h-[600px] overflow-hidden">
+<!-- Floating Navigation Grid/Pattern for Aesthetic -->
+<div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(#705d00 1px, transparent 1px); background-size: 32px 32px;"></div>
+<!-- Flow Elements -->
+<div class="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl items-start">
+<!-- Task Card 1 -->
+<div class="relative">
+<div class="bg-surface-container-highest border-4 border-on-surface-variant p-md rounded-2xl block-shadow transform -rotate-1">
+<div class="flex items-center justify-between mb-sm">
+<span class="text-label-sm font-bold opacity-60">STEP 01</span>
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-xs">Gather Flour</h3>
+<p class="text-body-md text-on-surface-variant">Raid the pantry for the finest sacks of white wheat.</p>
+<div class="mt-md flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Avatar of a pirate baker assistant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV9u2YhdHWC94UAZQZt7H2-brtwZfnWRGoQ8h9p31eITv-sUzbQDDgYcE6f2GiSWcVTUZX0Y3tVTUr_kCknjQqH1OSPcHVCslwNDqUC343jhWJ263CfWmaniR90Bke0WyO4aM9WRyB4VymdQ9l-R9rtcKBOWgfRKwdcf8jqUgbxX8voLtz0Xuxnd2cnQLgBhIsrXHAH8SgH1IPHVYAUI3EA6XsIGj6rX4bKFFftjtNvsbBsAoX3T6u01Pzre_tAQaA39IPmgYoNHY"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Avatar of a ship cook helper" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYOFY0jpiz1YRYerdCM399DndmbibnveQ0X_v1zXZH6vqf2Dewi8ZTnJp6rdkfdtgIoxbjQHqGqyDTYPr7Ym6wiaDvkB7G6KTzzE1kKDlChfmv8YfMYLpsAi3FvncwwApR9S7LfHo30_ZsdbOqGK6vVlQje-0aKBoga7IBo8CRTr7YZIezM5ktgthcEMqdAhoo8hcUPMfqSTEx3NGUyKP_NjE94AAKeh1V96wqzhbZcLDkPoSfMYCNKbMM223ST3x3golIAhfsIAY"/>
+</div>
+</div>
+<!-- Connector Arrow -->
+<div class="hidden lg:block absolute -right-xl top-1/2 -translate-y-1/2 w-xl">
+<svg class="text-primary opacity-40" fill="none" height="24" viewbox="0 0 64 24" width="64">
+<path class="path-arrow" d="M0 12H60M60 12L52 4M60 12L52 20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+</svg>
+</div>
+</div>
+<!-- Task Card 2 -->
+<div class="relative">
+<div class="bg-surface-container-highest border-4 border-primary p-md rounded-2xl block-shadow scale-105 z-20">
+<div class="flex items-center justify-between mb-sm">
+<span class="text-label-sm font-bold text-primary">STEP 02</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">timer</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-xs">Stoke the Ovens</h3>
+<p class="text-body-md text-on-surface-variant">Keep the dragon-fire burning at exactly 400 degrees.</p>
+<div class="mt-md bg-primary-container h-3 rounded-full overflow-hidden border-2 border-primary">
+<div class="bg-primary w-2/3 h-full"></div>
+</div>
+</div>
+<!-- Connector Arrow -->
+<div class="hidden lg:block absolute -right-xl top-1/2 -translate-y-1/2 w-xl">
+<svg class="text-primary opacity-40" fill="none" height="24" viewbox="0 0 64 24" width="64">
+<path class="path-arrow" d="M0 12H60M60 12L52 4M60 12L52 20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+</svg>
+</div>
+</div>
+<!-- Task Card 3 (Draft) -->
+<div class="bg-surface-container border-4 border-outline-variant p-md rounded-2xl block-shadow opacity-60 border-dashed transform rotate-1">
+<div class="flex items-center justify-between mb-sm">
+<span class="text-label-sm font-bold">STEP 03</span>
+<span class="material-symbols-outlined">lock</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-xs">Golden Glazing</h3>
+<p class="text-body-md">Apply the honey-shine to the finished buns.</p>
+</div>
+</div>
+<!-- The Active '+' Button and Overlay Menu -->
+<div class="absolute bottom-md right-md flex flex-col items-end">
+<!-- Overlay Menu -->
+<div class="mb-sm bg-surface border-4 border-primary rounded-2xl p-sm block-shadow w-64 z-50">
+<div class="flex flex-col gap-xs">
+<button class="flex items-center gap-sm p-3 hover:bg-primary-container rounded-xl text-left transition-colors font-label-bold text-on-primary-container group">
+<span class="material-symbols-outlined bg-primary text-on-primary p-1 rounded-lg group-hover:scale-110 transition-transform">add_task</span>
+                            Create New Task
+                        </button>
+<hr class="border-outline-variant my-1"/>
+<button class="flex items-center gap-sm p-3 hover:bg-secondary-container rounded-xl text-left transition-colors font-label-bold text-on-secondary-container group">
+<span class="material-symbols-outlined bg-secondary text-on-secondary p-1 rounded-lg group-hover:scale-110 transition-transform">library_books</span>
+                            Import from Library
+                        </button>
+</div>
+</div>
+<!-- Main FAB -->
+<button class="w-16 h-16 bg-[#FFD700] text-[#8B4513] rounded-2xl border-4 border-[#8B4513] flex items-center justify-center shadow-[0_6px_0_0_#B8860B] active:translate-y-1 active:shadow-none transition-all z-50">
+<span class="material-symbols-outlined text-4xl font-bold">add</span>
+</button>
+</div>
+</div>
+<!-- Inventory Style Section -->
+<div class="mt-xl grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="bg-surface-container-low border-2 border-outline-variant p-md rounded-3xl">
+<div class="flex items-center gap-sm mb-sm text-secondary">
+<span class="material-symbols-outlined">group</span>
+<h4 class="font-label-bold">CREW MEMBERS</h4>
+</div>
+<div class="flex gap-xs">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed border-2 border-secondary"></div>
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed border-2 border-secondary"></div>
+<button class="w-10 h-10 rounded-lg border-2 border-dashed border-secondary flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<div class="bg-surface-container-low border-2 border-outline-variant p-md rounded-3xl">
+<div class="flex items-center gap-sm mb-sm text-tertiary">
+<span class="material-symbols-outlined">inventory_2</span>
+<h4 class="font-label-bold">LOOT EARNED</h4>
+</div>
+<p class="text-headline-md font-bold text-on-surface">1,240 <span class="text-primary-fixed-dim">GP</span></p>
+</div>
+<div class="bg-surface-container-low border-2 border-outline-variant p-md rounded-3xl">
+<div class="flex items-center gap-sm mb-sm text-on-surface-variant">
+<span class="material-symbols-outlined">history</span>
+<h4 class="font-label-bold">LAST UPDATE</h4>
+</div>
+<p class="text-body-md">2 minutes ago by <span class="font-bold">Cap'n Baker</span></p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-end pb-6 pt-3 px-4 bg-[#F4EBD0] dark:bg-slate-900 rounded-t-[32px] border-t-4 border-[#8B4513]/20 shadow-[0_-4px_0_0_rgba(139,69,19,0.1)]">
+<a class="flex flex-col items-center justify-center bg-[#FFD700] text-[#8B4513] rounded-2xl px-5 py-1.5 shadow-[0_4px_0_0_#B8860B] translate-y-[-4px] active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-bold">Roadmaps</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#8B4513]/70 dark:text-slate-400 py-2 hover:text-[#8B4513] dark:hover:text-[#FFD700] active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-bold">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#8B4513]/70 dark:text-slate-400 py-2 hover:text-[#8B4513] dark:hover:text-[#FFD700] active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-bold">Settings</span>
+</a>
+</nav>
+</body></html>

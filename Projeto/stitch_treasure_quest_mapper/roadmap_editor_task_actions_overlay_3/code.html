@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&amp;family=Lexend:wght@500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#705d00",
+                    "on-tertiary-container": "#a83b00",
+                    "on-secondary-fixed-variant": "#004c6b",
+                    "surface-variant": "#ebe2c8",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#ffe16d",
+                    "inverse-on-surface": "#faf0d5",
+                    "on-tertiary-fixed-variant": "#7f2b00",
+                    "tertiary-fixed": "#ffdbce",
+                    "surface-container-high": "#f1e8cd",
+                    "primary-fixed-dim": "#e9c400",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#370e00",
+                    "surface-container-low": "#fcf3d8",
+                    "on-primary-fixed": "#221b00",
+                    "error": "#ba1a1a",
+                    "on-surface": "#1f1c0b",
+                    "on-secondary-fixed": "#001e2d",
+                    "on-background": "#1f1c0b",
+                    "surface": "#fff9ed",
+                    "on-secondary-container": "#004a69",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#a63b00",
+                    "surface-bright": "#fff9ed",
+                    "tertiary-fixed-dim": "#ffb599",
+                    "on-primary": "#ffffff",
+                    "secondary-container": "#3dbeff",
+                    "on-primary-container": "#705e00",
+                    "primary": "#705d00",
+                    "outline-variant": "#d0c6ab",
+                    "on-surface-variant": "#4d4732",
+                    "inverse-surface": "#35301e",
+                    "surface-dim": "#e2dabf",
+                    "on-tertiary": "#ffffff",
+                    "background": "#fff9ed",
+                    "surface-container-highest": "#ebe2c8",
+                    "surface-container": "#f7eed2",
+                    "on-secondary": "#ffffff",
+                    "secondary": "#00658d",
+                    "secondary-fixed": "#c6e7ff",
+                    "outline": "#7e775f",
+                    "primary-container": "#ffd700",
+                    "inverse-primary": "#e9c400",
+                    "on-error": "#ffffff",
+                    "secondary-fixed-dim": "#83cfff",
+                    "tertiary-container": "#ffd0bf",
+                    "on-primary-fixed-variant": "#544600"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "12px",
+                    "md": "24px",
+                    "base": "8px",
+                    "xs": "4px",
+                    "xl": "64px",
+                    "lg": "40px",
+                    "margin": "24px",
+                    "gutter": "20px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "label-bold": ["Lexend"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "label-sm": ["Lexend"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "800"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.block-shadow {
+    box-shadow: 4px 4px 0 0 rgba(120, 60, 40, 1)
+    }
+.block-shadow-active {
+    box-shadow: 0 0 0 0 rgba(120, 60, 40, 1)
+    }
+.parchment-texture {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDXBAXYfV7l3kLzQCehn7C6zmCcT5YeFSBGqw5nAZQGyPncF5dS2SQ0WaXs-m9Uby3qalefqIBYRaOamcGyBwSDm92urcvKwJGr7G4QG2YCf-TmktQ6f7Qw2ljHOiZSfL3XDXXctRZgFi2bjHKrBxdT8pcXaBzgqOIyBvMfG_mWjjdk69Iujt9AzHoc1YcIr3QBFhObJtQ9kgmtLmQusPf69yv64mlUTD2_AlWQ1LPvmnf936TEKwepINFrETeYMqWdJA4ESlgmtu4)
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body-md text-on-background min-h-screen flex flex-col pb-32">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-6 h-20 sticky top-0 z-50 bg-[#F5E6D3] dark:bg-slate-900 border-b-4 border-amber-900 dark:border-amber-700 shadow-[0px_4px_0px_0px_rgba(120,60,40,1)]">
+<div class="w-10 h-10 rounded-full border-2 border-amber-900 overflow-hidden bg-amber-200">
+<img alt="Pirate Captain" class="w-full h-full object-cover" data-alt="Stylized 2D digital illustration of a friendly pirate captain with a tricorn hat and a gold earring in a cartoony art style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs9poBg19KSbw-eNpSTTqTLJ9SB7WNuMtKpgwOMTq6UaoptWkA7AfRof_ZWKU_2fdquCOdFZRMaJDO-KkyBZzKOaVWtQ5UAj6ds2XATJIb7k_hHWWagOWvT--Cb-5aBeEC3Y-Pc7i0Nl1ZWlu_zFHEDLGnRWnV3B6Jm-6F5f8hUSav_pciLEkcuKvsKuEi7NCyyNIOmFxK4luxKaTBM5s6jy1odhsnAN_jBAQ8O3qPeNzOOf33dBtkIDBpSmc-mmeQ8YS3ARCDWbY"/>
+</div>
+<h1 class="font-['Plus_Jakarta_Sans'] font-black uppercase tracking-tighter text-xl text-amber-900 dark:text-amber-500 drop-shadow-sm">MASTER PLANNER</h1>
+<button class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-amber-200 dark:hover:bg-slate-800 transition-all active:translate-y-0.5 duration-100">
+<span class="material-symbols-outlined text-amber-900 dark:text-amber-400">search</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow p-margin max-w-2xl mx-auto w-full space-y-md">
+<!-- Hero Section / Map Banner -->
+<section class="relative w-full h-48 rounded-[32px] border-4 border-amber-900 overflow-hidden block-shadow">
+<img alt="Treasure Map" class="w-full h-full object-cover" data-alt="Vibrant cartoony illustration of a tropical island treasure map with red dotted lines, palm trees, and a large golden X" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2bD5AGokdjsevYdue5CgLkxkaNAJ2u9dGCJf7kXZVdb6PaLbwLDej1CKoh9bKyH46NwpxCgeyEMz_4WS6s_unQfv8jg5zovdYSJ7VvmDvQ3j3_B3DYhmV5aDwRMFDM_nckSM1GxaSlRvUR8aNGgQwYzAMTiPgyiJOVSNrCr_O9pPD-w1hu1SX5UsdhKsXCFT5FCsJAvjaqTeaW2oNYSnux-U2dQ2osamSMCW4AbA6881aMt5-KeG7SbF4Z9gGlRKljvD4fOzs1T8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-amber-900/80 to-transparent flex flex-col justify-end p-md">
+<p class="font-headline-md text-white text-headline-md">Your Legend Awaits</p>
+<p class="font-body-md text-amber-200">4 Active Roadmaps</p>
+</div>
+</section>
+<!-- Roadmap List (Vertical Parchment Cards) -->
+<div class="space-y-md">
+<!-- Card 1 -->
+<div class="parchment-texture bg-[#FDF5E6] border-4 border-amber-900 rounded-2xl p-md block-shadow hover:scale-[1.02] transition-transform cursor-pointer relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2 opacity-10">
+<span class="material-symbols-outlined text-6xl" style="font-variation-settings: 'FILL' 1;">explore</span>
+</div>
+<div class="flex justify-between items-start">
+<div class="space-y-xs">
+<span class="inline-block px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-label-sm font-label-bold uppercase border-2 border-amber-900">MAIN QUEST</span>
+<h3 class="font-headline-md text-headline-md text-amber-950">Grand Mastery of Vue.js</h3>
+</div>
+<span class="material-symbols-outlined text-amber-900">chevron_right</span>
+</div>
+<div class="mt-md flex items-center gap-sm">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-amber-900 bg-amber-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">skull</span>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-amber-900 bg-amber-300 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">anchor</span>
+</div>
+</div>
+<p class="text-label-sm text-amber-800 font-label-bold">12 / 24 OBJECTIVES</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="parchment-texture bg-[#FDF5E6] border-4 border-amber-900 rounded-2xl p-md block-shadow hover:scale-[1.02] transition-transform cursor-pointer relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2 opacity-10">
+<span class="material-symbols-outlined text-6xl" style="font-variation-settings: 'FILL' 1;">sailing</span>
+</div>
+<div class="flex justify-between items-start">
+<div class="space-y-xs">
+<span class="inline-block px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full text-label-sm font-label-bold uppercase border-2 border-amber-900">SIDE VOYAGE</span>
+<h3 class="font-headline-md text-headline-md text-amber-950">The Python Depths</h3>
+</div>
+<span class="material-symbols-outlined text-amber-900">chevron_right</span>
+</div>
+<div class="mt-md flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full border-2 border-amber-900 bg-emerald-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">diamond</span>
+</div>
+<p class="text-label-sm text-amber-800 font-label-bold">3 / 40 OBJECTIVES</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="parchment-texture bg-[#FDF5E6] border-4 border-amber-900 rounded-2xl p-md block-shadow hover:scale-[1.02] transition-transform cursor-pointer relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2 opacity-10">
+<span class="material-symbols-outlined text-6xl" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<div class="flex justify-between items-start">
+<div class="space-y-xs">
+<span class="inline-block px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-label-sm font-label-bold uppercase border-2 border-amber-900">TREASURE HUNT</span>
+<h3 class="font-headline-md text-headline-md text-amber-950">Design System Lore</h3>
+</div>
+<span class="material-symbols-outlined text-amber-900">chevron_right</span>
+</div>
+<div class="mt-md flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full border-2 border-amber-900 bg-amber-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">badge</span>
+</div>
+<p class="text-label-sm text-amber-800 font-label-bold">9 / 10 OBJECTIVES</p>
+</div>
+</div>
+</div>
+<!-- Prominent Action Button -->
+<section class="pt-lg pb-xl">
+<button class="w-full h-20 bg-amber-400 border-4 border-amber-900 rounded-2xl flex items-center justify-center gap-sm block-shadow active:translate-y-1 active:shadow-none transition-all">
+<span class="material-symbols-outlined text-3xl text-amber-950" style="font-variation-settings: 'FILL' 1;">add_location_alt</span>
+<span class="font-['Plus_Jakarta_Sans'] font-black uppercase text-2xl text-amber-950 tracking-tight">MAKE NEW ROADMAP</span>
+</button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pt-2 pb-6 bg-[#F5E6D3] dark:bg-slate-900 rounded-t-[32px] border-t-4 border-amber-900 dark:border-amber-700 shadow-[0px_-4px_0px_0px_rgba(120,60,40,1)]">
+<!-- Active Tab: Roadmaps -->
+<a class="flex flex-col items-center justify-center bg-amber-400 dark:bg-amber-500 text-amber-950 rounded-xl px-4 py-1 border-2 border-amber-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:scale-110 transition-transform active:scale-90 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="map" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-['Plus_Jakarta_Sans'] text-xs font-black uppercase">Roadmaps</span>
+</a>
+<!-- Inactive Tab: Library -->
+<a class="flex flex-col items-center justify-center text-amber-900/70 dark:text-amber-100/50 p-2 hover:scale-110 transition-transform active:scale-90 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-['Plus_Jakarta_Sans'] text-xs font-black uppercase">Library</span>
+</a>
+<!-- Inactive Tab: Settings -->
+<a class="flex flex-col items-center justify-center text-amber-900/70 dark:text-amber-100/50 p-2 hover:scale-110 transition-transform active:scale-90 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Plus_Jakarta_Sans'] text-xs font-black uppercase">Settings</span>
+</a>
+</nav>
+</body></html>

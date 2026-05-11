@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800;900&amp;family=Lexend:wght@500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#705d00",
+                    "surface-bright": "#fff9ed",
+                    "tertiary": "#a63b00",
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#ffe16d",
+                    "on-secondary-fixed-variant": "#004c6b",
+                    "on-background": "#1f1c0b",
+                    "outline": "#7e775f",
+                    "primary-fixed-dim": "#e9c400",
+                    "secondary-fixed-dim": "#83cfff",
+                    "tertiary-fixed-dim": "#ffb599",
+                    "surface-dim": "#e2dabf",
+                    "inverse-surface": "#35301e",
+                    "surface-container-highest": "#ebe2c8",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#fff9ed",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#7f2b00",
+                    "tertiary-fixed": "#ffdbce",
+                    "outline-variant": "#d0c6ab",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#c6e7ff",
+                    "on-tertiary-container": "#a83b00",
+                    "on-surface": "#1f1c0b",
+                    "primary": "#705d00",
+                    "inverse-on-surface": "#faf0d5",
+                    "on-error-container": "#93000a",
+                    "surface-container-low": "#fcf3d8",
+                    "on-secondary-container": "#004a69",
+                    "on-primary-fixed": "#221b00",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#f1e8cd",
+                    "surface-container": "#f7eed2",
+                    "tertiary-container": "#ffd0bf",
+                    "background": "#fff9ed",
+                    "secondary": "#00658d",
+                    "on-primary-fixed-variant": "#544600",
+                    "surface-variant": "#ebe2c8",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#370e00",
+                    "primary-container": "#ffd700",
+                    "secondary-container": "#3dbeff",
+                    "inverse-primary": "#e9c400",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#705e00",
+                    "on-secondary-fixed": "#001e2d",
+                    "on-surface-variant": "#4d4732"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "40px",
+                    "margin": "24px",
+                    "md": "24px",
+                    "sm": "12px",
+                    "base": "8px",
+                    "xs": "4px",
+                    "xl": "64px",
+                    "gutter": "20px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-sm": ["Lexend"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "label-bold": ["Lexend"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "800"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .dotted-grid {
+            background-image: radial-gradient(#d0c6ab 2px, transparent 2px);
+            background-size: 32px 32px;
+        }
+        .block-shadow {
+            box-shadow: 6px 6px 0 0 #705d00;
+        }
+        .block-shadow-sm {
+            box-shadow: 4px 4px 0 0 #705d00;
+        }
+        .pressed {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 0 #705d00;
+        }
+        .active-glow {
+            box-shadow: inset 0 0 12px rgba(255, 215, 0, 0.5);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-yellow-50 dark:bg-slate-950 border-b-4 border-yellow-800/10 dark:border-yellow-400/20 shadow-[0_4px_0_0_rgba(133,77,14,0.3)] dark:shadow-none rounded-b-3xl">
+<div class="flex items-center gap-4">
+<button class="text-yellow-700 dark:text-yellow-400 hover:scale-105 transition-transform active:translate-y-1">
+<span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+<h1 class="text-2xl font-black text-yellow-700 dark:text-yellow-500 drop-shadow-md font-['Plus_Jakarta_Sans'] uppercase tracking-tighter">TASK TREASURE</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-6 font-['Plus_Jakarta_Sans'] font-black uppercase tracking-tighter text-sm">
+<a class="text-yellow-700 dark:text-yellow-400 font-bold hover:scale-105 transition-transform" href="#">Explore</a>
+<a class="text-yellow-900/40 dark:text-slate-500 hover:scale-105 transition-transform" href="#">Loot</a>
+<a class="text-yellow-900/40 dark:text-slate-500 hover:scale-105 transition-transform" href="#">Crew</a>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-primary bg-primary-container overflow-hidden shadow-sm active:translate-y-1 transition-all">
+<img alt="Pirate Captain Avatar" data-alt="Stylized 3D cartoon pirate captain with a golden hook, vibrant red coat, and a friendly expression, high-quality game art style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaodkBLv9ze43J9U9tqu_MhhT9VdzCKUU-RFUyxPxQ0iGBB7IKp0biIos8bOKLmmSuBn9RanUhXNU1VsTizz1Op2XP1IRvFcqzbAMjZkCBzUOACNJrmsm3Wc7VG-63AafHywfp41Kqm7tjxLu8dxnsGzyHfUgtqL-IiaoFLIVVxDYGJbIUWNLTaA_hA9MCmKjBt1ctrGobaImG2aKfClox9vwyZ8Gow063C80syz-irqAapZjDma0UBpbbNkh01ZL1kwfRG7vHn08"/>
+</div>
+</div>
+</header>
+<!-- Canvas Map Area -->
+<main class="pt-32 pb-32 px-6 min-h-screen dotted-grid relative overflow-x-hidden">
+<!-- Header Ribbon / Title Section -->
+<div class="max-w-4xl mx-auto mb-16 text-center">
+<div class="inline-block bg-tertiary text-on-tertiary px-10 py-3 rounded-full border-4 border-yellow-950 block-shadow transform -rotate-1 mb-6">
+<h2 class="font-headline-lg text-headline-lg flex items-center gap-3">
+<span class="material-symbols-outlined">map</span>
+                    TREASURE MAP
+                </h2>
+</div>
+<p class="font-body-lg text-on-surface-variant max-w-lg mx-auto">The Baker's Quest: Master of the Seven Loaves</p>
+</div>
+<!-- Flow Visualizer -->
+<div class="max-w-5xl mx-auto relative flex flex-col items-center gap-20 py-10">
+<!-- Task Block 1 -->
+<div class="relative group">
+<div class="bg-surface-container-high border-4 border-primary p-6 rounded-[2rem] block-shadow w-64 text-center hover:translate-y-[-4px] transition-transform cursor-pointer">
+<div class="bg-secondary-container w-12 h-12 rounded-xl flex items-center justify-center border-2 border-primary mx-auto mb-4">
+<span class="material-symbols-outlined text-white">mop</span>
+</div>
+<p class="font-headline-md text-primary">Prepare the dough</p>
+<div class="mt-4 flex justify-center gap-2">
+<span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed rounded-full text-xs font-bold border-2 border-primary">20 MIN</span>
+</div>
+</div>
+<!-- Connector Arrow -->
+<div class="absolute -bottom-16 left-1/2 -translate-x-1/2">
+<span class="material-symbols-outlined text-primary text-5xl">south</span>
+</div>
+</div>
+<!-- Task Block 2 -->
+<div class="relative group">
+<div class="bg-surface-container-high border-4 border-primary p-6 rounded-[2rem] block-shadow w-64 text-center hover:translate-y-[-4px] transition-transform cursor-pointer">
+<div class="bg-primary-container w-12 h-12 rounded-xl flex items-center justify-center border-2 border-primary mx-auto mb-4">
+<span class="material-symbols-outlined text-on-primary-container">fireplace</span>
+</div>
+<p class="font-headline-md text-primary">Put loaves in ovens</p>
+</div>
+<!-- STYLIZED CONNECTOR WITH STICKER -->
+<div class="absolute -bottom-24 left-1/2 -translate-x-1/2 flex flex-col items-center">
+<span class="material-symbols-outlined text-primary text-6xl">south</span>
+<!-- Sticker -->
+<div class="absolute top-1/2 -right-16 bg-primary-container border-2 border-primary-fixed-dim rounded-lg px-3 py-1 rotate-12 shadow-md block-shadow-sm z-10">
+<span class="text-on-primary-container font-black text-xs tracking-widest">10/15 MIN</span>
+</div>
+</div>
+</div>
+<!-- Task Block 3 -->
+<div class="relative group mt-8">
+<div class="bg-surface-container-high border-4 border-primary p-6 rounded-[2rem] block-shadow w-64 text-center hover:translate-y-[-4px] transition-transform cursor-pointer">
+<div class="bg-tertiary-container w-12 h-12 rounded-xl flex items-center justify-center border-2 border-primary mx-auto mb-4">
+<span class="material-symbols-outlined text-on-tertiary-container">done_all</span>
+</div>
+<p class="font-headline-md text-primary">Take out loaves</p>
+</div>
+</div>
+<!-- Side Route Example (Asymmetric) -->
+<div class="absolute left-0 top-1/4 hidden lg:block">
+<div class="bg-white/50 border-4 border-dashed border-outline-variant p-4 rounded-3xl w-48 text-center text-outline opacity-70">
+<span class="material-symbols-outlined mb-2">add_task</span>
+<p class="text-xs font-bold">DRAG NEW QUEST HERE</p>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB -->
+<button class="fixed bottom-32 right-8 w-20 h-20 bg-primary-container text-on-primary-container rounded-3xl border-4 border-primary block-shadow flex items-center justify-center active:translate-y-1 active:shadow-none transition-all z-40">
+<span class="material-symbols-outlined text-5xl font-black">add</span>
+</button>
+<!-- Navigation Drawer (Side Mobile) -->
+<nav class="fixed inset-y-0 left-0 z-[100] flex flex-col p-6 overflow-y-auto bg-yellow-50 dark:bg-slate-950 h-full w-80 rounded-r-3xl shadow-2xl translate-x-[-100%] transition-transform">
+<div class="flex items-center gap-4 mb-10 pb-6 border-b-2 border-yellow-800/5">
+<div class="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center">
+<img alt="Captain Avatar" class="rounded-xl w-full h-full object-cover" data-alt="Close-up of a rugged but friendly cartoon pirate captain with a braided black beard and a captain's hat" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4Hc1j9iBJVgqR5736Zllf2ywG865SZjyZd8SEKS-jJyVeINaMNx1l8lnzDIaZtkOqXewjom4EB45Wt54dQawQv72MO1jaJJh71p94lfViTXbLb-EeWds6IiWLXO43Wj1ewMR-rypbR-gRd-SMy-Mid-1HNrnNeSV_5q9roPrZHTir8nu9iLWZIczOe4xaXvxFmexzWoIiiCxKx2TOiPfQrsgAxKVl4_iJtZL14bKogM_oA3WeGf5pW4ke-IBZNgjNgwftEGwBMqo"/>
+</div>
+<div>
+<h3 class="font-headline-md text-yellow-700">Captain Blackbeard</h3>
+<p class="text-xs font-bold text-yellow-600/60 uppercase">Level 42</p>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-4 p-4 text-yellow-800/70 hover:bg-yellow-100 rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-bold">Captain's Log</span>
+</a>
+<a class="flex items-center gap-4 p-4 bg-yellow-400/20 text-yellow-900 border-l-8 border-yellow-500 rounded-r-xl transition-colors" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-bold">Treasure Map</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-yellow-800/70 hover:bg-yellow-100 rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-bold">Settings</span>
+</a>
+</div>
+</nav>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 h-24 pb-safe bg-yellow-100 dark:bg-slate-900 border-t-4 border-yellow-800/10 dark:border-slate-800 shadow-[0_-4px_10px_rgba(0,0,0,0.1)] rounded-t-[40px] md:hidden">
+<a class="flex flex-col items-center justify-center text-yellow-800/60 dark:text-slate-400 px-6 py-2 hover:bg-yellow-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-['Plus_Jakarta_Sans'] font-extrabold text-[12px] mt-1">Explore</span>
+</a>
+<!-- ACTIVE ITEM: The Treasure Map falls under 'Loot' journey -->
+<a class="flex flex-col items-center justify-center bg-yellow-400 dark:bg-yellow-600 text-yellow-950 dark:text-yellow-50 rounded-2xl px-6 py-2 shadow-[4px_4px_0_0_rgba(113,63,18,1)] active:translate-y-0.5 active:shadow-[2px_2px_0_0_rgba(113,63,18,1)] transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">anchor</span>
+<span class="font-['Plus_Jakarta_Sans'] font-extrabold text-[12px] mt-1">Loot</span>
+</a>
+<a class="flex flex-col items-center justify-center text-yellow-800/60 dark:text-slate-400 px-6 py-2 hover:bg-yellow-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">skull</span>
+<span class="font-['Plus_Jakarta_Sans'] font-extrabold text-[12px] mt-1">Crew</span>
+</a>
+</nav>
+</body></html>

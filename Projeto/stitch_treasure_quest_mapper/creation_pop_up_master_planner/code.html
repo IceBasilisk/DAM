@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&amp;family=Lexend:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#4d4732",
+                    "on-secondary-fixed-variant": "#004c6b",
+                    "primary-fixed-dim": "#e9c400",
+                    "on-secondary-fixed": "#001e2d",
+                    "inverse-on-surface": "#faf0d5",
+                    "surface-container-highest": "#ebe2c8",
+                    "on-tertiary-fixed-variant": "#7f2b00",
+                    "surface-tint": "#705d00",
+                    "secondary": "#00658d",
+                    "primary-fixed": "#ffe16d",
+                    "inverse-primary": "#e9c400",
+                    "surface-dim": "#e2dabf",
+                    "on-tertiary-container": "#a83b00",
+                    "on-background": "#1f1c0b",
+                    "surface-container-low": "#fcf3d8",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#221b00",
+                    "background": "#fff9ed",
+                    "tertiary-fixed-dim": "#ffb599",
+                    "on-error": "#ffffff",
+                    "on-primary-container": "#705e00",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#ffdbce",
+                    "tertiary-container": "#ffd0bf",
+                    "secondary-fixed-dim": "#83cfff",
+                    "surface-variant": "#ebe2c8",
+                    "primary": "#705d00",
+                    "on-primary-fixed-variant": "#544600",
+                    "tertiary": "#a63b00",
+                    "surface-container": "#f7eed2",
+                    "surface": "#fff9ed",
+                    "secondary-fixed": "#c6e7ff",
+                    "on-tertiary-fixed": "#370e00",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#d0c6ab",
+                    "surface-bright": "#fff9ed",
+                    "surface-container-high": "#f1e8cd",
+                    "secondary-container": "#3dbeff",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#1f1c0b",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#ffd700",
+                    "inverse-surface": "#35301e",
+                    "on-secondary-container": "#004a69",
+                    "outline": "#7e775f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "24px",
+                    "xs": "4px",
+                    "xl": "64px",
+                    "margin": "24px",
+                    "sm": "12px",
+                    "lg": "40px",
+                    "gutter": "20px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "label-sm": ["Lexend"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-bold": ["Lexend"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "800"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .block-shadow {
+            box-shadow: 0 6px 0 0 rgba(0, 0, 0, 0.1);
+        }
+        .active-press:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1);
+        }
+        .modal-overlay {
+            background: rgba(31, 28, 11, 0.85);
+            backdrop-filter: blur(4px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- Top App Bar (Shared Component) -->
+<header class="fixed top-0 left-0 w-full z-50 h-16 flex items-center justify-between px-6 bg-[#F4EBD0] dark:bg-slate-900 border-b-4 border-black/10 shadow-[0_4px_0_0_rgba(139,69,19,0.2)]">
+<div class="flex items-center gap-4">
+<button class="text-[#B8860B] active:translate-y-0.5 active:shadow-none transition-all hover:bg-black/5 p-2 rounded-xl">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-['Plus_Jakarta_Sans'] font-extrabold tracking-tight text-xl text-[#8B4513] uppercase">Master Planner</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-[#B8860B] active:translate-y-0.5 active:shadow-none transition-all hover:bg-black/5 p-2 rounded-xl">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content (Background Layout) -->
+<main class="pt-24 pb-32 px-6 max-w-4xl mx-auto space-y-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Mock Content Card -->
+<div class="bg-surface-container border-4 border-on-surface-variant/20 p-6 rounded-[32px] shadow-[0_8px_0_0_rgba(77,71,50,0.1)]">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-primary-container p-3 rounded-2xl shadow-[0_4px_0_0_#B8860B]">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="anchor">anchor</span>
+</div>
+<span class="bg-secondary text-on-secondary px-3 py-1 rounded-full text-label-sm font-bold">ACTIVE</span>
+</div>
+<h3 class="font-headline-md text-on-background mb-2">Caribbean Conquest</h3>
+<p class="text-on-surface-variant font-body-md">Mapping the western sea routes for hidden loot.</p>
+</div>
+<!-- Mock Content Card -->
+<div class="bg-surface-container-high border-4 border-on-surface-variant/20 p-6 rounded-[32px] shadow-[0_8px_0_0_rgba(77,71,50,0.1)]">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-tertiary-container p-3 rounded-2xl shadow-[0_4px_0_0_#A63B00]">
+<span class="material-symbols-outlined text-on-tertiary-container" data-icon="skull">skull</span>
+</div>
+<span class="bg-outline text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-bold">PAUSED</span>
+</div>
+<h3 class="font-headline-md text-on-background mb-2">Dead Man's Chest</h3>
+<p class="text-on-surface-variant font-body-md">Internal inventory and storage management.</p>
+</div>
+</div>
+</main>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-[60] flex items-center justify-center p-4 modal-overlay">
+<!-- New Roadmap Modal -->
+<div class="bg-surface-container-low w-full max-w-lg rounded-[40px] border-4 border-[#8B4513] shadow-[0_12px_0_0_rgba(139,69,19,0.3)] overflow-hidden relative">
+<!-- Ribbon Header -->
+<div class="bg-tertiary py-4 px-8 text-center relative shadow-md">
+<h2 class="font-headline-md text-on-tertiary uppercase tracking-widest">New Roadmap</h2>
+<!-- Close Button -->
+<button class="absolute right-6 top-1/2 -translate-y-1/2 bg-on-tertiary/20 hover:bg-on-tertiary/30 text-on-tertiary rounded-full p-1.5 transition-colors">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<div class="p-8 space-y-8">
+<!-- Title Input Section -->
+<div class="space-y-3">
+<label class="font-label-bold text-[#8B4513] uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+                        Roadmap Title
+                    </label>
+<input class="w-full bg-[#FDF8E1] border-4 border-[#8B4513]/20 focus:border-primary-container focus:ring-0 rounded-2xl py-4 px-5 text-body-lg text-on-background placeholder:text-on-surface-variant/40 transition-all outline-none" placeholder="e.g. The Golden Expedition" type="text"/>
+</div>
+<!-- Select Logo Section -->
+<div class="space-y-6">
+<label class="font-label-bold text-[#8B4513] uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="palette">palette</span>
+                        Select Mark &amp; Color
+                    </label>
+<div class="flex items-center gap-6 bg-black/5 p-6 rounded-[32px]">
+<!-- Preview Circle -->
+<div class="flex-shrink-0 flex items-center justify-center w-24 h-24 bg-primary-container rounded-[24px] border-4 border-[#8B4513] shadow-[0_6px_0_0_rgba(139,69,19,0.2)]">
+<span class="material-symbols-outlined text-[48px] text-[#8B4513]" data-icon="map">map</span>
+</div>
+<div class="flex-grow space-y-4">
+<!-- Icon Grid -->
+<div class="flex flex-wrap gap-2">
+<button class="w-10 h-10 flex items-center justify-center bg-white border-2 border-[#8B4513]/20 rounded-xl hover:border-primary-container active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="map">map</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center bg-white border-2 border-[#8B4513]/20 rounded-xl hover:border-primary-container active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="sailing">sailing</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center bg-white border-2 border-[#8B4513]/20 rounded-xl hover:border-primary-container active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="diamond">diamond</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center bg-white border-2 border-[#8B4513]/20 rounded-xl hover:border-primary-container active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="fort">fort</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center bg-white border-2 border-primary-container ring-2 ring-primary-container rounded-xl">
+<span class="material-symbols-outlined text-sm" data-icon="explore">explore</span>
+</button>
+</div>
+<!-- Color Swatches -->
+<div class="flex flex-wrap gap-2">
+<button class="w-8 h-8 rounded-full bg-primary-container border-2 border-black/10 ring-2 ring-primary-container ring-offset-2"></button>
+<button class="w-8 h-8 rounded-full bg-secondary-container border-2 border-black/10 hover:scale-110 transition-transform"></button>
+<button class="w-8 h-8 rounded-full bg-tertiary-container border-2 border-black/10 hover:scale-110 transition-transform"></button>
+<button class="w-8 h-8 rounded-full bg-error-container border-2 border-black/10 hover:scale-110 transition-transform"></button>
+<button class="w-8 h-8 rounded-full bg-surface-container-highest border-2 border-black/10 hover:scale-110 transition-transform"></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex gap-4 pt-4">
+<button class="flex-1 py-4 bg-outline-variant/30 text-on-surface-variant font-label-bold uppercase rounded-2xl active-press border-2 border-on-surface-variant/10">
+                        Cancel
+                    </button>
+<button class="flex-1 py-4 bg-primary-container text-[#8B4513] font-label-bold uppercase rounded-2xl block-shadow active-press border-b-4 border-[#B8860B] transition-all">
+                        Set Sail
+                    </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Nav Bar (Shared Component) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-end pb-6 pt-3 px-4 bg-[#F4EBD0] dark:bg-slate-900 rounded-t-[32px] border-t-4 border-black/10 shadow-[0_-4px_0_0_rgba(139,69,19,0.1)]">
+<div class="flex flex-col items-center justify-center bg-[#FFD700] text-[#8B4513] rounded-2xl px-5 py-1.5 shadow-[0_4px_0_0_#B8860B] translate-y-[-4px] active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-bold">Roadmaps</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#8B4513]/70 dark:text-slate-400 py-2 hover:text-[#8B4513] active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-bold">Library</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#8B4513]/70 dark:text-slate-400 py-2 hover:text-[#8B4513] active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-bold">Settings</span>
+</div>
+</nav>
+<!-- FAB (Contextual for New Content) -->
+<button class="fixed bottom-28 right-8 w-16 h-16 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center shadow-[0_8px_0_0_rgba(184,134,11,1)] border-4 border-[#8B4513] active:translate-y-1 active:shadow-none transition-all z-40">
+<span class="material-symbols-outlined text-[32px]" data-icon="add">add</span>
+</button>
+</body></html>

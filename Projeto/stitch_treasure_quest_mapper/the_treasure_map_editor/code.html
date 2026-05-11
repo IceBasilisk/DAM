@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800;900&amp;family=Newsreader:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .parchment-texture {
+            background-color: #fff8f0;
+            background-image: radial-gradient(#d4c3bf 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+        .deckle-edge {
+            clip-path: polygon(0% 0%, 5% 2%, 10% 0%, 15% 3%, 20% 0%, 25% 2%, 30% 0%, 35% 3%, 40% 0%, 45% 2%, 50% 0%, 55% 3%, 60% 0%, 65% 2%, 70% 0%, 75% 3%, 80% 0%, 85% 2%, 90% 0%, 95% 3%, 100% 0%, 100% 100%, 95% 98%, 90% 100%, 85% 97%, 80% 100%, 75% 98%, 70% 100%, 65% 97%, 60% 100%, 55% 98%, 50% 100%, 45% 97%, 40% 100%, 35% 98%, 30% 100%, 25% 97%, 20% 100%, 15% 98%, 10% 100%, 5% 97%, 0% 100%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error": "#ba1a1a",
+                      "on-error": "#ffffff",
+                      "on-primary-container": "#c19c94",
+                      "background": "#fff8f0",
+                      "on-primary-fixed": "#2b1611",
+                      "tertiary-fixed-dim": "#e9c400",
+                      "surface-container-low": "#fff3d5",
+                      "surface-dim": "#e8d9b2",
+                      "on-tertiary-container": "#4c3e00",
+                      "on-background": "#221b03",
+                      "on-secondary": "#ffffff",
+                      "secondary": "#00629e",
+                      "primary-fixed": "#ffdad2",
+                      "inverse-primary": "#e5beb5",
+                      "surface-container-highest": "#f0e2ba",
+                      "surface-tint": "#755750",
+                      "on-tertiary-fixed-variant": "#544600",
+                      "on-secondary-fixed": "#001d34",
+                      "inverse-on-surface": "#fff0c8",
+                      "primary-fixed-dim": "#e5beb5",
+                      "on-secondary-fixed-variant": "#004a78",
+                      "on-surface-variant": "#504442",
+                      "inverse-surface": "#383015",
+                      "primary-container": "#4e342e",
+                      "outline": "#827471",
+                      "on-secondary-container": "#004470",
+                      "on-surface": "#221b03",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "secondary-container": "#62b4fe",
+                      "surface-bright": "#fff8f0",
+                      "outline-variant": "#d4c3bf",
+                      "surface-container-high": "#f6e7bf",
+                      "surface-container": "#fcedc5",
+                      "surface": "#fff8f0",
+                      "tertiary": "#705d00",
+                      "error-container": "#ffdad6",
+                      "secondary-fixed": "#cfe5ff",
+                      "on-tertiary-fixed": "#221b00",
+                      "on-primary-fixed-variant": "#5c403a",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "primary": "#361f1a",
+                      "surface-variant": "#f0e2ba",
+                      "tertiary-container": "#c9a900",
+                      "tertiary-fixed": "#ffe16d",
+                      "secondary-fixed-dim": "#99cbff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-mobile": "24px",
+                      "touch-target": "48px",
+                      "gutter": "16px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "body-md": ["Newsreader"],
+                      "headline-lg": ["Epilogue"],
+                      "label-caps": ["Newsreader"],
+                      "body-lg": ["Newsreader"],
+                      "headline-md": ["Epilogue"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background parchment-texture min-h-screen text-on-background font-body-md selection:bg-tertiary-fixed selection:text-on-tertiary-fixed">
+<nav class="bg-[#fdf6e3] dark:bg-stone-900 border-b-2 border-dashed border-[#4E342E]/20 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-1px_rgba(0,0,0,0.06)] sticky top-0 z-40">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-none">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#4E342E] dark:text-[#D4C4A8] hover:bg-[#4E342E]/5 transition-colors p-2 rounded-full active:transform active:scale-95 duration-150" data-icon="menu">menu</button>
+<h1 class="text-[#4E342E] dark:text-[#EFEBE9] text-2xl font-black font-epilogue tracking-widest uppercase">Work at the Bakery</h1>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-epilogue tracking-tight uppercase text-[#4E342E] underline decoration-double">Roadmaps</span>
+<div class="w-10 h-10 rounded-full border-2 border-[#4E342E]/30 overflow-hidden shadow-sm">
+<img alt="Captain Portrait" class="w-full h-auto" data-alt="Stylized pixel art portrait of a weathered pirate captain with a grey beard and a bicorne hat" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtfMe6EHSjVacDc6sNn8JDnaQwgmB_e__B33oHguiKyE_yEAire63aKjOyeGX_Zb5N4y7-1zWahgviX1a34JZYpoXMKWYTZrtyF2yKsiYwbuvN0Wopp4_G3sY-p4xV7CU3i3gyCzNgnDPvXZbiO46MUwb8IOyedhYCcSJXJ9DczdgNOqJEf-j35d3JU0pLpOVjxiNSG7C9H06-VutPU56WG8OVI9Yjh-ovEYYx2vzE0OxUAwKhH34T70yIppMQQWOnyMQI2SQ31Cc"/>
+</div>
+</div>
+</div>
+</nav>
+<main class="relative px-margin-mobile py-12 min-h-[calc(100vh-80px)] overflow-x-hidden">
+<div class="max-w-4xl mx-auto flex flex-col gap-12 relative">
+<div class="relative z-10 flex flex-col items-center gap-16">
+<div class="deckle-edge bg-surface-container-low border-2 border-[#4E342E]/20 p-6 w-full max-w-sm shadow-md hover:scale-105 transition-transform duration-300">
+<div class="flex items-start justify-between">
+<span class="material-symbols-outlined text-primary-container" data-icon="door_open">door_open</span>
+<span class="text-label-caps font-label-caps text-outline">TASK 01</span>
+</div>
+<h3 class="font-headline-md text-headline-md mt-2 text-[#4E342E]">Enter bakery</h3>
+<p class="text-body-md font-body-md text-[#4E342E]/70 mt-1 italic">Unlock the front gates and light the torches.</p>
+</div>
+<div class="relative h-12 w-1 border-l-2 border-dashed border-[#4E342E]/40 after:content-[''] after:absolute after:bottom-0 after:-left-[5px] after:border-t-8 after:border-l-4 after:border-r-4 after:border-t-[#4E342E]/40 after:border-l-transparent after:border-r-transparent"></div>
+<div class="deckle-edge bg-surface-container-low border-2 border-[#4E342E]/20 p-6 w-full max-w-sm shadow-md hover:scale-105 transition-transform duration-300">
+<div class="flex items-start justify-between">
+<span class="material-symbols-outlined text-primary-container" data-icon="local_fire_department">local_fire_department</span>
+<span class="text-label-caps font-label-caps text-outline">TASK 02</span>
+</div>
+<h3 class="font-headline-md text-headline-md mt-2 text-[#4E342E]">Turn On Ovens</h3>
+</div>
+<div class="relative h-12 w-1 border-l-2 border-dashed border-[#4E342E]/40 after:content-[''] after:absolute after:bottom-0 after:-left-[5px] after:border-t-8 after:border-l-4 after:border-r-4 after:border-t-[#4E342E]/40 after:border-l-transparent after:border-r-transparent"></div>
+<div class="deckle-edge bg-surface-container-low border-2 border-[#4E342E]/20 p-6 w-full max-w-sm shadow-md hover:scale-105 transition-transform duration-300">
+<div class="flex items-start justify-between">
+<span class="material-symbols-outlined text-primary-container" data-icon="bakery_dining">bakery_dining</span>
+<span class="text-label-caps font-label-caps text-outline">TASK 03</span>
+</div>
+<h3 class="font-headline-md text-headline-md mt-2 text-[#4E342E]">Put loaves in ovens</h3>
+</div>
+<div class="relative flex flex-col items-center">
+<div class="h-24 w-1 border-l-2 border-dashed border-[#4E342E]/40 after:content-[''] after:absolute after:bottom-0 after:-left-[5px] after:border-t-8 after:border-l-4 after:border-r-4 after:border-t-[#4E342E]/40 after:border-l-transparent after:border-r-transparent"></div>
+<div class="absolute top-1/2 -translate-y-1/2 bg-tertiary-fixed border-2 border-tertiary shadow-lg px-4 py-1 rounded-sm rotate-3 transform -skew-x-2">
+<span class="font-epilogue font-bold text-xs text-on-tertiary-fixed tracking-widest uppercase">10/15 min</span>
+</div>
+</div>
+<div class="deckle-edge bg-surface-container-low border-2 border-[#4E342E]/20 p-6 w-full max-w-sm shadow-md hover:scale-105 transition-transform duration-300">
+<div class="flex items-start justify-between">
+<span class="material-symbols-outlined text-primary-container" data-icon="done_all">done_all</span>
+<span class="text-label-caps font-label-caps text-outline">TASK 04</span>
+</div>
+<h3 class="font-headline-md text-headline-md mt-2 text-[#4E342E]">Take out loaves</h3>
+</div>
+<div class="relative h-12 w-1 border-l-2 border-dashed border-[#4E342E]/40 after:content-[''] after:absolute after:bottom-0 after:-left-[5px] after:border-t-8 after:border-l-4 after:border-r-4 after:border-t-[#4E342E]/40 after:border-l-transparent after:border-r-transparent"></div>
+<div class="deckle-edge bg-surface-container-low border-2 border-[#4E342E]/20 p-6 w-full max-w-sm shadow-md hover:scale-105 transition-transform duration-300">
+<div class="flex items-start justify-between">
+<span class="material-symbols-outlined text-primary-container" data-icon="storefront">storefront</span>
+<span class="text-label-caps font-label-caps text-outline">TASK 05</span>
+</div>
+<h3 class="font-headline-md text-headline-md mt-2 text-[#4E342E]">Display loaves</h3>
+</div>
+<div class="relative h-12 w-1 border-l-2 border-dashed border-[#4E342E]/40 after:content-[''] after:absolute after:bottom-0 after:-left-[5px] after:border-t-8 after:border-l-4 after:border-r-4 after:border-t-[#4E342E]/40 after:border-l-transparent after:border-r-transparent"></div>
+<div class="deckle-edge bg-surface-container-low border-2 border-[#4E342E]/20 p-6 w-full max-w-sm shadow-md hover:scale-105 transition-transform duration-300">
+<div class="flex items-start justify-between">
+<span class="material-symbols-outlined text-primary-container" data-icon="logout">logout</span>
+<span class="text-label-caps font-label-caps text-outline">TASK 06</span>
+</div>
+<h3 class="font-headline-md text-headline-md mt-2 text-[#4E342E]">Leave bakery</h3>
+</div>
+</div>
+<div class="absolute inset-0 z-0 pointer-events-none opacity-20 overflow-hidden">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<path d="M10,10 Q50,0 90,10 Q100,50 90,90 Q50,100 10,90 Q0,50 10,10" fill="none" stroke="#4E342E" stroke-dasharray="1,1" stroke-width="0.1"></path>
+</svg>
+</div>
+</div>
+</main>
+<div class="fixed bottom-10 right-10 z-50">
+<button class="w-20 h-20 rounded-full bg-tertiary-fixed border-4 border-tertiary shadow-[0_15px_35px_rgba(112,93,0,0.4)] flex items-center justify-center hover:scale-110 active:scale-90 transition-all group overflow-hidden relative">
+<div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="material-symbols-outlined text-[#705d00] text-5xl font-black transition-transform group-hover:rotate-45" data-icon="explore" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="absolute text-on-tertiary font-black text-2xl mb-1">+</span>
+</button>
+</div>
+<div class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-4 pt-2 bg-[#fdf6e3] dark:bg-stone-900 border-t-4 border-double border-[#4E342E]/40 shadow-[0_-10px_25px_-5px_rgba(78,52,46,0.2)] md:hidden">
+<a class="flex flex-col items-center justify-center bg-[#4E342E] text-[#fdf6e3] rounded-full p-3 shadow-inner ring-4 ring-[#4E342E]/20 duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-epilogue text-xs font-bold uppercase tracking-tighter">Roadmaps</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#4E342E]/60 p-2 hover:text-[#4E342E] hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="anchor">anchor</span>
+<span class="font-epilogue text-xs font-bold uppercase tracking-tighter">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#4E342E]/60 p-2 hover:text-[#4E342E] hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="skull">skull</span>
+<span class="font-epilogue text-xs font-bold uppercase tracking-tighter">Settings</span>
+</a>
+</div>
+</body></html>

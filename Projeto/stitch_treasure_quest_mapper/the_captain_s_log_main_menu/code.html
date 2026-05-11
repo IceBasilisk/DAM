@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800;900&amp;family=Newsreader:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error": "#ba1a1a",
+            "on-error": "#ffffff",
+            "on-primary-container": "#c19c94",
+            "background": "#fff8f0",
+            "on-primary-fixed": "#2b1611",
+            "tertiary-fixed-dim": "#e9c400",
+            "surface-container-low": "#fff3d5",
+            "surface-dim": "#e8d9b2",
+            "on-tertiary-container": "#4c3e00",
+            "on-background": "#221b03",
+            "on-secondary": "#ffffff",
+            "secondary": "#00629e",
+            "primary-fixed": "#ffdad2",
+            "inverse-primary": "#e5beb5",
+            "surface-container-highest": "#f0e2ba",
+            "surface-tint": "#755750",
+            "on-tertiary-fixed-variant": "#544600",
+            "on-secondary-fixed": "#001d34",
+            "inverse-on-surface": "#fff0c8",
+            "primary-fixed-dim": "#e5beb5",
+            "on-secondary-fixed-variant": "#004a78",
+            "on-surface-variant": "#504442",
+            "inverse-surface": "#383015",
+            "primary-container": "#4e342e",
+            "outline": "#827471",
+            "on-secondary-container": "#004470",
+            "on-surface": "#221b03",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "secondary-container": "#62b4fe",
+            "surface-bright": "#fff8f0",
+            "outline-variant": "#d4c3bf",
+            "surface-container-high": "#f6e7bf",
+            "surface-container": "#fcedc5",
+            "surface": "#fff8f0",
+            "tertiary": "#705d00",
+            "error-container": "#ffdad6",
+            "secondary-fixed": "#cfe5ff",
+            "on-tertiary-fixed": "#221b00",
+            "on-primary-fixed-variant": "#5c403a",
+            "on-primary": "#ffffff",
+            "on-error-container": "#93000a",
+            "primary": "#361f1a",
+            "surface-variant": "#f0e2ba",
+            "tertiary-container": "#c9a900",
+            "tertiary-fixed": "#ffe16d",
+            "secondary-fixed-dim": "#99cbff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "fontFamily": {
+            "body-md": ["newsreader"],
+            "headline-lg": ["epilogue"],
+            "label-caps": ["newsreader"],
+            "body-lg": ["newsreader"],
+            "headline-md": ["epilogue"]
+          },
+          "fontSize": {
+            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+            "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .parchment-texture {
+      background-color: #fff8f0;
+      background-image: radial-gradient(#d4c3bf 0.5px, transparent 0.5px), radial-gradient(#d4c3bf 0.5px, #fff8f0 0.5px);
+      background-size: 20px 20px;
+      background-position: 0 0, 10px 10px;
+      opacity: 0.1;
+    }
+    .deckle-edge {
+      clip-path: polygon(0% 0%, 5% 2%, 10% 0%, 15% 3%, 20% 0%, 25% 2%, 30% 0%, 35% 3%, 40% 0%, 45% 2%, 50% 0%, 55% 3%, 60% 0%, 65% 2%, 70% 0%, 75% 3%, 80% 0%, 85% 2%, 90% 0%, 95% 3%, 100% 0%, 100% 100%, 95% 98%, 90% 100%, 85% 97%, 80% 100%, 75% 98%, 70% 100%, 65% 97%, 60% 100%, 55% 98%, 50% 100%, 45% 97%, 40% 100%, 35% 98%, 30% 100%, 25% 97%, 20% 100%, 15% 98%, 10% 100%, 5% 97%, 0% 100%);
+    }
+    .wooden-plank {
+      background: linear-gradient(to bottom, #4E342E, #361f1a);
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), 0 8px 16px rgba(0,0,0,0.4);
+      border-bottom: 4px solid #1a0f0d;
+    }
+    .ink-underline {
+      background-image: linear-gradient(transparent 90%, #4E342E 90%);
+      background-size: 100% 2px;
+      background-repeat: no-repeat;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen relative flex flex-col">
+<div class="fixed inset-0 parchment-texture pointer-events-none"></div>
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 bg-[#fdf6e3] dark:bg-stone-900 border-b-2 border-dashed border-[#4E342E]/20 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-1px_rgba(0,0,0,0.06)]">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-none">
+<div class="flex items-center gap-4">
+<button class="hover:bg-[#4E342E]/5 transition-colors p-2 rounded-full active:transform active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[#4E342E] dark:text-[#D4C4A8]">menu</span>
+</button>
+<h1 class="text-2xl font-black text-[#4E342E] dark:text-[#EFEBE9] tracking-widest font-epilogue uppercase">Captain's Charts</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-[#4E342E]/20">
+<img alt="Captain Portrait" class="w-full h-full object-cover" data-alt="Close-up portrait of a weathered sailor with a grey beard and tricorn hat in warm cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqrN8qmUK56vtYsOOeUH17MjBJoVFEDwFj6FkyCIlzkr_XLcxXdUcM5cPL8FSj1MpWPoJ3G_QOo4lOCfFjkVE6g3O0NKckoDmCiOz5JNf1b2MSi3axW-2EnRTWhw8R88Oo1bxPbGPXUveFwydKxOmoqoO2PMvatVuy1qYFbnWirhZwumbAk4jqWtfZ--X4aOq_IkFpCToyypXCMbaVZ7O-c1uITe86R0hFX_eSC0aZC2SqTAyg7grrgRmtQI87AaOxaGnzVhrOnNM"/>
+</div>
+</div>
+</header>
+<main class="flex-grow p-6 space-y-8 max-w-2xl mx-auto w-full relative z-10">
+<!-- Section Heading -->
+<div class="text-center space-y-2 py-4">
+<h2 class="font-headline-lg text-primary uppercase tracking-tighter italic">Active Voyages</h2>
+<div class="flex justify-center">
+<span class="material-symbols-outlined text-primary scale-150" style="font-variation-settings: 'FILL' 1;">sailing</span>
+</div>
+</div>
+<!-- Active Voyages Grid -->
+<div class="grid gap-6">
+<!-- Card: Work at the Bakery -->
+<div class="group relative bg-[#f5e6d3] p-8 deckle-edge shadow-lg border-2 border-[#4E342E]/5 transition-transform hover:-rotate-1">
+<div class="absolute top-4 right-6 bg-primary text-[#fdf6e3] px-3 py-1 font-label-caps text-[10px] rounded-full shadow-sm">
+          LAST EDITED: 2 DAYS AGO
+        </div>
+<div class="space-y-4">
+<h3 class="font-headline-md text-primary tracking-tight">Work at the Bakery</h3>
+<p class="font-body-md text-on-surface-variant italic opacity-80 leading-snug">
+            Sifting flour and dodging cannonballs. A simple life for a complex mind.
+          </p>
+<div class="flex items-center gap-4 pt-2">
+<div class="flex-grow bg-[#4E342E]/10 h-3 rounded-full overflow-hidden border border-[#4E342E]/20">
+<div class="bg-tertiary w-3/4 h-full relative">
+<div class="absolute right-0 top-0 h-full w-2 bg-error shadow-[0_0_10px_rgba(186,26,26,0.8)]"></div>
+</div>
+</div>
+<span class="font-label-caps text-primary">75% Done</span>
+</div>
+</div>
+<div class="mt-6 flex justify-end">
+<span class="material-symbols-outlined text-[#4E342E] group-hover:translate-x-2 transition-transform">arrow_right_alt</span>
+</div>
+</div>
+<!-- Card: Plunder the Caribbean -->
+<div class="group relative bg-[#f5e6d3] p-8 deckle-edge shadow-lg border-2 border-[#4E342E]/5 transition-transform hover:rotate-1">
+<div class="absolute top-4 right-6 bg-outline text-[#fdf6e3] px-3 py-1 font-label-caps text-[10px] rounded-full">
+          LAST EDITED: 1 WEEK AGO
+        </div>
+<div class="space-y-4">
+<h3 class="font-headline-md text-primary tracking-tight">Plunder the Caribbean</h3>
+<p class="font-body-md text-on-surface-variant italic opacity-80 leading-snug">
+            Seeking the legendary sunken chest of the Gilded Kraken.
+          </p>
+<div class="flex items-center gap-4 pt-2">
+<div class="flex-grow bg-[#4E342E]/10 h-3 rounded-full overflow-hidden border border-[#4E342E]/20">
+<div class="bg-tertiary w-1/4 h-full relative">
+<div class="absolute right-0 top-0 h-full w-2 bg-error shadow-[0_0_10px_rgba(186,26,26,0.8)]"></div>
+</div>
+</div>
+<span class="font-label-caps text-primary">25% Done</span>
+</div>
+</div>
+<div class="mt-6 flex justify-end">
+<span class="material-symbols-outlined text-[#4E342E] group-hover:translate-x-2 transition-transform">arrow_right_alt</span>
+</div>
+</div>
+</div>
+<!-- Map Illustration Decoration -->
+<div class="flex justify-center pt-8 opacity-40">
+<img alt="Treasure Map Decoration" class="w-48 grayscale contrast-125" data-alt="Sepia toned antique map fragment with compass rose and weathered edges on textured parchment" data-location="Caribbean" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFRSwsVIaY8fyNg_ittiioxf-Pk-UJmVkSO_1bx6UghnVt7qZicB8X_6BWQAgRF4PaooepOex0jzWSbcB4LElvKwglkQubgZo5tQqCBc6fb6WyQryinqWRwdCcA7Yi7V3ZM6BOJ1APMZ5-Wen4_GVJIrZVGc-W0pG6At_72JEwOBwEZZqwgw_Nf4EGxB5WWFZMdbokVwyBB7pcUJXFFNri8xhmNR402VzDfCz-hd_XwRb4MdR2zgEcB7dydtFkrrHQcfls5O5CCrM"/>
+</div>
+<div class="h-32"></div> <!-- Spacer for fixed button and nav -->
+</main>
+<!-- Primary Action: Commence New Voyage -->
+<div class="fixed bottom-24 left-0 w-full px-6 z-40 max-w-2xl mx-auto left-1/2 -translate-x-1/2">
+<button class="wooden-plank w-full py-5 rounded-lg flex items-center justify-center gap-4 group transition-all hover:scale-[1.02] active:scale-95">
+<div class="bg-tertiary text-on-tertiary w-10 h-10 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(201,169,0,0.5)]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+</div>
+<span class="font-headline-md text-[#fdf6e3] tracking-wider uppercase">Commence New Voyage</span>
+</button>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-[#fdf6e3] dark:bg-stone-900 flex justify-around items-center px-4 pb-4 pt-2 border-t-4 border-double border-[#4E342E]/40 shadow-[0_-10px_25px_-5px_rgba(78,52,46,0.2)] rounded-t-[2rem]">
+<!-- Tab: Roadmaps (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#4E342E] text-[#fdf6e3] rounded-full p-3 shadow-inner ring-4 ring-[#4E342E]/20 duration-100" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-epilogue text-xs font-bold uppercase tracking-tighter mt-1">Roadmaps</span>
+</a>
+<!-- Tab: Library -->
+<a class="flex flex-col items-center justify-center text-[#4E342E]/60 p-2 hover:text-[#4E342E] hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined">anchor</span>
+<span class="font-epilogue text-xs font-bold uppercase tracking-tighter mt-1">Library</span>
+</a>
+<!-- Tab: Settings -->
+<a class="flex flex-col items-center justify-center text-[#4E342E]/60 p-2 hover:text-[#4E342E] hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined">skull</span>
+<span class="font-epilogue text-xs font-bold uppercase tracking-tighter mt-1">Settings</span>
+</a>
+</nav>
+</body></html>
