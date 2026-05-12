@@ -55,6 +55,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.core)
+    implementation(libs.androidx.material.icons.extended)
 
     // Viewmodel Layer (Section 3.3) [cite: 383, 584]
     implementation(libs.androidx.lifecycle.viewmodel.compose)

@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- Overall colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="cheesecake">#FFF5E6D3</color>
+    <color name="cigar">#FF783A21</color>
+    <color name="lauren">#FFA3BF95</color>
+    <color name="lighting_yellow">#FFFBBF24</color>
+    <color name="fresh_cream">#FFFFF9ED</color>
+
+    <!-- Fonts -->
+    <color name="warm_coffee">#FF290001</color>
+    <color name="teak">#FF94582D</color>
+    <color name="cedar_wood">#FF741F00</color>
+
+    <!-- Main Menu -->
+
+    <!-- Pop-ups -->
+    <color name="gold">#FFFFD700</color>
+    <color name="deep_olive">#FF705D00</color>
+    <color name="highlighter_blue">#FF3DBEFF</color>
+    <color name="sea_blue">#FF00658D</color>
+    <color name="pale_apricot">#FFFFD0BF</color>
+    <color name="cocoa_brown">#FFA63B00</color>
+    <color name="salsa_red">#FF7F2B00</color>
+    <color name="red_oak">#FFBF9580</color>
+
+    <color name="pale_brown">#FFF7EED2</color>
+    <color name="dirty_blonde">#FFD0C6AB</color>
+    <color name="judge_gray">#FF4D4732</color>
 </resources>

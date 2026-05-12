@@ -1,3 +1,38 @@
 <resources>
     <string name="app_name">Master Planner</string>
+    <string name="roadmaps_tab">ROADMAPS</string>
+    <string name="library_tab">LIBRARY</string>
+    <string name="cancel_button">CANCEL</string>
+
+    <!-- Main Menu -->
+    <string name="create_roadmap_button">MAKE NEW ROADMAP</string>
+
+    <!-- Roadmap Creation Pop-up -->
+    <string name="rm_create_popup_title">CHART NEW COURSE</string>
+    <string name="rm_create_roadmap_title_label">ROADMAP TITLE</string>
+    <string name="rm_create_icon_label">SELECT MARK &amp; COLOR</string>
+    <string name="rm_create_confirm_button">SET SAIL</string>
+    <string name="rm_create_search_text">E.g. Clean Bedroom</string>
+
+    <!-- Roadmap Editor -->
+    <string name="rm_editor_label">ROADMAP EDITOR</string>
+    <string name="rm_editor_duplicate_task_label">Duplicate Task</string>
+    <string name="rm_editor_add_time_label">Add Time</string>
+    <string name="rm_editor_remove_task_label">Remove Task</string>
+
+    <string name="rm_editor_time_title">ADD DURATION</string>
+    <string name="rm_editor_time_before_label">BEFORE TASK</string>
+    <string name="rm_editor_time_after_label">AFTER TASK</string>
+    <string name="rm_editor_time_confirm_button">CONFIRM TIME</string>
+
+    <!-- Task Library -->
+    <string name="task_lib_title">The Booty Bag</string>
+    <string name="task_lib_search_text">Search for tasks…</string>
+    <string name="task_lib_new_task_button">Create New Task</string>
+    <string name="task_lib_task_selected_confirm">IMPORT SELECTED</string>
+
+    <!-- Task Creation -->
+    <string name="task_create_task_name_label">TASK NAME</string>
+    <string name="task_create_search_text">E.g. Make Bed</string>
+    <string name="task_create_confirm_button">CREATE TASK</string>
 </resources>
