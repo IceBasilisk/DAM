@@ -35,4 +35,7 @@
     <string name="task_create_task_name_label">TASK NAME</string>
     <string name="task_create_search_text">E.g. Make Bed</string>
     <string name="task_create_confirm_button">CREATE TASK</string>
+
+    <!-- Roadmap Test -->
+    <string name="test_bakery_title">Morning Bakery Routine</string>
 </resources>

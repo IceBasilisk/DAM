@@ -15,10 +15,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.weathercompose.R
 
 @Composable
 fun MainMenuScreen() {
@@ -56,26 +58,6 @@ fun MainMenuScreen() {
             }
 
             item {
-                RoadmapCard(
-                    category = "SIDE VOYAGE",
-                    categoryColor = pink,
-                    title = "The Python Depths",
-                    progress = "3 / 40 OBJECTIVES",
-                    icon = Icons.Default.Sailing
-                )
-            }
-
-            item {
-                RoadmapCard(
-                    category = "TREASURE HUNT",
-                    categoryColor = yellow,
-                    title = "Design System Lore",
-                    progress = "9 / 10 OBJECTIVES",
-                    icon = Icons.Default.Security
-                )
-            }
-
-            item {
                 Button(
                     onClick = { /* TODO */ },
                     modifier = Modifier
@@ -95,7 +77,7 @@ fun MainMenuScreen() {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            "MAKE NEW ROADMAP",
+                            text = stringResource(R.string.create_roadmap_button),
                             color = brown,
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp
@@ -138,7 +120,7 @@ fun MasterPlannerTopBar() {
         }
 
         Text(
-            "MASTER PLANNER",
+            text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.ExtraBold,
             color = brown,
@@ -209,10 +191,7 @@ fun FeaturedCard() {
 
 @Composable
 fun RoadmapCard(
-    category: String,
-    categoryColor: Color,
     title: String,
-    progress: String,
     icon: ImageVector
 ) {
     val brown = colorResource(R.color.cigar)
@@ -245,19 +224,6 @@ fun RoadmapCard(
                     .fillMaxHeight(),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Surface(
-                    color = categoryColor,
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Text(
-                        text = category,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = brown
-                    )
-                }
-
                 Text(
                     text = title,
                     style = MaterialTheme.typography.headlineSmall,
@@ -271,13 +237,6 @@ fun RoadmapCard(
                         contentDescription = null,
                         tint = gold,
                         modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = progress,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = brown.copy(alpha = 0.7f),
-                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }
