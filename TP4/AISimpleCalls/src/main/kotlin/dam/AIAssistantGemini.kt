@@ -24,10 +24,12 @@ class AIAssistantGemini(override val properties: Properties) : AIAssistant {
     // override var model = "gemini-1.0-ultra" // NOK - Most capable model (if available)
     // override var model = "gemini-1.5-flash" // OK - Faster, less expensive
     // override var model = "gemini-1.5-pro" // OK - Primary model for most tasks
-     override var model = "gemini-2.0-flash" // OK - Most capable model (if available)
+    // override var model = "gemini-2.0-flash" // OK - Most capable model (if available)
     // override var model = "gemini-2.0-pro" // NOK - Most capable model (if available)
     // override var model = "gemini-2.5-flash" // NOK - Most capable model (if available)
-    // override var model = "gemini-2.5-flash-preview" // NOK - Most capable model (if available) //override var model = "gemini-2.5-flash-preview-04-17" // NOK - Most capable model (if available)
+    // override var model = "gemini-2.5-flash-preview" // NOK - Most capable model (if available)
+    // override var model = "gemini-2.5-flash-preview-04-17" // NOK - Most capable model (if available)
+    override var model = "gemini-2.5-flash-lite" // Low-cost Gemini model for simple chat
 
     /**
      * Constructs and formats a structured request from the given input prompt.

@@ -6,6 +6,8 @@ import kotlinx.coroutines.runBlocking
  * Main entry point for the LLM Assistant application
  */
 fun main() = runBlocking {
+    System.setProperty("logback.statusListenerClass", "ch.qos.logback.core.status.NopStatusListener")
+
     println("\n🤖 Starting LLM Assistant application... 😀😀😀😀😀\n")
 
     // Get configuration properties

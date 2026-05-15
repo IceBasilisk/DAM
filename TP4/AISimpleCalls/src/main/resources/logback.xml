@@ -1,4 +1,6 @@
 <configuration>
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%r [%thread] %-5level %logger{36} - %msg%n</pattern>
