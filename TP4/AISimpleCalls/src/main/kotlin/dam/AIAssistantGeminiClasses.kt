@@ -2,9 +2,11 @@ package dam
 
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * GeminiAIAssistant class provides an interface to communicate with Google's Gemini AI models.
@@ -28,6 +30,13 @@ class AIAssistantGeminiClasses(override val properties: Properties) : AIAssistan
     // override var model = "gemini-2.5-flash" // NOK - Most capable model (if available)
     // override var model = "gemini-2.5-flash-preview" // NOK - Most capable model (if available) //override var model = "gemini-2.5-flash-preview-04-17" // NOK - Most capable model (if available)
     override var model = "gemini-2.5-flash-lite" // Low-cost Gemini model for simple chat
+
+    override val client: OkHttpClient
+        get() = OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
 
     // Data classes for Gemini API request structure
 

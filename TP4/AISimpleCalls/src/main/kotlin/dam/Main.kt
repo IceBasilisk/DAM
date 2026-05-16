@@ -21,32 +21,58 @@ fun main() = runBlocking {
     println("✨ Using AI_LLM: ${properties.getProperty("AI_LLM")}")
 
     // Use the factory to create the appropriate assistant based on configuration
-    val assistant: AIAssistant = AIAssistantFactory.createAssistant(properties)
+    val baseAssistant: AIAssistant = AIAssistantFactory.createAssistant(properties)
     println()
 
     // Write system and model
-    println("✨ Using: ${assistant.getSystem()} ${assistant.model}\n")
+    println("✨ Using: ${baseAssistant.getSystem()} ${baseAssistant.model}\n")
 
-    // Display a welcome message
-    println("💬 Type your questions and press Enter to chat with the AI.")
-    println("💬 Press Ctrl+D (Unix/Mac) or Ctrl+Z (Windows) to exit.\n")
+    val mode = properties.getProperty("MODE", "CHAT").uppercase()
+    print("Mode: $mode\n")
 
-    // Main interaction loop
-    while (true) {
-        println("➖➖➖➖➖➖➖➖➖➖")
-        // Ask for question input and read it from the console
-        print("🧠 Your question: ")
-        val input = readlnOrNull() ?: break
+    if (mode == "SENTIMENT") {
 
-        // If blank input, write a help message and continue to ask for input
-        if (input.isBlank()) {
-            println("⚠️ Please enter a question or press Ctrl+D to exit.")
-            continue
+        val sentimentAssistant = AIAssistantSentiment(baseAssistant)
+
+        println("💬 Sentiment analysis mode. Enter text to analyse.")
+        println("💬 Press Ctrl+D (Unix/Mac) or Ctrl+Z (Windows) to exit.\n")
+
+        while (true) {
+            println("➖➖➖➖➖➖➖➖➖➖")
+            print("🧠 Text to analyse: ")
+            val input = readlnOrNull() ?: break
+            if (input.isBlank()) {
+                println("⚠️ Please enter a question or press Ctrl+D to exit.")
+                continue
+            }
+            try {
+                val output = sentimentAssistant.analysesentiment(input)
+                println("\n🤖 Result: $output\n")
+            } catch (e: Exception) {
+                println("\n❌ Failed to parse sentiment response: ${e.message}\n")
+            }
         }
+    } else {
+        println("💬 Type your questions and press Enter to chat with the AI.")
+        println("💬 Press Ctrl+D (Unix/Mac) or Ctrl+Z (Windows) to exit.\n")
 
-        // Process input
-        val output = assistant.processInput(input)
-        println("\n🤖 Answer: $output\n\n")
+        // Main interaction loop
+        while (true) {
+            println("➖➖➖➖➖➖➖➖➖➖")
+            // Ask for question input and read it from the console
+            print("🧠 Your question: ")
+            val input = readlnOrNull() ?: break
+
+            // If blank input, write a help message and continue to ask for input
+            if (input.isBlank()) {
+                println("⚠️ Please enter a question or press Ctrl+D to exit.")
+                continue
+            }
+
+            // Process input
+            val output = baseAssistant.processInput(input)
+            println("\n🤖 Answer: $output\n\n")
+        }
     }
 
     // Bye message
