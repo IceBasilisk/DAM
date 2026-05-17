@@ -12,7 +12,7 @@
     <string name="rm_create_roadmap_title_label">ROADMAP TITLE</string>
     <string name="rm_create_icon_label">SELECT MARK &amp; COLOR</string>
     <string name="rm_create_confirm_button">SET SAIL</string>
-    <string name="rm_create_search_text">E.g. Clean Bedroom</string>
+    <string name="rm_create_search_suggestion">E.g. Clean Bedroom</string>
 
     <!-- Roadmap Editor -->
     <string name="rm_editor_label">ROADMAP EDITOR</string>
@@ -36,6 +36,24 @@
     <string name="task_create_search_text">E.g. Make Bed</string>
     <string name="task_create_confirm_button">CREATE TASK</string>
 
-    <!-- Roadmap Test -->
-    <string name="test_bakery_title">Morning Bakery Routine</string>
+    <!-- Testing values -->
+    <!-- Roadmaps -->
+    <string name="roadmap_title_test1">Morning Bakery Routine</string>
+    <string name="roadmap_title_test2">Cleaning Room</string>
+    <string name="roadmap_title_test3">Path To Work</string>
+    <!-- Tasks -->
+    <string name="task_title_test1">Enter Bakery</string>
+    <string name="task_title_test2">Turn on ovens</string>
+    <string name="task_title_test3">Put loaves in oven</string>
+    <string name="task_title_test4">Take out loaves</string>
+    <string name="task_title_test5">Display loaves</string>
+    <string name="task_title_test6">Leave Bakery</string>
+    <string name="task_title_test7">Go to bedroom</string>
+    <string name="task_title_test8">Make bed</string>
+    <string name="task_title_test9">Organize pyjama</string>
+    <string name="task_title_test10">Leave room</string>
+    <!-- Durations -->
+    <string name="duration_test1">10/15 MIN</string>
+    <string name="duration_test2">5 MIN</string>
+
 </resources>

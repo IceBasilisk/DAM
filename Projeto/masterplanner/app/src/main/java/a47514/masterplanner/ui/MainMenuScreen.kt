@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,7 +32,7 @@ fun MainMenuScreen() {
 
     Scaffold(
         topBar = { MasterPlannerTopBar() },
-        bottomBar = { MasterPlannerBottomBar() },
+        bottomBar = { MainMenuBottomBar() },
         containerColor = cream
     ) { innerPadding ->
         LazyColumn(
@@ -49,11 +48,7 @@ fun MainMenuScreen() {
 
             item {
                 RoadmapCard(
-                    category = "MAIN QUEST",
-                    categoryColor = blue,
-                    title = "Grand Mastery of Vue.js",
-                    progress = "12 / 24 OBJECTIVES",
-                    icon = Icons.Default.Explore
+                    title = stringResource(R.string.roadmap_title_test1),
                 )
             }
 
@@ -179,7 +174,7 @@ fun FeaturedCard() {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    "4 Active Roadmaps",
+                    "1 Active Roadmaps",
                     color = Color.White.copy(alpha = 0.8f),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium
@@ -192,11 +187,9 @@ fun FeaturedCard() {
 @Composable
 fun RoadmapCard(
     title: String,
-    icon: ImageVector
 ) {
     val brown = colorResource(R.color.cigar)
-    val gold = colorResource(R.color.gold)
-    val cardBg = colorResource(R.color.cheesecake)
+    val cardBg = colorResource(R.color.lauren)
 
     Card(
         modifier = Modifier
@@ -207,16 +200,6 @@ fun RoadmapCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            // Faded background icon
-            Icon(
-                icon,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(140.dp)
-                    .align(Alignment.TopEnd)
-                    .offset(x = 30.dp, y = (-20).dp),
-                tint = brown.copy(alpha = 0.05f)
-            )
 
             Column(
                 modifier = Modifier
@@ -230,44 +213,17 @@ fun RoadmapCard(
                     fontWeight = FontWeight.Bold,
                     color = brown
                 )
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        Icons.Default.Token,
-                        contentDescription = null,
-                        tint = gold,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            }
-
-            // Chevron arrow circle
-            Surface(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(16.dp)
-                    .size(36.dp),
-                color = brown.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(18.dp)
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        Icons.Default.ChevronRight,
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp),
-                        tint = brown
-                    )
-                }
             }
         }
     }
 }
 
 @Composable
-fun MasterPlannerBottomBar() {
+fun MainMenuBottomBar() {
     val brown = colorResource(R.color.cigar)
     val cream = colorResource(R.color.fresh_cream)
     val gold = colorResource(R.color.gold)
+    val lighterBrown = colorResource(R.color.old_rose)
 
     NavigationBar(
         containerColor = cream,
@@ -291,8 +247,8 @@ fun MasterPlannerBottomBar() {
             icon = { Icon(Icons.Default.LibraryBooks, contentDescription = null) },
             label = { Text("LIBRARY") },
             colors = NavigationBarItemDefaults.colors(
-                unselectedIconColor = brown.copy(alpha = 0.6f),
-                unselectedTextColor = brown.copy(alpha = 0.6f)
+                unselectedIconColor = lighterBrown,
+                unselectedTextColor = lighterBrown
             )
         )
         NavigationBarItem(
@@ -301,8 +257,8 @@ fun MasterPlannerBottomBar() {
             icon = { Icon(Icons.Default.Settings, contentDescription = null) },
             label = { Text("SETTINGS") },
             colors = NavigationBarItemDefaults.colors(
-                unselectedIconColor = brown.copy(alpha = 0.6f),
-                unselectedTextColor = brown.copy(alpha = 0.6f)
+                unselectedIconColor = lighterBrown,
+                unselectedTextColor = lighterBrown
             )
         )
     }
