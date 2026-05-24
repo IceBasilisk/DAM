@@ -52,7 +52,7 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
     val seaLevelPressure = weatherUIState.seaLevelPressure
     val time = weatherUIState.time
     val configuration = LocalConfiguration.current
-    val day = true // Must change this in the future
+    val day = (configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) != Configuration.UI_MODE_NIGHT_YES
     val mapt = getWeatherCodeMap()
     val wCode = mapt.get(weathercode)
     val wImage = when (wCode) {

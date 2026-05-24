@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WeatherCompose</string>
+    <string name="coordinates_label">Coordenadas</string>
+    <string name="latitude_label">Latitude</string>
+    <string name="longitude_label">Longitude</string>
+    <string name="sea_level_label">Pressão ao nível do mar</string>
+    <string name="wind_direction_label">Direção do vento</string>
+    <string name="wind_speed_label">Velocidade do vento</string>
+    <string name="temperature_label">Temperatura</string>
+    <string name="time_label">Hora</string>
+    <string name="button_label">Atualizar</string>
+</resources>

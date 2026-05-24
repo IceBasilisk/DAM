@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="820d218e-a4f1-4db4-8597-cb8b38d8bc45" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/kotlin/Main.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WeatherCompose/app/src/main/res/values-pt-rPT/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Projeto/masterplanner/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Projeto/masterplanner/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Projeto/masterplanner/app/src/main/java/a47514/masterplanner/ui/MainMenuScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Projeto/masterplanner/app/src/main/java/a47514/masterplanner/ui/MainMenuScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeatherCompose/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/WeatherCompose/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WeatherCompose/app/src/main/java/dam_47514/weathercompose/ui/WeatherScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/WeatherCompose/app/src/main/java/dam_47514/weathercompose/ui/WeatherScreen.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,11 +130,6 @@
       <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
       <module name="TP3" />
       <option name="filePath" />
@@ -144,8 +144,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.32098.37" />
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.32098.37" />
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
       </set>
     </attachedChunks>
   </component>
@@ -159,6 +159,8 @@
       <workItem from="1776265985401" duration="449000" />
       <workItem from="1776266624058" duration="1972000" />
       <workItem from="1776848122151" duration="3000" />
+      <workItem from="1779230226175" duration="1028000" />
+      <workItem from="1779231944640" duration="385000" />
     </task>
     <servers />
   </component>

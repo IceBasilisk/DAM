@@ -1,13 +1,16 @@
 package a47514.masterplanner.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,10 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.weathercompose.R
 
 @Composable
 fun MainMenuScreen() {
+    var showDialog by remember { mutableStateOf(false) }
     val cream = colorResource(R.color.fresh_cream)
     val brown = colorResource(R.color.cigar)
     val gold = colorResource(R.color.gold)
@@ -35,6 +40,9 @@ fun MainMenuScreen() {
         bottomBar = { MainMenuBottomBar() },
         containerColor = cream
     ) { innerPadding ->
+        if (showDialog) {
+            CreateRoadmapDialog(onDismiss = { showDialog = false })
+        }
         LazyColumn(
             modifier = Modifier
                 .padding(innerPadding)
@@ -54,7 +62,7 @@ fun MainMenuScreen() {
 
             item {
                 Button(
-                    onClick = { /* TODO */ },
+                    onClick = { showDialog = true },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(80.dp)
@@ -268,4 +276,222 @@ fun MainMenuBottomBar() {
 @Composable
 fun MainMenuScreenPreview() {
     MainMenuScreen()
+}
+
+@Composable
+fun CreateRoadmapDialog(onDismiss: () -> Unit) {
+    var title by remember { mutableStateOf("") }
+    var selectedMark by remember { mutableStateOf(0) }
+    var selectedColor by remember { mutableStateOf(0) }
+
+    val marks = listOf(
+        Icons.Default.DirectionsBoat,
+        Icons.Default.Map,
+        Icons.Default.Anchor,
+        Icons.Default.Explore
+    )
+    val colorOptions = listOf(
+        colorResource(R.color.gold),
+        colorResource(R.color.highlighter_blue),
+        colorResource(R.color.pale_apricot)
+    )
+
+    val cigar = colorResource(R.color.cigar)
+    val cream = colorResource(R.color.fresh_cream)
+    val gold = colorResource(R.color.gold)
+    val cheesecake = colorResource(R.color.cheesecake)
+
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            shape = RoundedCornerShape(28.dp),
+            color = cream
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                // Header
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(cigar)
+                        .padding(vertical = 20.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "CHART NEW COURSE",
+                        color = Color.White,
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 20.sp,
+                        letterSpacing = 1.sp
+                    )
+                }
+
+                Column(
+                    modifier = Modifier
+                        .padding(24.dp)
+                        .fillMaxWidth()
+                ) {
+                    // Title section
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            Icons.Default.Edit,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp),
+                            tint = cigar
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = "ROADMAP TITLE",
+                            color = cigar,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    OutlinedTextField(
+                        value = title,
+                        onValueChange = { title = it },
+                        placeholder = { Text("e.g. Find the Lost Lagoon") },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = cigar,
+                            unfocusedBorderColor = cigar.copy(alpha = 0.5f)
+                        )
+                    )
+
+                    Spacer(modifier = Modifier.height(28.dp))
+
+                    // Mark & Color section
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            Icons.Default.Flag,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp),
+                            tint = cigar
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = "SELECT MARK & COLOR",
+                            color = cigar,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Marks
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        marks.forEachIndexed { index, icon ->
+                            val isSelected = selectedMark == index
+                            Box(
+                                modifier = Modifier
+                                    .size(64.dp)
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .background(if (isSelected) gold else cheesecake)
+                                    .border(
+                                        width = if (isSelected) 3.dp else 1.dp,
+                                        color = if (isSelected) cigar else Color.LightGray,
+                                        shape = RoundedCornerShape(16.dp)
+                                    )
+                                    .clickable { selectedMark = index },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = icon,
+                                    contentDescription = null,
+                                    tint = cigar,
+                                    modifier = Modifier.size(32.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    // Colors
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        colorOptions.forEachIndexed { index, color ->
+                            val isSelected = selectedColor == index
+                            Box(
+                                modifier = Modifier
+                                    .padding(horizontal = 12.dp)
+                                    .size(44.dp)
+                                    .clip(CircleShape)
+                                    .background(color)
+                                    .border(
+                                        width = if (isSelected) 3.dp else 0.dp,
+                                        color = if (isSelected) cigar else Color.Transparent,
+                                        shape = CircleShape
+                                    )
+                                    .clickable { selectedColor = index }
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    // Cancel Button
+                    Button(
+                        onClick = onDismiss,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(60.dp)
+                            .border(2.dp, cigar, RoundedCornerShape(16.dp)),
+                        colors = ButtonDefaults.buttonColors(containerColor = cheesecake),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text(
+                            text = "CANCEL",
+                            color = cigar,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Set Sail Button
+                    Button(
+                        onClick = { /* Handle Create */ onDismiss() },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(60.dp)
+                            .border(2.dp, cigar, RoundedCornerShape(16.dp)),
+                        colors = ButtonDefaults.buttonColors(containerColor = gold),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "SET SAIL",
+                                color = cigar,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Icon(
+                                Icons.Default.DirectionsBoat,
+                                contentDescription = null,
+                                tint = cigar,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
