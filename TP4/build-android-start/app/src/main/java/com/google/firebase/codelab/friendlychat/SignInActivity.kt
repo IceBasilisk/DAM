@@ -73,7 +73,8 @@ class SignInActivity : AppCompatActivity() {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .setLogo(R.mipmap.ic_launcher)
-                .setTheme(R.style.AppTheme) // Use the custom theme
+                //.setTheme(R.style.AppTheme) // Use the custom theme
+                .setTheme(R. style . AppThemeNoActionBar)
                 .build()
 
             signInLauncher.launch(signInIntent)
