@@ -24,6 +24,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -58,11 +59,11 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
     val wImage = when (wCode) {
         WMO_WeatherCode.CLEAR_SKY,
         WMO_WeatherCode.MAINLY_CLEAR,
-        WMO_WeatherCode.PARTLY_CLOUDY -> if (day) wCode?.image + "day"
-        else wCode?.image + "night"
+        WMO_WeatherCode.PARTLY_CLOUDY -> wCode?.image + "day"
 
         else -> wCode?.image
     }
+    val backgroundColor = if (day) colorResource(R.color.light_blue) else colorResource(R.color.blue)
     val context = LocalContext.current
     val wIcon = context.resources.getIdentifier(
         wImage, "drawable",
@@ -71,6 +72,7 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
     if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
         LandscapeWeatherUI(
             wIcon,
+            backgroundColor,
             latitude,
             longitude,
             temperature,
@@ -92,6 +94,7 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
     } else {
         PortraitWeatherUI(
             wIcon,
+            backgroundColor,
             latitude,
             longitude,
             temperature,
@@ -116,6 +119,7 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
 @Composable
 fun PortraitWeatherUI(
     wIcon: Int,
+    backgroundColor: Color,
     latitude: String,
     longitude: String,
     temperature: Float,
@@ -131,7 +135,7 @@ fun PortraitWeatherUI(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(R.color.blue)),
+            .background(backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -205,7 +209,7 @@ fun PortraitWeatherUI(
                     )
                     Text(
                         text = "$seaLevelPressure hPa",
-                        style = typography.labelMedium,
+                        style = typography.labelLarge,
                         textAlign = TextAlign.Right,
                         fontWeight = FontWeight.Light
                     )
@@ -222,7 +226,7 @@ fun PortraitWeatherUI(
                     )
                     Text(
                         text = "$windDirection º",
-                        style = typography.labelMedium,
+                        style = typography.labelLarge,
                         textAlign = TextAlign.Right,
                         fontWeight = FontWeight.Light
                     )
@@ -239,7 +243,7 @@ fun PortraitWeatherUI(
                     )
                     Text(
                         text = "$windSpeed km/h",
-                        style = typography.labelMedium,
+                        style = typography.labelLarge,
                         textAlign = TextAlign.Right,
                         fontWeight = FontWeight.Light
                     )
@@ -256,7 +260,7 @@ fun PortraitWeatherUI(
                     )
                     Text(
                         text = "$temperature ºC",
-                        style = typography.labelMedium,
+                        style = typography.labelLarge,
                         textAlign = TextAlign.Right,
                         fontWeight = FontWeight.Light
                     )
@@ -273,7 +277,7 @@ fun PortraitWeatherUI(
                     )
                     Text(
                         text = time,
-                        style = typography.labelMedium,
+                        style = typography.labelLarge,
                         textAlign = TextAlign.Right,
                         fontWeight = FontWeight.Light
                     )
@@ -299,6 +303,7 @@ fun PortraitWeatherUI(
 @Composable
 fun LandscapeWeatherUI(
     wIcon: Int,
+    backgroundColor: Color,
     latitude: String,
     longitude: String,
     temperature: Float,
@@ -314,7 +319,7 @@ fun LandscapeWeatherUI(
     Column(
         Modifier
             .fillMaxSize()
-            .background(colorResource(R.color.blue))
+            .background(backgroundColor)
     ) {
 
         Row(

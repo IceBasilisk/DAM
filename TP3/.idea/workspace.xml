@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="820d218e-a4f1-4db4-8597-cb8b38d8bc45" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/WeatherCompose/app/src/main/res/values-pt-rPT/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Projeto/masterplanner/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Projeto/masterplanner/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Projeto/masterplanner/app/src/main/java/a47514/masterplanner/ui/MainMenuScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Projeto/masterplanner/app/src/main/java/a47514/masterplanner/ui/MainMenuScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WeatherCompose/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/WeatherCompose/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WeatherCompose/app/src/main/java/dam_47514/weathercompose/ui/WeatherScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/WeatherCompose/app/src/main/java/dam_47514/weathercompose/ui/WeatherScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GreetingProcessorProject/processor/src/main/kotlin/GreetingProcessor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/GreetingProcessorProject/processor/src/main/kotlin/GreetingProcessor.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,31 +75,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.TP3 [:app:MainKt.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests in 'TP3.app'.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.TP3 [:app:MainKt.main()].executor": "Run",
+    "Gradle.Tests in 'TP3.app'.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/luiss/Documents/GitHub/DAM/TP3",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Tests in 'TP3.app'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -161,6 +158,9 @@
       <workItem from="1776848122151" duration="3000" />
       <workItem from="1779230226175" duration="1028000" />
       <workItem from="1779231944640" duration="385000" />
+      <workItem from="1779979843705" duration="704000" />
+      <workItem from="1779980587016" duration="111000" />
+      <workItem from="1779981225186" duration="29000" />
     </task>
     <servers />
   </component>

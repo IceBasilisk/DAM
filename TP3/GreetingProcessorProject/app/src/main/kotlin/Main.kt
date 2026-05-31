@@ -1,4 +1,5 @@
-import `unnamed package`.MyClassWrapper
+import app.MyClass
+import app.MyClassWrapper
 
 
 fun main() {

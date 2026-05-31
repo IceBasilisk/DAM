@@ -1,3 +1,5 @@
+package app
+
 import annotations.Greeting
 
 open class MyClass {
