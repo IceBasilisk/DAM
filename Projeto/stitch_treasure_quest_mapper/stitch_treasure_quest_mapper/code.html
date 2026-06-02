@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Master Planner - Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;family=Lexend:wght@500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#ebe2c8",
+                    "on-primary-container": "#705e00",
+                    "surface-bright": "#fff9ed",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed": "#ffdbce",
+                    "on-tertiary-container": "#a83b00",
+                    "error": "#ba1a1a",
+                    "surface": "#fff9ed",
+                    "primary": "#705d00",
+                    "inverse-primary": "#e9c400",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-secondary-container": "#004a69",
+                    "outline": "#7e775f",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#e9c400",
+                    "on-surface-variant": "#4d4732",
+                    "on-primary-fixed-variant": "#544600",
+                    "on-secondary": "#ffffff",
+                    "inverse-surface": "#35301e",
+                    "on-secondary-fixed-variant": "#004c6b",
+                    "tertiary-container": "#ffd0bf",
+                    "surface-container-low": "#fcf3d8",
+                    "background": "#fff9ed",
+                    "surface-container-high": "#f1e8cd",
+                    "secondary": "#00658d",
+                    "on-surface": "#1f1c0b",
+                    "on-secondary-fixed": "#001e2d",
+                    "inverse-on-surface": "#faf0d5",
+                    "surface-tint": "#705d00",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#ffd700",
+                    "on-background": "#1f1c0b",
+                    "tertiary": "#a63b00",
+                    "primary-fixed": "#ffe16d",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed": "#c6e7ff",
+                    "secondary-container": "#3dbeff",
+                    "surface-dim": "#e2dabf",
+                    "surface-container": "#f7eed2",
+                    "on-primary-fixed": "#221b00",
+                    "secondary-fixed-dim": "#83cfff",
+                    "tertiary-fixed-dim": "#ffb599",
+                    "surface-container-highest": "#ebe2c8",
+                    "outline-variant": "#d0c6ab",
+                    "on-tertiary-fixed": "#370e00",
+                    "on-tertiary-fixed-variant": "#7f2b00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "20px",
+                    "base": "8px",
+                    "xs": "4px",
+                    "md": "24px",
+                    "sm": "12px",
+                    "margin": "24px",
+                    "xl": "64px",
+                    "lg": "40px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "label-sm": ["Lexend"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "label-bold": ["Lexend"],
+                    "body-md": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "800"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Parchment Texture Simulation */
+        .parchment-bg {
+            background-color: #fff9ed;
+            background-image: radial-gradient(#f1e8cd 0.5px, transparent 0.5px);
+            background-size: 16px 16px;
+        }
+
+        .block-shadow-primary {
+            box-shadow: 4px 4px 0px 0px #4d4732;
+        }
+        
+        .block-shadow-gold {
+            box-shadow: 4px 4px 0px 0px #705e00;
+        }
+
+        .btn-active-state:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px 0px transparent;
+        }
+
+        input:focus {
+            box-shadow: 0 0 0 4px rgba(112, 93, 0, 0.2);
+            outline: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="parchment-bg text-on-background min-h-screen flex flex-col items-center justify-center px-gutter py-xl">
+<!-- Top AppBar (Simplified for Login per Contextual Suppression Rules) -->
+<header class="fixed top-0 left-0 w-full flex items-center justify-center px-gutter py-sm bg-surface shadow-[4px_4px_0px_0px_rgba(77,71,50,1)] border-b-4 border-surface-variant z-50">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary text-headline-lg">anchor</span>
+<h1 class="font-headline-lg text-headline-lg font-extrabold text-primary tracking-tight">Master Planner</h1>
+</div>
+</header>
+<!-- Login Container (Islands Design) -->
+<main class="w-full max-w-[480px] mt-xl">
+<div class="bg-surface-container-low border-4 border-surface-variant rounded-xl p-lg block-shadow-primary transition-all duration-300">
+<!-- Branding/Icon -->
+<div class="flex flex-col items-center mb-lg">
+<div class="w-24 h-24 bg-primary-container rounded-full flex items-center justify-center border-4 border-primary block-shadow-gold mb-md">
+<span class="material-symbols-outlined text-[48px] text-on-primary-container" style="font-variation-settings: 'FILL' 1;">sailing</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface text-center">Welcome Aboard, Captain!</h2>
+<p class="font-body-md text-on-surface-variant mt-xs text-center">Ready to navigate your destiny?</p>
+</div>
+<!-- Login Form -->
+<form class="flex flex-col gap-md" onsubmit="event.preventDefault();">
+<!-- Email Field -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant ml-xs" for="email">Email</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-base top-1/2 -translate-y-1/2 text-outline">mail</span>
+<input class="w-full pl-xl pr-base py-sm bg-surface border-4 border-surface-variant rounded-lg font-body-md text-on-surface placeholder:text-outline-variant focus:border-primary transition-colors" id="email" placeholder="captain@highseas.com" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant ml-xs" for="password">Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-base top-1/2 -translate-y-1/2 text-outline">key</span>
+<input class="w-full pl-xl pr-base py-sm bg-surface border-4 border-surface-variant rounded-lg font-body-md text-on-surface placeholder:text-outline-variant focus:border-primary transition-colors" id="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<!-- Forgot Password -->
+<div class="flex justify-end">
+<a class="font-label-sm text-label-sm text-secondary hover:underline decoration-2" href="#">Forgot your charts? (Reset Password)</a>
+</div>
+<!-- Primary Action -->
+<button class="group relative mt-base" type="submit">
+<div class="absolute inset-0 bg-primary translate-y-1 rounded-xl"></div>
+<div class="relative w-full py-sm bg-primary-container border-4 border-primary rounded-xl font-headline-md text-on-primary-container block-shadow-gold btn-active-state transition-all hover:bg-primary-fixed">
+                        BOARD THE SHIP
+                    </div>
+</button>
+</form>
+</div>
+<!-- Secondary Action: Sign Up -->
+<div class="mt-lg text-center">
+<p class="font-body-md text-on-surface-variant">
+                New to the archipelago? 
+                <a class="font-label-bold text-label-bold text-primary hover:text-on-primary-container transition-colors px-base py-xs bg-surface-container-high border-2 border-primary rounded-full ml-xs" href="#">
+                    Join the Crew (Sign Up)
+                </a>
+</p>
+</div>
+</main>
+<!-- Atmospheric Footer Image -->
+<div class="fixed bottom-0 left-0 w-full overflow-hidden pointer-events-none opacity-20 -z-10">
+<img alt="Pirate Map Atmosphere" class="w-full h-64 object-cover" data-alt="A highly detailed, stylized pirate map spread across an old wooden table, featuring hand-drawn islands, sea monsters, and golden compasses. The art style is playful and high-contrast, matching a modern mobile game aesthetic with vibrant browns and golden yellows. Soft sunlight filters from the side, highlighting the thick ink strokes and textured parchment. The mood is adventurous and epic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJwHW1c7agELAizpg7ZaWDtK0QIXT7JhS-KpYyOfxTKudtcmQTzXONhRIvwgtX0BS4irh8Xj_4FRCAfc6fpIn7JQsVKLqbcV1PaWD5w-Hp2-_CrNcqmAdlSXi3amSqm9An8J2_lV1Yu_NUJIgILPFUYIoIDUq6fSR5isw1daGaZjtcWxr5Xjxuzv6ga24raYjagjE2blx5Wo56xQgWJVVdCILSBZrZdEOQ5CqO4zRRPMLMy4UzD-TvovoWeXXl7_uuZFRJW70_t00"/>
+</div>
+<script>
+        // Simple Interaction logic
+        document.querySelector('form').addEventListener('submit', function() {
+            const btn = this.querySelector('button div.relative');
+            btn.innerHTML = 'SETTING SAIL...';
+            btn.classList.add('opacity-80');
+            setTimeout(() => {
+                btn.innerHTML = 'BOARD THE SHIP';
+                btn.classList.remove('opacity-80');
+            }, 2000);
+        });
+
+        // Add some "sticker" pop effect on hover
+        const card = document.querySelector('main > div');
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-4px) rotate(-0.5deg)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0) rotate(0deg)';
+        });
+    </script>
+</body></html>

@@ -1,8 +1,26 @@
 <resources>
+    <!-- General -->
     <string name="app_name">Master Planner</string>
     <string name="roadmaps_tab">ROADMAPS</string>
     <string name="library_tab">LIBRARY</string>
     <string name="cancel_button">CANCEL</string>
+
+    <!-- Login Page -->
+    <string name="login_intro">Welcome aboard,\nCaptain!</string>
+    <string name="login_intro_flavor_text">Ready to navigate your destiny?</string>
+    <string name="login_email_example">captain@highseas.com</string>
+    <string name="login_password_example">••••••••</string>
+    <string name="login_reset_password_msg">Forgot your charts? (Reset Password)</string>
+    <string name="login_button_label">BOARD THE SHIP</string>
+    <string name="login_sign_up_button">Join the Crew (Sign Up)</string>
+
+    <!-- Sign Up Page -->
+    <string name="signup_intro">Join the Crew!</string>
+    <string name="signup_intro_flavor_text">Ready to chart your own course?</string>
+    <string name="signup_email_text">Email address</string>
+    <string name="signup_password_text">••••••••</string>
+    <string name="signup_login_button">Already part of the crew?</string>
+    <string name="signup_button_label">ENLIST NOW</string>
 
     <!-- Main Menu -->
     <string name="create_roadmap_button">MAKE NEW ROADMAP</string>
