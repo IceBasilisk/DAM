@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.example.weathercompose.R
 
 @Composable
-fun TaskLibraryScreen() {
+fun TaskLibraryScreen(onCreateTask: () -> Unit = {}) {
     val cream = colorResource(R.color.fresh_cream)
     val brown = colorResource(R.color.cigar)
     val gold = colorResource(R.color.gold)
@@ -141,7 +141,7 @@ fun TaskLibraryScreen() {
 
                 item {
                     Button(
-                        onClick = { /* TODO */ },
+                        onClick = onCreateTask,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(64.dp)

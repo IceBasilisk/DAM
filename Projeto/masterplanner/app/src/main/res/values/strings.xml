@@ -53,6 +53,11 @@
     <string name="task_create_task_name_label">TASK NAME</string>
     <string name="task_create_search_text">E.g. Make Bed</string>
     <string name="task_create_confirm_button">CREATE TASK</string>
+    <string name="task_create_title_label">LOG ENTRY NAME</string>
+    <string name="task_create_title_example">e.g., Scrub the Decks</string>
+    <string name="task_create_icon_label">CHOOSE THY MARK</string>
+    <string name="task_create_color_label">GUILD COLORS</string>
+    <string name="task_create_button_text">Create Task</string>
 
     <!-- Testing values -->
     <!-- Roadmaps -->
@@ -71,7 +76,7 @@
     <string name="task_title_test9">Organize pyjama</string>
     <string name="task_title_test10">Leave room</string>
     <!-- Durations -->
-    <string name="duration_test1">10/15 MIN</string>
+    <string name="duration_test1">15 MIN</string>
     <string name="duration_test2">5 MIN</string>
 
 </resources>

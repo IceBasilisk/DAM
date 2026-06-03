@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Forge New Task - Master Planner</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;family=Lexend:wght@500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .block-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(31, 28, 11, 1);
+        }
+        .block-shadow-sm {
+            box-shadow: 2px 2px 0px 0px rgba(31, 28, 11, 1);
+        }
+        .pressed-state:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px 0px rgba(31, 28, 11, 1);
+        }
+        .parchment-texture {
+            background-color: #fff9ed;
+            background-image: radial-gradient(#ebe2c8 0.5px, transparent 0.5px);
+            background-size: 16px 16px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#ebe2c8",
+                        "surface": "#fff9ed",
+                        "on-secondary-fixed-variant": "#004c6b",
+                        "secondary-fixed-dim": "#83cfff",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#e9c400",
+                        "primary-fixed": "#ffe16d",
+                        "surface-bright": "#fff9ed",
+                        "outline": "#7e775f",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#705d00",
+                        "tertiary-fixed-dim": "#ffb599",
+                        "surface-container-low": "#fcf3d8",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#e9c400",
+                        "inverse-on-surface": "#faf0d5",
+                        "surface-variant": "#ebe2c8",
+                        "tertiary-fixed": "#ffdbce",
+                        "on-primary-fixed-variant": "#544600",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#705e00",
+                        "on-secondary-fixed": "#001e2d",
+                        "on-surface": "#1f1c0b",
+                        "secondary-fixed": "#c6e7ff",
+                        "background": "#fff9ed",
+                        "surface-container": "#f7eed2",
+                        "on-surface-variant": "#4d4732",
+                        "on-background": "#1f1c0b",
+                        "secondary-container": "#3dbeff",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "inverse-surface": "#35301e",
+                        "on-tertiary-container": "#a83b00",
+                        "on-tertiary-fixed-variant": "#7f2b00",
+                        "tertiary-container": "#ffd0bf",
+                        "secondary": "#00658d",
+                        "on-primary-fixed": "#221b00",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#705d00",
+                        "on-secondary-container": "#004a69",
+                        "on-tertiary-fixed": "#370e00",
+                        "surface-dim": "#e2dabf",
+                        "surface-container-high": "#f1e8cd",
+                        "outline-variant": "#d0c6ab",
+                        "tertiary": "#a63b00",
+                        "primary-container": "#ffd700"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "64px",
+                        "lg": "40px",
+                        "md": "24px",
+                        "base": "8px",
+                        "margin": "24px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-bold": ["Lexend"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "label-sm": ["Lexend"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "800"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background parchment-texture min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-40 bg-surface border-b-4 border-surface-variant flex items-center justify-between px-md h-xl">
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-high transition-colors p-xs rounded-lg active:translate-y-0.5" data-icon="arrow_back">arrow_back</button>
+<h1 class="font-headline-md text-headline-md font-extrabold text-primary">Forge New Task</h1>
+</div>
+<div class="material-symbols-outlined text-primary" data-icon="history_edu">history_edu</div>
+</header>
+<main class="max-w-xl mx-auto px-margin py-lg space-y-lg">
+<!-- Task Name Section -->
+<section class="space-y-sm">
+<label class="font-label-bold text-label-bold text-on-surface-variant px-xs">LOG ENTRY NAME</label>
+<div class="relative">
+<input class="w-full h-16 px-md bg-surface-container-low border-4 border-on-background rounded-xl font-body-lg text-body-lg focus:outline-none focus:ring-4 focus:ring-primary-container block-shadow transition-all placeholder:text-outline-variant" placeholder="e.g., Scrub the Decks" type="text"/>
+</div>
+</section>
+<!-- Mark Selection Section -->
+<section class="space-y-sm">
+<label class="font-label-bold text-label-bold text-on-surface-variant px-xs uppercase">Choose Thy Mark</label>
+<div class="grid grid-cols-4 gap-base">
+<!-- Compass -->
+<button class="mark-btn flex flex-col items-center justify-center aspect-square bg-surface-container border-4 border-on-background rounded-xl block-shadow-sm hover:bg-surface-container-highest transition-all pressed-state group active-mark" data-mark="compass" onclick="selectMark(this)">
+<span class="material-symbols-outlined text-4xl text-on-surface group-[.active-mark]:text-primary" data-icon="explore">explore</span>
+<span class="font-label-sm text-label-sm mt-xs">Compass</span>
+</button>
+<!-- Anchor -->
+<button class="mark-btn flex flex-col items-center justify-center aspect-square bg-surface-container border-4 border-on-background rounded-xl block-shadow-sm hover:bg-surface-container-highest transition-all pressed-state group" data-mark="anchor" onclick="selectMark(this)">
+<span class="material-symbols-outlined text-4xl text-on-surface group-[.active-mark]:text-primary" data-icon="anchor">anchor</span>
+<span class="font-label-sm text-label-sm mt-xs">Anchor</span>
+</button>
+<!-- Skull -->
+<button class="mark-btn flex flex-col items-center justify-center aspect-square bg-surface-container border-4 border-on-background rounded-xl block-shadow-sm hover:bg-surface-container-highest transition-all pressed-state group" data-mark="skull" onclick="selectMark(this)">
+<span class="material-symbols-outlined text-4xl text-on-surface group-[.active-mark]:text-primary" data-icon="skull">skull</span>
+<span class="font-label-sm text-label-sm mt-xs">Skull</span>
+</button>
+<!-- Chest -->
+<button class="mark-btn flex flex-col items-center justify-center aspect-square bg-surface-container border-4 border-on-background rounded-xl block-shadow-sm hover:bg-surface-container-highest transition-all pressed-state group" data-mark="chest" onclick="selectMark(this)">
+<span class="material-symbols-outlined text-4xl text-on-surface group-[.active-mark]:text-primary" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-sm text-label-sm mt-xs">Chest</span>
+</button>
+</div>
+</section>
+<!-- Color Swatches Section -->
+<section class="space-y-sm">
+<label class="font-label-bold text-label-bold text-on-surface-variant px-xs uppercase">Guild Colors</label>
+<div class="flex justify-between items-center bg-surface-container border-4 border-on-background p-md rounded-xl block-shadow-sm">
+<!-- Gold -->
+<button class="color-btn w-12 h-12 rounded-full border-4 border-on-background bg-primary-container ring-offset-2 transition-all active-color ring-4 ring-primary" onclick="selectColor(this, 'bg-primary-container')"></button>
+<!-- Blue -->
+<button class="color-btn w-12 h-12 rounded-full border-4 border-on-background bg-secondary ring-offset-2 transition-all" onclick="selectColor(this, 'bg-secondary')"></button>
+<!-- Deep Orange -->
+<button class="color-btn w-12 h-12 rounded-full border-4 border-on-background bg-tertiary ring-offset-2 transition-all" onclick="selectColor(this, 'bg-tertiary')"></button>
+<!-- Dark Brown -->
+<button class="color-btn w-12 h-12 rounded-full border-4 border-on-background bg-inverse-surface ring-offset-2 transition-all" onclick="selectColor(this, 'bg-inverse-surface')"></button>
+</div>
+</section>
+<!-- Aesthetic Card Decoration -->
+<div class="relative w-full h-40 overflow-hidden rounded-2xl border-4 border-on-background block-shadow mt-xl">
+<img alt="Pirate planning scene" class="w-full h-full object-cover grayscale-[0.2] sepia-[0.3]" data-alt="A cinematic, high-contrast illustration of a pirate captain's planning desk in a low-lit cabin. Golden coins, a rolled parchment map, and a heavy iron compass rest on a thick dark wood surface. Soft, warm campfire light glows from the side, casting long, stylized shadows. The art style is bold and vibrant with thick outlines and a playful, epic casual gaming aesthetic, using a palette of gold, deep brown, and parchment cream." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSeA8pYvQggIUiXo8zZp-ogyN1QHNMU7D39f4tdBTxBE6kmsiBSYCN_Oj_dKKpSG1vblnZVRnxq3Lzjg509nqbBBaQ3El-jnIkS9GTjPo08gqEFMDlwGvn5M566XqmLVoRb29XHJHbQd2GCpi50XH2i5EyTcdHXEGzA-4n2OhQZIhmqXWFPZxb7-St7LJ5qjQRo4ypLZNuEp_3OBfa1edwmT_yA8_E65U2_IkGkQjNibQ0lMXyRmkLD5Duce03B52cPTXyY9dRZ3M"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/60 to-transparent flex items-end p-md">
+<p class="text-surface font-label-bold text-label-bold">PREPARE FOR THE VOYAGE</p>
+</div>
+</div>
+<!-- Submit Button -->
+<div class="pt-lg">
+<button class="w-full h-xl bg-primary-container text-on-primary-container font-headline-md text-headline-md border-4 border-on-background rounded-xl block-shadow pressed-state flex items-center justify-center gap-sm group">
+<span class="material-symbols-outlined" data-icon="auto_fix_high" style="font-variation-settings: 'FILL' 1;">auto_fix_high</span>
+                Create Task
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-margin py-base bg-surface-container border-t-4 border-surface-variant shadow-[0_-4px_0_0_rgba(0,0,0,0.1)] rounded-t-xl z-50">
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-xs hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-bold text-label-bold">Map</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-sm py-xs translate-y-[-2px] hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="hardware" style="font-variation-settings: 'FILL' 1;">hardware</span>
+<span class="font-label-bold text-label-bold">Forge</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-xs hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+<span class="font-label-bold text-label-bold">Vault</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-xs hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-bold text-label-bold">Crew</span>
+</div>
+</nav>
+<script>
+        function selectMark(element) {
+            document.querySelectorAll('.mark-btn').forEach(btn => {
+                btn.classList.remove('active-mark', 'bg-primary-container/20');
+            });
+            element.classList.add('active-mark', 'bg-primary-container/20');
+        }
+
+        function selectColor(element, colorClass) {
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.classList.remove('ring-4', 'ring-primary', 'active-color');
+            });
+            element.classList.add('ring-4', 'ring-primary', 'active-color');
+            
+            // Visual feedback on the button itself or other elements
+            console.log("Selected guild color: " + colorClass);
+        }
+    </script>
+</body></html>

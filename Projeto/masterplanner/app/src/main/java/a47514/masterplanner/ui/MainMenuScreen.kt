@@ -1,5 +1,6 @@
 package a47514.masterplanner.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -69,7 +70,8 @@ fun MainMenuScreen() {
                         .padding(vertical = 8.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = gold),
                     shape = RoundedCornerShape(16.dp),
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
+                    border = BorderStroke(width = 2.dp, color = brown)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
@@ -198,29 +200,38 @@ fun RoadmapCard(
 ) {
     val brown = colorResource(R.color.cigar)
     val cardBg = colorResource(R.color.lauren)
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(150.dp),
-        shape = RoundedCornerShape(28.dp),
-        colors = CardDefaults.cardColors(containerColor = cardBg),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-
-            Column(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = brown
+    Box {
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .offset(x = 6.dp, y = 6.dp) // Shift down and right
+                .background(
+                    brown, RoundedCornerShape(24.dp)
                 )
+        )
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp),
+            shape = RoundedCornerShape(28.dp),
+            colors = CardDefaults.cardColors(containerColor = cardBg),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+            border = BorderStroke(width = 2.dp, color = brown)
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = brown
+                    )
+                }
             }
         }
     }
