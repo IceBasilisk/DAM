@@ -28,10 +28,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weathercompose.R
+import a47514.masterplanner.R
 
 @Composable
-fun CreateAccountScreen() {
+fun CreateAccountScreen(
+    onCreateAccountClick: (String, String, String) -> Unit = { _, _, _ -> },
+    onLoginClick: () -> Unit = {}
+) {
     val cream = colorResource(R.color.fresh_cream)
     val cigar = colorResource(R.color.cigar)
     val gold = colorResource(R.color.gold)
@@ -224,7 +227,7 @@ fun CreateAccountScreen() {
 
                     // Enlist Now Button
                     Button(
-                        onClick = { /* TODO */ },
+                        onClick = { onCreateAccountClick(email, password, confirmPassword) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(64.dp)
@@ -268,7 +271,7 @@ fun CreateAccountScreen() {
                             color = cigar,
                             fontWeight = FontWeight.Bold,
                             fontSize = 15.sp,
-                            modifier = Modifier.clickable { /* TODO */ }
+                            modifier = Modifier.clickable { onLoginClick() }
                         )
                     }
                 }

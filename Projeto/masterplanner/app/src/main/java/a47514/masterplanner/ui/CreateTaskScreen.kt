@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weathercompose.R
+import a47514.masterplanner.R
 
 @Composable
 fun CreateTaskScreen(onBack: () -> Unit = {}) {
@@ -43,7 +43,7 @@ fun CreateTaskScreen(onBack: () -> Unit = {}) {
             ForgeTaskTopBar(onBack = onBack)
         },
         bottomBar = {
-            ForgeTaskBottomBar()
+            MainMenuBottomBar()
         },
         containerColor = cream
     ) { innerPadding ->
@@ -338,9 +338,9 @@ fun ColorSelectorCard(selectedColorIndex: Int, onColorSelect: (Int) -> Unit) {
 
     val colors = listOf(
         colorResource(R.color.gold),
-        colorResource(R.color.sea_blue),
-        colorResource(R.color.salsa_red),
-        colorResource(R.color.judge_gray)
+        colorResource(R.color.highlighter_blue),
+        colorResource(R.color.cocoa_brown),
+        colorResource(R.color.paradise_green)
     )
 
     Box(modifier = Modifier.fillMaxWidth().height(80.dp)) {

@@ -4,6 +4,7 @@
     <string name="roadmaps_tab">ROADMAPS</string>
     <string name="library_tab">LIBRARY</string>
     <string name="cancel_button">CANCEL</string>
+    <string name="slogan">CHART YOUR DESTINY</string>
 
     <!-- Login Page -->
     <string name="login_intro">Welcome aboard,\nCaptain!</string>

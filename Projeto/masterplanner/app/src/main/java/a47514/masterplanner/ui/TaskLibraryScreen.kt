@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weathercompose.R
+import a47514.masterplanner.R
 
 @Composable
 fun TaskLibraryScreen(onCreateTask: () -> Unit = {}) {

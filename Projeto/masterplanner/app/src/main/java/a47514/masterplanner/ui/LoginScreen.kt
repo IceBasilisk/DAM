@@ -24,10 +24,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weathercompose.R
+import a47514.masterplanner.R
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    onLoginClick: (String, String) -> Unit = { _, _ -> },
+    onSignUpClick: () -> Unit = {},
+    onResetPasswordClick: () -> Unit = {}
+) {
     val cream = colorResource(R.color.fresh_cream)
     val cigar = colorResource(R.color.cigar)
     val gold = colorResource(R.color.gold)
@@ -190,14 +194,14 @@ fun LoginScreen() {
                         fontSize = 14.sp,
                         modifier = Modifier
                             .align(Alignment.End)
-                            .clickable { /* TODO */ }
+                            .clickable { onResetPasswordClick() }
                     )
 
                     Spacer(modifier = Modifier.height(32.dp))
 
                     // Board the Ship Button
                     Button(
-                        onClick = { /* TODO */ },
+                        onClick = { onLoginClick(email, password) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(64.dp)
@@ -231,7 +235,7 @@ fun LoginScreen() {
                     shape = RoundedCornerShape(16.dp),
                     border = androidx.compose.foundation.BorderStroke(2.dp, cigar),
                     color = Color.Transparent,
-                    modifier = Modifier.clickable { /* TODO */ }
+                    modifier = Modifier.clickable { onSignUpClick() }
                 ) {
                     Text(
                         text = stringResource(R.string.login_sign_up_button),

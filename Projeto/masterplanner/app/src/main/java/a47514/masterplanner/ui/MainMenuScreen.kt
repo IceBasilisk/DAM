@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.example.weathercompose.R
+import a47514.masterplanner.R
 
 @Composable
 fun MainMenuScreen() {
@@ -32,9 +32,6 @@ fun MainMenuScreen() {
     val cream = colorResource(R.color.fresh_cream)
     val brown = colorResource(R.color.cigar)
     val gold = colorResource(R.color.gold)
-    val blue = colorResource(R.color.highlighter_blue)
-    val pink = colorResource(R.color.pale_apricot)
-    val yellow = colorResource(R.color.lighting_yellow)
 
     Scaffold(
         topBar = { MasterPlannerTopBar() },
