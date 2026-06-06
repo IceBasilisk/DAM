@@ -26,16 +26,26 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import a47514.masterplanner.R
 
+import a47514.masterplanner.Screen
+
 @Composable
-fun MainMenuScreen() {
+fun MainMenuScreen(
+    onLogoutClick: () -> Unit = {},
+    onNavigate: (Screen) -> Unit = {}
+) {
     var showDialog by remember { mutableStateOf(false) }
     val cream = colorResource(R.color.fresh_cream)
     val brown = colorResource(R.color.cigar)
     val gold = colorResource(R.color.gold)
 
     Scaffold(
-        topBar = { MasterPlannerTopBar() },
-        bottomBar = { MainMenuBottomBar() },
+        topBar = { MasterPlannerTopBar(onLogoutClick) },
+        bottomBar = { 
+            MasterPlannerBottomBar(
+                currentScreen = Screen.MainMenu,
+                onNavigate = onNavigate
+            )
+        },
         containerColor = cream
     ) { innerPadding ->
         if (showDialog) {
@@ -55,6 +65,7 @@ fun MainMenuScreen() {
             item {
                 RoadmapCard(
                     title = stringResource(R.string.roadmap_title_test1),
+                    onClick = { onNavigate(Screen.RoadMapEditor) }
                 )
             }
 
@@ -94,9 +105,10 @@ fun MainMenuScreen() {
 }
 
 @Composable
-fun MasterPlannerTopBar() {
+fun MasterPlannerTopBar(onLogoutClick: () -> Unit = {}) {
     val brown = colorResource(R.color.cigar)
     val cream = colorResource(R.color.fresh_cream)
+    var showMenu by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
@@ -112,13 +124,41 @@ fun MasterPlannerTopBar() {
                 .size(40.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .background(brown)
+                .clickable { showMenu = true }
         ) {
             Icon(
                 Icons.Default.Person,
-                contentDescription = null,
+                contentDescription = "Account",
                 tint = cream,
                 modifier = Modifier.align(Alignment.Center)
             )
+
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false },
+                modifier = Modifier.background(cream).border(1.dp, brown, RoundedCornerShape(8.dp))
+            ) {
+                DropdownMenuItem(
+                    text = { 
+                        Text(
+                            "Logout", 
+                            color = brown, 
+                            fontWeight = FontWeight.Bold 
+                        ) 
+                    },
+                    onClick = {
+                        showMenu = false
+                        onLogoutClick()
+                    },
+                    leadingIcon = { 
+                        Icon(
+                            Icons.Default.Logout, 
+                            contentDescription = null, 
+                            tint = brown 
+                        ) 
+                    }
+                )
+            }
         }
 
         Text(
@@ -194,10 +234,11 @@ fun FeaturedCard() {
 @Composable
 fun RoadmapCard(
     title: String,
+    onClick: () -> Unit = {}
 ) {
     val brown = colorResource(R.color.cigar)
     val cardBg = colorResource(R.color.lauren)
-    Box {
+    Box(modifier = Modifier.clickable { onClick() }) {
         Box(
             modifier = Modifier
                 .matchParentSize()
@@ -234,51 +275,7 @@ fun RoadmapCard(
     }
 }
 
-@Composable
-fun MainMenuBottomBar() {
-    val brown = colorResource(R.color.cigar)
-    val cream = colorResource(R.color.fresh_cream)
-    val gold = colorResource(R.color.gold)
-    val lighterBrown = colorResource(R.color.old_rose)
-
-    NavigationBar(
-        containerColor = cream,
-        tonalElevation = 8.dp,
-        modifier = Modifier.clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
-    ) {
-        NavigationBarItem(
-            selected = true,
-            onClick = { },
-            icon = { Icon(Icons.Default.Map, contentDescription = null) },
-            label = { Text("ROADMAPS") },
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = brown,
-                selectedTextColor = brown,
-                indicatorColor = gold
-            )
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = { },
-            icon = { Icon(Icons.Default.LibraryBooks, contentDescription = null) },
-            label = { Text("LIBRARY") },
-            colors = NavigationBarItemDefaults.colors(
-                unselectedIconColor = lighterBrown,
-                unselectedTextColor = lighterBrown
-            )
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = { },
-            icon = { Icon(Icons.Default.Settings, contentDescription = null) },
-            label = { Text("SETTINGS") },
-            colors = NavigationBarItemDefaults.colors(
-                unselectedIconColor = lighterBrown,
-                unselectedTextColor = lighterBrown
-            )
-        )
-    }
-}
+// MainMenuBottomBar removed in favor of MasterPlannerBottomBar in CommonUI.kt
 
 @Preview(showBackground = true)
 @Composable

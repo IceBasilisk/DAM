@@ -11,7 +11,7 @@ import androidx.compose.runtime.*
 import com.google.firebase.auth.FirebaseAuth
 
 enum class Screen {
-    Splash, Login, SignUp, MainMenu
+    Splash, Login, SignUp, MainMenu, TaskLibrary, RoadMapEditor, CreateTask
 }
 
 class MainActivity : ComponentActivity() {
@@ -21,6 +21,10 @@ class MainActivity : ComponentActivity() {
             MasterPlannerTheme {
                 var currentScreen by remember { mutableStateOf(Screen.Splash) }
                 val auth = FirebaseAuth.getInstance()
+
+                val navigate: (Screen) -> Unit = { screen ->
+                    currentScreen = screen
+                }
 
                 when (currentScreen) {
                     Screen.Splash -> {
@@ -41,7 +45,7 @@ class MainActivity : ComponentActivity() {
                             },
                             onSignUpClick = { currentScreen = Screen.SignUp },
                             onResetPasswordClick = {
-                                Utility.showToast(this, "Password reset functionality not implemented yet")
+                                Utility.showToast(this@MainActivity, "Password reset functionality not implemented yet")
                             }
                         )
                     }
@@ -56,7 +60,31 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     Screen.MainMenu -> {
-                        MainMenuScreen()
+                        MainMenuScreen(
+                            onLogoutClick = {
+                                auth.signOut()
+                                currentScreen = Screen.Login
+                            },
+                            onNavigate = navigate
+                        )
+                    }
+                    Screen.TaskLibrary -> {
+                        TaskLibraryScreen(
+                            onCreateTask = { currentScreen = Screen.CreateTask },
+                            onNavigate = navigate
+                        )
+                    }
+                    Screen.RoadMapEditor -> {
+                        RoadMapEditorScreen(
+                            onCreateTask = { currentScreen = Screen.CreateTask },
+                            onNavigate = navigate
+                        )
+                    }
+                    Screen.CreateTask -> {
+                        CreateTaskScreen(
+                            onBack = { currentScreen = Screen.MainMenu },
+                            onNavigate = navigate
+                        )
                     }
                 }
             }

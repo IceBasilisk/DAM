@@ -1,5 +1,9 @@
 package a47514.masterplanner.data
 
-class Roadmap {
-    //TODO
-}
+data class Roadmap(
+    val id: String = "",
+    val title: String = "",
+    val iconName: String = "",
+    val colorHex: String = "",
+    val tasks: List<Task> = emptyList()
+)

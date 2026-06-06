@@ -26,8 +26,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import a47514.masterplanner.R
 
+import a47514.masterplanner.Screen
+
 @Composable
-fun TaskLibraryScreen(onCreateTask: () -> Unit = {}) {
+fun TaskLibraryScreen(
+    onCreateTask: () -> Unit = {},
+    onNavigate: (Screen) -> Unit = {}
+) {
     val cream = colorResource(R.color.fresh_cream)
     val brown = colorResource(R.color.cigar)
     val gold = colorResource(R.color.gold)
@@ -52,7 +57,12 @@ fun TaskLibraryScreen(onCreateTask: () -> Unit = {}) {
 
     Scaffold(
         topBar = { MasterPlannerTopBar() },
-        bottomBar = { TaskLibraryBottomBar() },
+        bottomBar = { 
+            MasterPlannerBottomBar(
+                currentScreen = Screen.TaskLibrary,
+                onNavigate = onNavigate
+            )
+        },
         containerColor = cream
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
@@ -262,51 +272,7 @@ fun LibraryTaskCard(task: TaskItemData) {
     }
 }
 
-@Composable
-fun TaskLibraryBottomBar() {
-    val brown = colorResource(R.color.cigar)
-    val lighterBrown = colorResource(R.color.old_rose)
-    val cream = colorResource(R.color.fresh_cream)
-    val gold = colorResource(R.color.gold)
-
-    NavigationBar(
-        containerColor = cream,
-        tonalElevation = 8.dp,
-        modifier = Modifier.clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
-    ) {
-        NavigationBarItem(
-            selected = false,
-            onClick = { },
-            icon = { Icon(Icons.Default.Map, contentDescription = null) },
-            label = { Text("ROADMAPS") },
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = lighterBrown,
-                selectedTextColor = lighterBrown
-            )
-        )
-        NavigationBarItem(
-            selected = true,
-            onClick = { },
-            icon = { Icon(Icons.Default.LibraryBooks, contentDescription = null) },
-            label = { Text("LIBRARY") },
-            colors = NavigationBarItemDefaults.colors(
-                unselectedIconColor = brown,
-                unselectedTextColor = brown,
-                indicatorColor = gold
-            )
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = { },
-            icon = { Icon(Icons.Default.Settings, contentDescription = null) },
-            label = { Text("SETTINGS") },
-            colors = NavigationBarItemDefaults.colors(
-                unselectedIconColor = lighterBrown,
-                unselectedTextColor = lighterBrown
-            )
-        )
-    }
-}
+// TaskLibraryBottomBar removed in favor of MasterPlannerBottomBar in CommonUI.kt
 
 @Preview(showBackground = true)
 @Composable

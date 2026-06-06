@@ -27,12 +27,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import a47514.masterplanner.R
 
+import a47514.masterplanner.Screen
+
 @Composable
-fun CreateTaskScreen(onBack: () -> Unit = {}) {
+fun CreateTaskScreen(
+    onBack: () -> Unit = {},
+    onNavigate: (Screen) -> Unit = {}
+) {
     val cream = colorResource(R.color.fresh_cream)
     val cigar = colorResource(R.color.cigar)
-    val gold = colorResource(R.color.gold)
-    val cheesecake = colorResource(R.color.cheesecake)
 
     var taskName by remember { mutableStateOf("") }
     var selectedMark by remember { mutableIntStateOf(0) }
@@ -43,7 +46,10 @@ fun CreateTaskScreen(onBack: () -> Unit = {}) {
             ForgeTaskTopBar(onBack = onBack)
         },
         bottomBar = {
-            MainMenuBottomBar()
+            MasterPlannerBottomBar(
+                currentScreen = Screen.CreateTask,
+                onNavigate = onNavigate
+            )
         },
         containerColor = cream
     ) { innerPadding ->
@@ -203,64 +209,7 @@ fun ForgeTaskTopBar(onBack: () -> Unit) {
     }
 }
 
-@Composable
-fun ForgeTaskBottomBar() {
-    val brown = colorResource(R.color.cigar)
-    val cream = colorResource(R.color.fresh_cream)
-    val gold = colorResource(R.color.gold)
-    val lighterBrown = colorResource(R.color.old_rose)
-
-    Column {
-        HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f), thickness = 1.dp)
-        NavigationBar(
-            containerColor = cream,
-            tonalElevation = 0.dp,
-            modifier = Modifier.clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
-        ) {
-            NavigationBarItem(
-                selected = false,
-                onClick = { },
-                icon = { Icon(Icons.Default.Map, contentDescription = null) },
-                label = { Text("Map") },
-                colors = NavigationBarItemDefaults.colors(
-                    unselectedIconColor = lighterBrown,
-                    unselectedTextColor = lighterBrown
-                )
-            )
-            NavigationBarItem(
-                selected = true,
-                onClick = { },
-                icon = { Icon(Icons.Default.Hardware, contentDescription = null) },
-                label = { Text("Forge") },
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = brown,
-                    selectedTextColor = brown,
-                    indicatorColor = gold
-                )
-            )
-            NavigationBarItem(
-                selected = false,
-                onClick = { },
-                icon = { Icon(Icons.Default.Lock, contentDescription = null) },
-                label = { Text("Vault") },
-                colors = NavigationBarItemDefaults.colors(
-                    unselectedIconColor = lighterBrown,
-                    unselectedTextColor = lighterBrown
-                )
-            )
-            NavigationBarItem(
-                selected = false,
-                onClick = { },
-                icon = { Icon(Icons.Default.People, contentDescription = null) },
-                label = { Text("Crew") },
-                colors = NavigationBarItemDefaults.colors(
-                    unselectedIconColor = lighterBrown,
-                    unselectedTextColor = lighterBrown
-                )
-            )
-        }
-    }
-}
+// ForgeTaskBottomBar removed in favor of MasterPlannerBottomBar in CommonUI.kt
 
 @Composable
 fun PirateTextField(value: String, onValueChange: (String) -> Unit, placeholder: String) {

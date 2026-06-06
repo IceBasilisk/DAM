@@ -35,8 +35,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import a47514.masterplanner.R
 
+import a47514.masterplanner.Screen
+
 @Composable
-fun RoadMapEditorScreen(onCreateTask: () -> Unit = {}) {
+fun RoadMapEditorScreen(
+    onCreateTask: () -> Unit = {},
+    onNavigate: (Screen) -> Unit = {}
+) {
     val cream = colorResource(R.color.fresh_cream)
     val brown = colorResource(R.color.cigar)
     val gold = colorResource(R.color.gold)
@@ -61,7 +66,12 @@ fun RoadMapEditorScreen(onCreateTask: () -> Unit = {}) {
 
     Scaffold(
         topBar = { MasterPlannerTopBar() },
-        bottomBar = { MainMenuBottomBar() },
+        bottomBar = { 
+            MasterPlannerBottomBar(
+                currentScreen = Screen.RoadMapEditor,
+                onNavigate = onNavigate
+            )
+        },
         containerColor = cream,
         floatingActionButton = {
             FloatingActionButton(
