@@ -36,12 +36,17 @@ import androidx.compose.ui.window.Dialog
 import a47514.masterplanner.R
 
 import a47514.masterplanner.Screen
+import a47514.masterplanner.data.RoadmapViewModel
 
 @Composable
 fun RoadMapEditorScreen(
+    roadmapId: String,
+    roadmapViewModel: RoadmapViewModel,
     onCreateTask: () -> Unit = {},
     onNavigate: (Screen) -> Unit = {}
 ) {
+    val tasks by roadmapViewModel.tasks.collectAsState()
+
     val cream = colorResource(R.color.fresh_cream)
     val brown = colorResource(R.color.cigar)
     val gold = colorResource(R.color.gold)
@@ -62,7 +67,10 @@ fun RoadMapEditorScreen(
         RoadmapItem.Task(stringResource(R.string.task_title_test6))
     )
 
-    val currentItems = remember { mutableStateListOf<RoadmapItem>().apply { addAll(initialItems) } }
+    val currentItems = remember(tasks) {
+        tasks.map { task -> RoadmapItem.Task(title = task.name, taskId = task.id) as RoadmapItem }
+            .toMutableStateList()
+    }
 
     Scaffold(
         topBar = { MasterPlannerTopBar() },
@@ -184,7 +192,8 @@ fun RoadMapEditorScreen(
                                             currentItems.add(index + 1, RoadmapItem.Task(item.title))
                                         },
                                         onDelete = {
-                                            currentItems.removeAt(index)
+                                            val taskId = (currentItems[index] as? RoadmapItem.Task)?.taskId ?: ""
+                                            roadmapViewModel.deleteTask(roadmapId, taskId) { /* optional toast */ }
                                         },
                                         onAddTime = {
                                             selectedTaskIndexForDuration = index
@@ -206,7 +215,7 @@ fun RoadMapEditorScreen(
 }
 
 sealed class RoadmapItem {
-    data class Task(val title: String) : RoadmapItem()
+    data class Task(val title: String, val taskId: String = "") : RoadmapItem()
     data class Duration(val time: String) : RoadmapItem()
 }
 
@@ -535,13 +544,6 @@ fun TimeReel(label: String, selectedValue: Int, options: List<Int>, onSelect: (I
             )
         }
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun RoadMapEditorScreenPreview() {
-    RoadMapEditorScreen()
 }
 
 @Composable

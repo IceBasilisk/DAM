@@ -1,5 +1,6 @@
 package a47514.masterplanner
 
+import a47514.masterplanner.data.RoadmapViewModel
 import a47514.masterplanner.data.Utility
 import a47514.masterplanner.ui.*
 import a47514.masterplanner.ui.theme.MasterPlannerTheme
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.util.Patterns
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.runtime.*
 import com.google.firebase.auth.FirebaseAuth
 
@@ -15,11 +17,15 @@ enum class Screen {
 }
 
 class MainActivity : ComponentActivity() {
+
+    private val roadmapViewModel: RoadmapViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MasterPlannerTheme {
                 var currentScreen by remember { mutableStateOf(Screen.Splash) }
+                var currentRoadmapId by remember { mutableStateOf("") }
                 val auth = FirebaseAuth.getInstance()
 
                 val navigate: (Screen) -> Unit = { screen ->
@@ -60,29 +66,47 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     Screen.MainMenu -> {
+                        LaunchedEffect(Unit) { roadmapViewModel.listenToRoadmaps() }
+
                         MainMenuScreen(
-                            onLogoutClick = {
-                                auth.signOut()
-                                currentScreen = Screen.Login
-                            },
-                            onNavigate = navigate
+                            roadmapViewModel = roadmapViewModel,
+                            onLogoutClick = { auth.signOut(); currentScreen = Screen.Login },
+                            onNavigate = { screen, roadmapId ->
+                                currentRoadmapId = roadmapId ?: ""
+                                navigate(screen)
+                            }
                         )
                     }
                     Screen.TaskLibrary -> {
                         TaskLibraryScreen(
-                            onCreateTask = { currentScreen = Screen.CreateTask },
+                            roadmapViewModel = roadmapViewModel,
+                            onCreateTask = {
+                                currentRoadmapId = "library"
+                                currentScreen = Screen.CreateTask
+                            },
+                            onLogoutClick = { auth.signOut(); currentScreen = Screen.Login },
                             onNavigate = navigate
                         )
                     }
                     Screen.RoadMapEditor -> {
+                        LaunchedEffect(currentRoadmapId) {
+                            roadmapViewModel.listenToTasks(currentRoadmapId)
+                        }
+
                         RoadMapEditorScreen(
+                            roadmapId = currentRoadmapId,
+                            roadmapViewModel = roadmapViewModel,
                             onCreateTask = { currentScreen = Screen.CreateTask },
                             onNavigate = navigate
                         )
                     }
                     Screen.CreateTask -> {
                         CreateTaskScreen(
-                            onBack = { currentScreen = Screen.MainMenu },
+                            roadmapId = currentRoadmapId,
+                            roadmapViewModel = roadmapViewModel,
+                            onBack = { 
+                                currentScreen = if (currentRoadmapId == "library") Screen.TaskLibrary else Screen.RoadMapEditor
+                            },
                             onNavigate = navigate
                         )
                     }

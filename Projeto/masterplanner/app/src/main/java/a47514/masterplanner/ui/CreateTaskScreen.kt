@@ -28,9 +28,14 @@ import androidx.compose.ui.unit.sp
 import a47514.masterplanner.R
 
 import a47514.masterplanner.Screen
+import a47514.masterplanner.data.RoadmapViewModel
+import a47514.masterplanner.data.Task
+import com.google.firebase.Timestamp
 
 @Composable
 fun CreateTaskScreen(
+    roadmapId: String,
+    roadmapViewModel: RoadmapViewModel,
     onBack: () -> Unit = {},
     onNavigate: (Screen) -> Unit = {}
 ) {
@@ -40,6 +45,9 @@ fun CreateTaskScreen(
     var taskName by remember { mutableStateOf("") }
     var selectedMark by remember { mutableIntStateOf(0) }
     var selectedColor by remember { mutableIntStateOf(0) }
+
+    val iconNames = listOf("Waves","Flag","Ship","Gem","Compass","Anchor","Sails","Chest")
+    val colorHexValues = listOf("#FFD700", "#3DBEFF", "#A63B00", "#53C66A")
 
     Scaffold(
         topBar = {
@@ -154,7 +162,25 @@ fun CreateTaskScreen(
             PirateButton(
                 text = stringResource(R.string.task_create_button_text),
                 icon = Icons.Default.AutoFixHigh,
-                onClick = { /* Handle creation */ }
+                onClick = {
+                    if (taskName.isNotBlank()) {
+                        val newTask = Task(
+                            name = taskName,
+                            iconName = iconNames.getOrElse(selectedMark) { "Flag" },
+                            colorHex = colorHexValues.getOrElse(selectedColor) { "#FFD700" }
+                        )
+                        
+                        if (roadmapId == "library") {
+                            roadmapViewModel.saveTaskToLibrary(newTask) { success ->
+                                if (success) onBack()
+                            }
+                        } else {
+                            roadmapViewModel.saveTask(roadmapId, newTask) { success ->
+                                if (success) onBack()
+                            }
+                        }
+                    }
+                }
             )
 
             Spacer(modifier = Modifier.height(40.dp))
@@ -369,10 +395,4 @@ fun PirateButton(text: String, icon: ImageVector, onClick: () -> Unit) {
             }
         }
     }
-}
-
-@Preview(showBackground = true, device = "spec:width=411dp,height=891dp")
-@Composable
-fun CreateTaskScreenPreview() {
-    CreateTaskScreen()
 }

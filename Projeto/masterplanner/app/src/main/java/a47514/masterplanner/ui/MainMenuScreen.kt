@@ -15,41 +15,59 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import a47514.masterplanner.R
 
 import a47514.masterplanner.Screen
+import a47514.masterplanner.data.Roadmap
+import a47514.masterplanner.data.RoadmapViewModel
+import androidx.compose.foundation.lazy.items
+import com.google.firebase.Timestamp
 
 @Composable
 fun MainMenuScreen(
+    roadmapViewModel: RoadmapViewModel,
     onLogoutClick: () -> Unit = {},
-    onNavigate: (Screen) -> Unit = {}
+    onNavigate: (Screen, String?) -> Unit = { _, _ -> }
 ) {
+    val roadmaps by roadmapViewModel.roadmaps.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
-    val cream = colorResource(R.color.fresh_cream)
-    val brown = colorResource(R.color.cigar)
-    val gold = colorResource(R.color.gold)
+    val context = androidx.compose.ui.platform.LocalContext.current
 
     Scaffold(
         topBar = { MasterPlannerTopBar(onLogoutClick) },
         bottomBar = { 
             MasterPlannerBottomBar(
                 currentScreen = Screen.MainMenu,
-                onNavigate = onNavigate
+                onNavigate = { screen -> onNavigate(screen, null) }
             )
         },
-        containerColor = cream
+        containerColor = colorResource(R.color.fresh_cream)
     ) { innerPadding ->
         if (showDialog) {
-            CreateRoadmapDialog(onDismiss = { showDialog = false })
+            CreateRoadmapDialog(
+                onDismiss = { showDialog = false },
+                onConfirm = { title, iconName, colorHex ->
+                    val newRoadmap = Roadmap(
+                        title = title,
+                        iconName = iconName,
+                        colorHex = colorHex
+                    )
+                    roadmapViewModel.saveRoadmap(newRoadmap) { success, _ ->
+                        if (success) {
+                            showDialog = false
+                        } else {
+                            a47514.masterplanner.data.Utility.showToast(context, "Failed to save roadmap")
+                        }
+                    }
+                }
+            )
         }
         LazyColumn(
             modifier = Modifier
@@ -58,14 +76,12 @@ fun MainMenuScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item { Spacer(modifier = Modifier.height(8.dp)) }
-
-            item { FeaturedCard() }
-
-            item {
+            items(roadmaps) { roadmap ->
                 RoadmapCard(
-                    title = stringResource(R.string.roadmap_title_test1),
-                    onClick = { onNavigate(Screen.RoadMapEditor) }
+                    title = roadmap.title,
+                    iconName = roadmap.iconName,
+                    colorHex = roadmap.colorHex,
+                    onClick = { onNavigate(Screen.RoadMapEditor, roadmap.id) }
                 )
             }
 
@@ -76,22 +92,22 @@ fun MainMenuScreen(
                         .fillMaxWidth()
                         .height(80.dp)
                         .padding(vertical = 8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = gold),
+                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.gold)),
                     shape = RoundedCornerShape(16.dp),
                     elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
-                    border = BorderStroke(width = 2.dp, color = brown)
+                    border = BorderStroke(width = 2.dp, color = colorResource(R.color.cigar))
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             Icons.Default.AddLocationAlt,
                             contentDescription = null,
-                            tint = brown,
+                            tint = colorResource(R.color.cigar),
                             modifier = Modifier.size(28.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = stringResource(R.string.create_roadmap_button),
-                            color = brown,
+                            color = colorResource(R.color.cigar),
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp
                         )
@@ -152,7 +168,7 @@ fun MasterPlannerTopBar(onLogoutClick: () -> Unit = {}) {
                     },
                     leadingIcon = { 
                         Icon(
-                            Icons.Default.Logout, 
+                            Icons.Default.Logout,
                             contentDescription = null, 
                             tint = brown 
                         ) 
@@ -179,65 +195,15 @@ fun MasterPlannerTopBar(onLogoutClick: () -> Unit = {}) {
 }
 
 @Composable
-fun FeaturedCard() {
-    val cigar = colorResource(R.color.cigar)
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp),
-        shape = RoundedCornerShape(28.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(Color(0xFF8B4513), Color(0xFF432818))
-                    )
-                )
-        ) {
-            // Background Icon as watermark
-            Icon(
-                Icons.Default.Public,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(240.dp)
-                    .align(Alignment.Center)
-                    .offset(x = 60.dp, y = 20.dp),
-                tint = Color.White.copy(alpha = 0.05f)
-            )
-
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(24.dp)
-            ) {
-                Text(
-                    "Your Legend Awaits",
-                    color = Color.White,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.ExtraBold
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    "1 Active Roadmaps",
-                    color = Color.White.copy(alpha = 0.8f),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-        }
-    }
-}
-
-@Composable
 fun RoadmapCard(
     title: String,
+    iconName: String = "",
+    colorHex: String = "#A3BF95",
     onClick: () -> Unit = {}
 ) {
     val brown = colorResource(R.color.cigar)
-    val cardBg = colorResource(R.color.lauren)
+    val cardBg = try { Color(android.graphics.Color.parseColor(colorHex)) } catch (e: Exception) { colorResource(R.color.lauren) }
+    
     Box(modifier = Modifier.clickable { onClick() }) {
         Box(
             modifier = Modifier
@@ -250,41 +216,49 @@ fun RoadmapCard(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp),
+                .height(120.dp),
             shape = RoundedCornerShape(28.dp),
             colors = CardDefaults.cardColors(containerColor = cardBg),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             border = BorderStroke(width = 2.dp, color = brown)
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Column(
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
                     modifier = Modifier
-                        .padding(20.dp)
-                        .fillMaxHeight(),
-                    verticalArrangement = Arrangement.SpaceBetween
+                        .size(60.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color.White.copy(alpha = 0.3f))
+                        .border(1.dp, brown, RoundedCornerShape(16.dp)),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = brown
+                    Icon(
+                        imageVector = a47514.masterplanner.data.Utility.iconFromName(iconName),
+                        contentDescription = null,
+                        tint = brown,
+                        modifier = Modifier.size(32.dp)
                     )
                 }
+                
+                Spacer(modifier = Modifier.width(20.dp))
+                
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = brown
+                )
             }
         }
     }
 }
 
-// MainMenuBottomBar removed in favor of MasterPlannerBottomBar in CommonUI.kt
-
-@Preview(showBackground = true)
 @Composable
-fun MainMenuScreenPreview() {
-    MainMenuScreen()
-}
-
-@Composable
-fun CreateRoadmapDialog(onDismiss: () -> Unit) {
+fun CreateRoadmapDialog( onDismiss: () -> Unit, onConfirm: (title: String, iconName: String, colorHex: String) -> Unit) {
     var title by remember { mutableStateOf("") }
     var selectedMark by remember { mutableStateOf(0) }
     var selectedColor by remember { mutableStateOf(0) }
@@ -471,7 +445,15 @@ fun CreateRoadmapDialog(onDismiss: () -> Unit) {
 
                     // Set Sail Button
                     Button(
-                        onClick = { /* Handle Create */ onDismiss() },
+                        onClick = { if (title.isNotBlank()) {
+                            val iconNames = listOf("Ship","Flag","Anchor","Compass")
+                            val colorHexValues = listOf("#FFD700","#3DBEFF","#FFD0BF")
+                            onConfirm(
+                                title,
+                                iconNames.getOrElse(selectedMark) { "Flag" },
+                                colorHexValues.getOrElse(selectedColor) { "#FFFFD700" }
+                            )
+                        } },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(60.dp)
