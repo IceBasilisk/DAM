@@ -29,9 +29,13 @@ import a47514.masterplanner.data.RoadmapViewModel
 import a47514.masterplanner.data.Task
 import a47514.masterplanner.data.Utility.iconFromName
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.core.graphics.toColorInt
 
 @Composable
@@ -52,7 +56,7 @@ fun TaskLibraryScreen(
     LaunchedEffect(Unit) { roadmapViewModel.listenToTaskLibrary() }
 
     Scaffold(
-        topBar = { MasterPlannerTopBar(onLogoutClick = onLogoutClick) },
+        topBar = { TaskLibraryTopBar(onLogoutClick = onLogoutClick) },
         bottomBar = { 
             MasterPlannerBottomBar(
                 currentScreen = Screen.TaskLibrary,
@@ -107,7 +111,6 @@ fun TaskLibraryScreen(
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp
                         )
-                        Icon(Icons.Default.FilterList, contentDescription = "Filter", tint = brown)
                     }
                 }
 
@@ -226,5 +229,72 @@ fun LibraryTaskCard(task: Task) {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun TaskLibraryTopBar(onLogoutClick: () -> Unit = {}) {
+    val brown = colorResource(R.color.cigar)
+    val cream = colorResource(R.color.fresh_cream)
+    var showMenu by remember { mutableStateOf(false) }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .statusBarsPadding(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        // Pirate Avatar Placeholder
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .background(brown)
+                .clickable { showMenu = true }
+        ) {
+            Icon(
+                Icons.Default.Person,
+                contentDescription = "Account",
+                tint = cream,
+                modifier = Modifier.align(Alignment.Center)
+            )
+
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false },
+                modifier = Modifier.background(cream).border(1.dp, brown, RoundedCornerShape(8.dp))
+            ) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            "Logout",
+                            color = brown,
+                            fontWeight = FontWeight.Bold
+                        )
+                    },
+                    onClick = {
+                        showMenu = false
+                        onLogoutClick()
+                    },
+                    leadingIcon = {
+                        Icon(
+                            Icons.Default.Logout,
+                            contentDescription = null,
+                            tint = brown
+                        )
+                    }
+                )
+            }
+        }
+
+        Text(
+            text = stringResource(R.string.app_name),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.ExtraBold,
+            color = brown,
+            letterSpacing = 1.sp
+        )
     }
 }

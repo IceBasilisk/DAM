@@ -47,7 +47,7 @@ fun CreateTaskScreen(
     var selectedColor by remember { mutableIntStateOf(0) }
 
     val iconNames = listOf("Waves","Flag","Ship","Gem","Compass","Anchor","Sails","Chest")
-    val colorHexValues = listOf("#FFD700", "#3DBEFF", "#A63B00", "#53C66A")
+    val colorHexValues = listOf("#FFD700", "#3DBEFF", "#D92639", "#53C66A")
 
     Scaffold(
         topBar = {

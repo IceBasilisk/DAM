@@ -97,7 +97,8 @@ class MainActivity : ComponentActivity() {
                             roadmapId = currentRoadmapId,
                             roadmapViewModel = roadmapViewModel,
                             onCreateTask = { currentScreen = Screen.CreateTask },
-                            onNavigate = navigate
+                            onNavigate = navigate,
+                            onBack = { currentScreen = Screen.MainMenu }  // ← add this
                         )
                     }
                     Screen.CreateTask -> {

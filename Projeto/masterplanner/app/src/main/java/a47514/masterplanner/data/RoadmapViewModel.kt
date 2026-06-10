@@ -1,5 +1,6 @@
 package a47514.masterplanner.data
 
+import a47514.masterplanner.ui.RoadmapItem
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.Query
@@ -20,6 +21,9 @@ class RoadmapViewModel : ViewModel() {
     private val _libraryTasks = MutableStateFlow<List<Task>>(emptyList())
     val libraryTasks: StateFlow<List<Task>> = _libraryTasks
 
+    private val _currentRoadmap = MutableStateFlow<Roadmap?>(null)
+    val currentRoadmap: StateFlow<Roadmap?> = _currentRoadmap
+
     fun listenToRoadmaps() {
         Utility.collectionReferenceForRoadmaps
             .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -39,68 +43,58 @@ class RoadmapViewModel : ViewModel() {
     // Call this when RoadMapEditorScreen opens for a specific roadmap
     // Pattern: same as listenToRoadmaps() but on the tasks sub-collection
     fun listenToTasks(roadmapId: String) {
+        // Also fetch the roadmap document itself for the title
+        Utility.collectionReferenceForRoadmaps
+            .document(roadmapId)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null || snapshot == null) return@addSnapshotListener
+                _currentRoadmap.value = snapshot.toObject<Roadmap>()?.copy(id = snapshot.id)
+            }
+
         Utility.collectionReferenceForTasks(roadmapId)
             .orderBy("timestamp", Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, error ->
                 if (error != null || snapshot == null) return@addSnapshotListener
-
                 val list = snapshot.documents
-                    .mapNotNull { doc ->
-                        doc.toObject<Task>()?.copy(id = doc.id)
-                    }
-                    .sortedBy { it.timestamp?.seconds ?: 0L } // fallback for null timestamps
-
+                    .mapNotNull { doc -> doc.toObject<Task>()?.copy(id = doc.id) }
+                    .sortedBy { it.timestamp?.seconds ?: 0L }
                 _tasks.value = list
             }
     }
 
-    // ── CRUD — Tasks ─────────────────────────────────────────────────────────
 
-    // Pattern: NoteDetailsActivity.saveNoteToFirebase() — create path
     fun saveTask(roadmapId: String, task: Task, onResult: (Boolean) -> Unit) {
         val colRef = Utility.collectionReferenceForTasks(roadmapId)
         val docRef = if (task.id.isEmpty()) colRef.document() else colRef.document(task.id)
         val taskToSave = if (task.id.isEmpty()) task.copy(id = docRef.id) else task
         docRef.set(taskToSave)
-            .addOnSuccessListener {
-                Log.d("Firestore", "Roadmap saved: ${docRef.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.e("Firestore", "Roadmap save failed", e)
-            }
+            .addOnSuccessListener { onResult(true) }
+            .addOnFailureListener { onResult(false) }
     }
 
-    // Pattern: NoteDetailsActivity.deleteNoteFromFirebase()
     fun deleteTask(roadmapId: String, taskId: String, onResult: (Boolean) -> Unit) {
         Utility.collectionReferenceForTasks(roadmapId)
             .document(taskId)
             .delete()
-            .addOnCompleteListener { result -> onResult(result.isSuccessful) }
+            .addOnSuccessListener { onResult(true) }
+            .addOnFailureListener { onResult(false) }
     }
-
-    // ── CRUD — Roadmaps ───────────────────────────────────────────────────────
 
     fun saveRoadmap(roadmap: Roadmap, onResult: (Boolean, String) -> Unit) {
         val colRef = Utility.collectionReferenceForRoadmaps
         val docRef = if (roadmap.id.isEmpty()) colRef.document() else colRef.document(roadmap.id)
-        
-        // Ensure the ID stored in the object matches the Firestore document ID
         val roadmapToSave = if (roadmap.id.isEmpty()) roadmap.copy(id = docRef.id) else roadmap
-
         docRef.set(roadmapToSave)
-            .addOnSuccessListener {
-                Log.d("Firestore", "Roadmap saved: ${docRef.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.e("Firestore", "Roadmap save failed", e)
-            }
+            .addOnSuccessListener { onResult(true, docRef.id) }
+            .addOnFailureListener { onResult(false, "") }
     }
 
     fun deleteRoadmap(roadmapId: String, onResult: (Boolean) -> Unit) {
         Utility.collectionReferenceForRoadmaps
             .document(roadmapId)
             .delete()
-            .addOnCompleteListener { result -> onResult(result.isSuccessful) }
+            .addOnSuccessListener { onResult(true) }
+            .addOnFailureListener { onResult(false) }
     }
 
     fun listenToTaskLibrary() {
@@ -122,6 +116,31 @@ class RoadmapViewModel : ViewModel() {
         val colRef = Utility.collectionReferenceForTaskLibrary
         val docRef = if (task.id.isEmpty()) colRef.document() else colRef.document(task.id)
         val taskToSave = if (task.id.isEmpty()) task.copy(id = docRef.id) else task
-        docRef.set(taskToSave).addOnCompleteListener { onResult(it.isSuccessful) }
+        docRef.set(taskToSave)
+            .addOnSuccessListener { onResult(true) }
+            .addOnFailureListener { onResult(false) }
+    }
+
+    fun saveRoadmapItems(roadmapId: String, items: List<RoadmapItem>, onResult: (Boolean) -> Unit) {
+        val entries = items.map { item ->
+            when (item) {
+                is RoadmapItem.Task -> RoadmapItemEntry(
+                    type = "task",
+                    taskId = item.taskId,
+                    taskName = item.title,
+                    iconName = item.iconName,
+                    colorHex = item.colorHex
+                )
+                is RoadmapItem.Duration -> RoadmapItemEntry(
+                    type = "duration",
+                    durationLabel = item.time
+                )
+            }
+        }
+        Utility.collectionReferenceForRoadmaps
+            .document(roadmapId)
+            .update("itemEntries", entries)
+            .addOnSuccessListener { onResult(true) }
+            .addOnFailureListener { onResult(false) }
     }
 }

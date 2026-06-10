@@ -11,9 +11,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Assignment
-import androidx.compose.material.icons.automirrored.filled.Login
-import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -27,9 +24,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -37,43 +32,72 @@ import a47514.masterplanner.R
 
 import a47514.masterplanner.Screen
 import a47514.masterplanner.data.RoadmapViewModel
+import android.widget.NumberPicker
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.graphics.toColorInt
 
 @Composable
 fun RoadMapEditorScreen(
     roadmapId: String,
     roadmapViewModel: RoadmapViewModel,
     onCreateTask: () -> Unit = {},
-    onNavigate: (Screen) -> Unit = {}
+    onNavigate: (Screen) -> Unit = {},
+    onBack: () -> Unit = {}
 ) {
     val tasks by roadmapViewModel.tasks.collectAsState()
+    val currentRoadmap by roadmapViewModel.currentRoadmap.collectAsState()
 
     val cream = colorResource(R.color.fresh_cream)
     val brown = colorResource(R.color.cigar)
     val gold = colorResource(R.color.gold)
-    val apricot = colorResource(R.color.pale_apricot)
     val lighterBrown = colorResource(R.color.old_rose)
 
     var showBootyBag by remember { mutableStateOf(false) }
     var showDurationDialog by remember { mutableStateOf(false) }
     var selectedTaskIndexForDuration by remember { mutableStateOf(-1) }
 
-    val initialItems = listOf(
-        RoadmapItem.Task(stringResource(R.string.task_title_test1)),
-        RoadmapItem.Task(stringResource(R.string.task_title_test2)),
-        RoadmapItem.Task(stringResource(R.string.task_title_test3)),
-        RoadmapItem.Duration(stringResource(R.string.duration_test1)),
-        RoadmapItem.Task(stringResource(R.string.task_title_test4)),
-        RoadmapItem.Task(stringResource(R.string.task_title_test5)),
-        RoadmapItem.Task(stringResource(R.string.task_title_test6))
-    )
-
-    val currentItems = remember(tasks) {
-        tasks.map { task -> RoadmapItem.Task(title = task.name, taskId = task.id) as RoadmapItem }
-            .toMutableStateList()
+    // Load persisted order+durations from Firestore, fall back to tasks-only if empty
+    val currentItems = remember(currentRoadmap, tasks) {
+        val entries = currentRoadmap?.itemEntries ?: emptyList()
+        if (entries.isNotEmpty()) {
+            entries.map { entry ->
+                if (entry.type == "duration") {
+                    RoadmapItem.Duration(entry.durationLabel) as RoadmapItem
+                } else {
+                    RoadmapItem.Task(
+                        title = entry.taskName,
+                        taskId = entry.taskId,
+                        iconName = entry.iconName,
+                        colorHex = entry.colorHex
+                    ) as RoadmapItem
+                }
+            }.toMutableStateList()
+        } else {
+            // No saved order yet — use tasks sorted by timestamp as baseline
+            tasks.map { task ->
+                RoadmapItem.Task(
+                    title = task.name,
+                    taskId = task.id,
+                    iconName = task.iconName,
+                    colorHex = task.colorHex
+                ) as RoadmapItem
+            }.toMutableStateList()
+        }
     }
 
     Scaffold(
-        topBar = { MasterPlannerTopBar() },
+        topBar = {
+            RoadMapEditorTopBar(
+                title = currentRoadmap?.title ?: "...",
+                onSaveAndBack = {
+                    roadmapViewModel.saveRoadmapItems(roadmapId, currentItems.toList()) {
+                        onBack()
+                    }
+                }
+            )
+        },
         bottomBar = { 
             MasterPlannerBottomBar(
                 currentScreen = Screen.RoadMapEditor,
@@ -97,10 +121,12 @@ fun RoadMapEditorScreen(
     ) { innerPadding ->
         if (showBootyBag) {
             BootyBagDialog(
+                roadmapViewModel = roadmapViewModel,
                 onDismiss = { showBootyBag = false },
                 onImportSelected = { selectedTasks ->
-                    currentItems.addAll(selectedTasks.map { RoadmapItem.Task(it) })
+                    currentItems.addAll(selectedTasks)
                     showBootyBag = false
+                    roadmapViewModel.saveRoadmapItems(roadmapId, currentItems.toList()) {}
                 },
                 onCreateTask = onCreateTask
             )
@@ -111,12 +137,10 @@ fun RoadMapEditorScreen(
                 onDismiss = { showDurationDialog = false },
                 onConfirm = { time, isBefore ->
                     val item = RoadmapItem.Duration(time)
-                    if (isBefore) {
-                        currentItems.add(selectedTaskIndexForDuration, item)
-                    } else {
-                        currentItems.add(selectedTaskIndexForDuration + 1, item)
-                    }
+                    if (isBefore) currentItems.add(selectedTaskIndexForDuration, item)
+                    else currentItems.add(selectedTaskIndexForDuration + 1, item)
                     showDurationDialog = false
+                    roadmapViewModel.saveRoadmapItems(roadmapId, currentItems.toList()) {}
                 }
             )
         }
@@ -133,32 +157,6 @@ fun RoadMapEditorScreen(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Header Badge
-                Surface(
-                    color = apricot,
-                    shape = RoundedCornerShape(12.dp),
-                    border = BorderStroke(2.dp, brown)
-                ) {
-                    Text(
-                        text = stringResource(R.string.roadmap_title_test1),
-                        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
-                        color = brown,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp
-                    )
-                }
-
-                Text(
-                    text = stringResource(R.string.rm_editor_label),
-                    color = brown,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 8.dp),
-                    letterSpacing = 2.sp
-                )
-
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -188,12 +186,16 @@ fun RoadMapEditorScreen(
                                 is RoadmapItem.Task -> {
                                     EditorTaskCard(
                                         title = item.title,
+                                        iconName = item.iconName,
+                                        colorHex = item.colorHex,
                                         onDuplicate = {
-                                            currentItems.add(index + 1, RoadmapItem.Task(item.title))
+                                            currentItems.add(index + 1, RoadmapItem.Task(item.title, iconName = item.iconName, colorHex = item.colorHex))
                                         },
                                         onDelete = {
                                             val taskId = (currentItems[index] as? RoadmapItem.Task)?.taskId ?: ""
-                                            roadmapViewModel.deleteTask(roadmapId, taskId) { /* optional toast */ }
+                                            roadmapViewModel.deleteTask(roadmapId, taskId) {}
+                                            currentItems.removeAt(index)
+                                            roadmapViewModel.saveRoadmapItems(roadmapId, currentItems.toList()) {}
                                         },
                                         onAddTime = {
                                             selectedTaskIndexForDuration = index
@@ -215,7 +217,12 @@ fun RoadMapEditorScreen(
 }
 
 sealed class RoadmapItem {
-    data class Task(val title: String, val taskId: String = "") : RoadmapItem()
+    data class Task(
+        val title: String,
+        val taskId: String = "",
+        val iconName: String = "",
+        val colorHex: String = ""
+    ) : RoadmapItem()
     data class Duration(val time: String) : RoadmapItem()
 }
 
@@ -239,13 +246,19 @@ fun DottedBackground(color: Color) {
 @Composable
 fun EditorTaskCard(
     title: String,
+    iconName: String = "",
+    colorHex: String = "",
     onDuplicate: () -> Unit,
     onDelete: () -> Unit,
     onAddTime: () -> Unit
 ) {
     val brown = colorResource(R.color.cigar)
     val cardBg = colorResource(R.color.cheesecake)
-    val iconBg = colorResource(R.color.highlighter_blue)
+    val iconBgColor = try {
+        Color(colorHex.toColorInt())
+    } catch (e: Exception) {
+        colorResource(R.color.highlighter_blue)
+    }
 
     var showMenu by remember { mutableStateOf(false) }
 
@@ -267,18 +280,16 @@ fun EditorTaskCard(
                 modifier = Modifier
                     .size(48.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(iconBg)
+                    .background(iconBgColor)
                     .border(1.dp, brown, RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center
             ) {
-                // Placeholder icons based on task
-                val icon = when {
-                    title.contains("bakery", ignoreCase = true) -> Icons.AutoMirrored.Filled.Login
-                    title.contains("ovens", ignoreCase = true) -> Icons.Default.SettingsInputComponent
-                    title.contains("loaves", ignoreCase = true) -> Icons.Default.BakeryDining
-                    else -> Icons.AutoMirrored.Filled.Logout
-                }
-                Icon(icon, contentDescription = null, tint = brown, modifier = Modifier.size(28.dp))
+                Icon(
+                    imageVector = a47514.masterplanner.data.Utility.iconFromName(iconName),
+                    contentDescription = null,
+                    tint = brown,
+                    modifier = Modifier.size(28.dp)
+                )
             }
 
             Text(
@@ -293,14 +304,8 @@ fun EditorTaskCard(
 
             Box {
                 IconButton(onClick = { showMenu = true }) {
-                    Icon(
-                        Icons.Default.Edit,
-                        contentDescription = "Edit",
-                        tint = brown,
-                        modifier = Modifier.size(24.dp)
-                    )
+                    Icon(Icons.Default.Edit, contentDescription = "Edit", tint = brown, modifier = Modifier.size(24.dp))
                 }
-
                 DropdownMenu(
                     expanded = showMenu,
                     onDismissRequest = { showMenu = false },
@@ -308,26 +313,17 @@ fun EditorTaskCard(
                 ) {
                     DropdownMenuItem(
                         text = { Text("Duplicate Task", color = brown, fontWeight = FontWeight.Bold) },
-                        onClick = {
-                            onDuplicate()
-                            showMenu = false
-                        },
+                        onClick = { onDuplicate(); showMenu = false },
                         leadingIcon = { Icon(Icons.Default.ContentCopy, contentDescription = null, tint = brown) }
                     )
                     DropdownMenuItem(
                         text = { Text("Delete Task", color = brown, fontWeight = FontWeight.Bold) },
-                        onClick = {
-                            onDelete()
-                            showMenu = false
-                        },
+                        onClick = { onDelete(); showMenu = false },
                         leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null, tint = brown) }
                     )
                     DropdownMenuItem(
                         text = { Text("Add Time", color = brown, fontWeight = FontWeight.Bold) },
-                        onClick = {
-                            onAddTime()
-                            showMenu = false
-                        },
+                        onClick = { onAddTime(); showMenu = false },
                         leadingIcon = { Icon(Icons.Default.Timer, contentDescription = null, tint = brown) }
                     )
                 }
@@ -525,6 +521,52 @@ fun AddDurationDialog(onDismiss: () -> Unit, onConfirm: (String, Boolean) -> Uni
 }
 
 @Composable
+fun HourPicker(
+    value: Int,
+    onValueChange: (Int) -> Unit
+) {
+    AndroidView(
+        factory = { context ->
+            NumberPicker(context).apply {
+                minValue = 0
+                maxValue = 23
+                wrapSelectorWheel = true
+
+                setOnValueChangedListener { _, _, newVal ->
+                    onValueChange(newVal)
+                }
+            }
+        },
+        update = {
+            it.value = value
+        }
+    )
+}
+
+@Composable
+fun MinutePicker(
+    value: Int,
+    onValueChange: (Int) -> Unit
+) {
+    AndroidView(
+        factory = { context ->
+            NumberPicker(context).apply {
+                minValue = 0
+                maxValue = 59
+                wrapSelectorWheel = true
+
+                setOnValueChangedListener { _, _, newVal ->
+                    onValueChange(newVal)
+                }
+            }
+        },
+        update = {
+            it.value = value
+        }
+    )
+}
+
+@Composable
 fun TimeReel(label: String, selectedValue: Int, options: List<Int>, onSelect: (Int) -> Unit) {
     val cigar = colorResource(R.color.cigar)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -547,26 +589,31 @@ fun TimeReel(label: String, selectedValue: Int, options: List<Int>, onSelect: (I
 }
 
 @Composable
-fun BootyBagDialog(onDismiss: () -> Unit, onImportSelected: (List<String>) -> Unit, onCreateTask: () -> Unit = {}) {
+fun BootyBagDialog(
+    roadmapViewModel: RoadmapViewModel,
+    onDismiss: () -> Unit,
+    onImportSelected: (List<RoadmapItem.Task>) -> Unit,
+    onCreateTask: () -> Unit = {}
+) {
     val cigar = colorResource(R.color.cigar)
     val gold = colorResource(R.color.gold)
     val cream = colorResource(R.color.fresh_cream)
     val cheesecake = colorResource(R.color.cheesecake)
 
     var searchQuery by remember { mutableStateOf("") }
-    val selectedTasks = remember { mutableStateListOf<Int>() }
+    val selectedTaskIds = remember { mutableStateListOf<String>() }
 
-    val bootyTasks = listOf(
-        BootyTaskData("Bake Bread", "KITCHEN", Icons.Default.BakeryDining, colorResource(R.color.pale_apricot)),
-        BootyTaskData("Restock Flour", "SUPPLY", Icons.AutoMirrored.Filled.Assignment, colorResource(R.color.highlighter_blue)),
-        BootyTaskData("Scrub Decks", "CLEAN", Icons.Default.CleaningServices, colorResource(R.color.old_rose))
-    )
+    val libraryTasks by roadmapViewModel.libraryTasks.collectAsState()
+    val filteredTasks = remember(libraryTasks, searchQuery) {
+        if (searchQuery.isBlank()) libraryTasks
+        else libraryTasks.filter { it.name.contains(searchQuery, ignoreCase = true) }
+    }
+
+    LaunchedEffect(Unit) { roadmapViewModel.listenToTaskLibrary() }
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(600.dp),
+            modifier = Modifier.fillMaxWidth().height(600.dp),
             shape = RoundedCornerShape(28.dp),
             color = cream,
             border = BorderStroke(3.dp, cigar)
@@ -586,12 +633,7 @@ fun BootyBagDialog(onDismiss: () -> Unit, onImportSelected: (List<String>) -> Un
                         ) {
                             Icon(Icons.Default.ShoppingBag, contentDescription = null, tint = cigar)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = "THE BOOTY BAG",
-                                color = cigar,
-                                fontWeight = FontWeight.ExtraBold,
-                                fontSize = 18.sp
-                            )
+                            Text("THE BOOTY BAG", color = cigar, fontWeight = FontWeight.ExtraBold, fontSize = 18.sp)
                             Spacer(modifier = Modifier.weight(1f))
                             IconButton(
                                 onClick = onDismiss,
@@ -631,21 +673,46 @@ fun BootyBagDialog(onDismiss: () -> Unit, onImportSelected: (List<String>) -> Un
                 }
 
                 // Task List
-                LazyColumn(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    itemsIndexed(bootyTasks) { index, task ->
-                        val isSelected = selectedTasks.contains(index)
-                        BootyTaskCard(
-                            task = task,
-                            isSelected = isSelected,
-                            onToggle = {
-                                if (isSelected) selectedTasks.remove(index) else selectedTasks.add(index)
-                            }
+                if (filteredTasks.isEmpty()) {
+                    Box(
+                        modifier = Modifier.weight(1f).fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = if (libraryTasks.isEmpty()) "No tasks in your library yet.\nCreate one first!" else "No tasks match your search.",
+                            color = cigar.copy(alpha = 0.5f),
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
                         )
+                    }
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.weight(1f).padding(horizontal = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        item { Spacer(modifier = Modifier.height(4.dp)) }
+                        items(filteredTasks) { task ->
+                            val isSelected = selectedTaskIds.contains(task.id)
+                            val iconBgColor = try {
+                                Color(android.graphics.Color.parseColor(task.colorHex))
+                            } catch (e: Exception) { Color(0xFFFFD700) }
+
+                            BootyTaskCard(
+                                task = BootyTaskData(
+                                    title = task.name,
+                                    tag = task.iconName.uppercase(),
+                                    icon = a47514.masterplanner.data.Utility.iconFromName(task.iconName),
+                                    iconBg = iconBgColor
+                                ),
+                                isSelected = isSelected,
+                                onToggle = {
+                                    if (isSelected) selectedTaskIds.remove(task.id)
+                                    else selectedTaskIds.add(task.id)
+                                }
+                            )
+                        }
+                        item { Spacer(modifier = Modifier.height(4.dp)) }
                     }
                 }
 
@@ -653,10 +720,7 @@ fun BootyBagDialog(onDismiss: () -> Unit, onImportSelected: (List<String>) -> Un
                 Column(modifier = Modifier.fillMaxWidth()) {
                     HorizontalDivider(color = cigar, thickness = 2.dp)
                     Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(cheesecake)
-                            .padding(16.dp)
+                        modifier = Modifier.fillMaxWidth().background(cheesecake).padding(16.dp)
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -672,11 +736,19 @@ fun BootyBagDialog(onDismiss: () -> Unit, onImportSelected: (List<String>) -> Un
                                 lineHeight = 14.sp,
                                 modifier = Modifier.clickable { onCreateTask() }
                             )
-
                             Button(
                                 onClick = {
-                                    val selectedTitles = selectedTasks.map { bootyTasks[it].title }
-                                    onImportSelected(selectedTitles)
+                                    val selected = filteredTasks
+                                        .filter { selectedTaskIds.contains(it.id) }
+                                        .map { task ->
+                                            RoadmapItem.Task(
+                                                title = task.name,
+                                                taskId = task.id,
+                                                iconName = task.iconName,
+                                                colorHex = task.colorHex
+                                            )
+                                        }
+                                    onImportSelected(selected)
                                 },
                                 modifier = Modifier
                                     .height(64.dp)
@@ -691,7 +763,7 @@ fun BootyBagDialog(onDismiss: () -> Unit, onImportSelected: (List<String>) -> Un
                                     color = cigar,
                                     fontWeight = FontWeight.ExtraBold,
                                     fontSize = 14.sp,
-                                    textAlign = TextAlign.Center
+                                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
                                 )
                             }
                         }
@@ -708,6 +780,66 @@ data class BootyTaskData(
     val icon: ImageVector,
     val iconBg: Color
 )
+
+@Composable
+fun RoadMapEditorTopBar(
+    title: String,
+    onSaveAndBack: () -> Unit
+) {
+    val brown = colorResource(R.color.cigar)
+    val cream = colorResource(R.color.fresh_cream)
+    val gold = colorResource(R.color.gold)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+            .padding(horizontal = 8.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        // Back + Save button
+        IconButton(
+            onClick = onSaveAndBack,
+            modifier = Modifier
+                .size(44.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(brown)
+        ) {
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Save & Back",
+                tint = cream,
+                modifier = Modifier.size(22.dp)
+            )
+        }
+
+        // Roadmap title badge — centered
+        Surface(
+            color = gold,
+            shape = RoundedCornerShape(12.dp),
+            border = BorderStroke(2.dp, brown),
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 12.dp)
+        ) {
+            Text(
+                text = title,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 10.dp),
+                color = brown,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 16.sp,
+                maxLines = 1,
+                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+        }
+
+        // Placeholder to balance the row (same size as back button)
+        Spacer(modifier = Modifier.size(44.dp))
+    }
+}
 
 @Composable
 fun BootyTaskCard(task: BootyTaskData, isSelected: Boolean, onToggle: () -> Unit) {
