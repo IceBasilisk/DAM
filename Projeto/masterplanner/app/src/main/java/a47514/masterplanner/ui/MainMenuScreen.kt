@@ -28,7 +28,7 @@ import a47514.masterplanner.Screen
 import a47514.masterplanner.data.Roadmap
 import a47514.masterplanner.data.RoadmapViewModel
 import androidx.compose.foundation.lazy.items
-import com.google.firebase.Timestamp
+import androidx.core.graphics.toColorInt
 
 @Composable
 fun MainMenuScreen(
@@ -39,10 +39,11 @@ fun MainMenuScreen(
     val roadmaps by roadmapViewModel.roadmaps.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
     val context = androidx.compose.ui.platform.LocalContext.current
+    val isOnline by roadmapViewModel.isOnline.collectAsState()
 
     Scaffold(
         topBar = { MasterPlannerTopBar(onLogoutClick) },
-        bottomBar = { 
+        bottomBar = {
             MasterPlannerBottomBar(
                 currentScreen = Screen.MainMenu,
                 onNavigate = { screen -> onNavigate(screen, null) }
@@ -63,59 +64,78 @@ fun MainMenuScreen(
                         if (success) {
                             showDialog = false
                         } else {
-                            a47514.masterplanner.data.Utility.showToast(context, "Failed to save roadmap")
+                            a47514.masterplanner.data.Utility.showToast(
+                                context,
+                                "Failed to save roadmap"
+                            )
                         }
                     }
                 }
             )
         }
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(roadmaps) { roadmap ->
-                RoadmapCard(
-                    title = roadmap.title,
-                    iconName = roadmap.iconName,
-                    colorHex = roadmap.colorHex,
-                    onClick = { onNavigate(Screen.RoadMapEditor, roadmap.id) }
-                )
-            }
+            OfflineBanner(isOnline = isOnline)
 
-            item {
-                Button(
-                    onClick = { showDialog = true },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(80.dp)
-                        .padding(vertical = 8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.gold)),
-                    shape = RoundedCornerShape(16.dp),
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
-                    border = BorderStroke(width = 2.dp, color = colorResource(R.color.cigar))
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            Icons.Default.AddLocationAlt,
-                            contentDescription = null,
-                            tint = colorResource(R.color.cigar),
-                            modifier = Modifier.size(28.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = stringResource(R.string.create_roadmap_button),
-                            color = colorResource(R.color.cigar),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp
-                        )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(roadmaps) { roadmap ->
+                    RoadmapCard(
+                        title = roadmap.title,
+                        iconName = roadmap.iconName,
+                        colorHex = roadmap.colorHex,
+                        onClick = { onNavigate(Screen.RoadMapEditor, roadmap.id) },
+                        onDeleteRoadmap = { deleteTasks ->
+                            roadmapViewModel.deleteRoadmapWithTasks(roadmap.id, deleteTasks) {}
+                        }
+                    )
+                }
+
+                item {
+                    Button(
+                        onClick = {
+                            if (roadmaps.size >= 3) {
+                                onNavigate(Screen.Freemium, null)
+                            } else {
+                                showDialog = true
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(80.dp)
+                            .padding(vertical = 8.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.gold)),
+                        shape = RoundedCornerShape(16.dp),
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
+                        border = BorderStroke(width = 2.dp, color = colorResource(R.color.cigar))
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                Icons.Default.AddLocationAlt,
+                                contentDescription = null,
+                                tint = colorResource(R.color.cigar),
+                                modifier = Modifier.size(28.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = stringResource(R.string.create_roadmap_button),
+                                color = colorResource(R.color.cigar),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 18.sp
+                            )
+                        }
                     }
                 }
-            }
 
-            item { Spacer(modifier = Modifier.height(16.dp)) }
+                item { Spacer(modifier = Modifier.height(16.dp)) }
+            }
         }
     }
 }
@@ -129,8 +149,8 @@ fun MasterPlannerTopBar(onLogoutClick: () -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
-            .statusBarsPadding(),
+            .statusBarsPadding()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -152,26 +172,28 @@ fun MasterPlannerTopBar(onLogoutClick: () -> Unit = {}) {
             DropdownMenu(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false },
-                modifier = Modifier.background(cream).border(1.dp, brown, RoundedCornerShape(8.dp))
+                modifier = Modifier
+                    .background(cream)
+                    .border(1.dp, brown, RoundedCornerShape(8.dp))
             ) {
                 DropdownMenuItem(
-                    text = { 
+                    text = {
                         Text(
-                            "Logout", 
-                            color = brown, 
-                            fontWeight = FontWeight.Bold 
-                        ) 
+                            "Logout",
+                            color = brown,
+                            fontWeight = FontWeight.Bold
+                        )
                     },
                     onClick = {
                         showMenu = false
                         onLogoutClick()
                     },
-                    leadingIcon = { 
+                    leadingIcon = {
                         Icon(
                             Icons.Default.Logout,
-                            contentDescription = null, 
-                            tint = brown 
-                        ) 
+                            contentDescription = null,
+                            tint = brown
+                        )
                     }
                 )
             }
@@ -199,19 +221,61 @@ fun RoadmapCard(
     title: String,
     iconName: String = "",
     colorHex: String = "#A3BF95",
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    onDeleteRoadmap: (deleteTasks: Boolean) -> Unit = {}
 ) {
     val brown = colorResource(R.color.cigar)
-    val cardBg = try { Color(android.graphics.Color.parseColor(colorHex)) } catch (e: Exception) { colorResource(R.color.lauren) }
-    
+    val cream = colorResource(R.color.fresh_cream)
+    val cardBg = try {
+        Color(colorHex.toColorInt())
+    } catch (e: Exception) {
+        colorResource(R.color.lauren)
+    }
+
+    var showMenu by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
+    // Confirmation dialog
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            containerColor = cream,
+            title = {
+                Text("Delete Roadmap", color = brown, fontWeight = FontWeight.ExtraBold)
+            },
+            text = {
+                Text(
+                    "Would you like to also delete all tasks inside \"$title\"?",
+                    color = brown
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = { showDeleteDialog = false; onDeleteRoadmap(true) },
+                    colors = ButtonDefaults.buttonColors(containerColor = brown)
+                ) { Text("Delete All", color = cream, fontWeight = FontWeight.Bold) }
+            },
+            dismissButton = {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedButton(
+                        onClick = { showDeleteDialog = false; onDeleteRoadmap(false) },
+                        border = BorderStroke(2.dp, brown)
+                    ) { Text("Keep Tasks", color = brown, fontWeight = FontWeight.Bold) }
+                    TextButton(onClick = { showDeleteDialog = false }) {
+                        Text("Cancel", color = brown)
+                    }
+                }
+            }
+        )
+    }
+
     Box(modifier = Modifier.clickable { onClick() }) {
+        // Hard shadow
         Box(
             modifier = Modifier
                 .matchParentSize()
-                .offset(x = 6.dp, y = 6.dp) // Shift down and right
-                .background(
-                    brown, RoundedCornerShape(24.dp)
-                )
+                .offset(x = 6.dp, y = 6.dp)
+                .background(brown, RoundedCornerShape(24.dp))
         )
         Card(
             modifier = Modifier
@@ -238,27 +302,64 @@ fun RoadmapCard(
                 ) {
                     Icon(
                         imageVector = a47514.masterplanner.data.Utility.iconFromName(iconName),
-                        contentDescription = null,
-                        tint = brown,
+                        contentDescription = null, tint = brown,
                         modifier = Modifier.size(32.dp)
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.width(20.dp))
-                
+
                 Text(
                     text = title,
+                    modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = brown
+                    fontWeight = FontWeight.Bold, color = brown
                 )
+
+                // Pencil menu
+                Box {
+                    IconButton(onClick = { showMenu = true }) {
+                        Icon(
+                            Icons.Default.Edit, contentDescription = "Options",
+                            tint = brown, modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false },
+                        modifier = Modifier
+                            .background(cream)
+                            .border(1.dp, brown, RoundedCornerShape(8.dp))
+                    ) {
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    "Delete Roadmap",
+                                    color = brown,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            },
+                            onClick = { showMenu = false; showDeleteDialog = true },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.Delete,
+                                    contentDescription = null,
+                                    tint = brown
+                                )
+                            }
+                        )
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-fun CreateRoadmapDialog( onDismiss: () -> Unit, onConfirm: (title: String, iconName: String, colorHex: String) -> Unit) {
+fun CreateRoadmapDialog(
+    onDismiss: () -> Unit,
+    onConfirm: (title: String, iconName: String, colorHex: String) -> Unit
+) {
     var title by remember { mutableStateOf("") }
     var selectedMark by remember { mutableStateOf(0) }
     var selectedColor by remember { mutableStateOf(0) }
@@ -445,15 +546,17 @@ fun CreateRoadmapDialog( onDismiss: () -> Unit, onConfirm: (title: String, iconN
 
                     // Set Sail Button
                     Button(
-                        onClick = { if (title.isNotBlank()) {
-                            val iconNames = listOf("Ship","Flag","Anchor","Compass")
-                            val colorHexValues = listOf("#FFD700","#3DBEFF","#FFD0BF")
-                            onConfirm(
-                                title,
-                                iconNames.getOrElse(selectedMark) { "Flag" },
-                                colorHexValues.getOrElse(selectedColor) { "#FFFFD700" }
-                            )
-                        } },
+                        onClick = {
+                            if (title.isNotBlank()) {
+                                val iconNames = listOf("Ship", "Flag", "Anchor", "Compass")
+                                val colorHexValues = listOf("#FFD700", "#3DBEFF", "#FFD0BF")
+                                onConfirm(
+                                    title,
+                                    iconNames.getOrElse(selectedMark) { "Flag" },
+                                    colorHexValues.getOrElse(selectedColor) { "#FFFFD700" }
+                                )
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(60.dp)

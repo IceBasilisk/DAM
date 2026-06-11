@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -44,7 +43,8 @@ fun RoadMapEditorScreen(
     roadmapViewModel: RoadmapViewModel,
     onCreateTask: () -> Unit = {},
     onNavigate: (Screen) -> Unit = {},
-    onBack: () -> Unit = {}
+    onBack: () -> Unit = {},
+    onFreemium: () -> Unit = {}
 ) {
     val tasks by roadmapViewModel.tasks.collectAsState()
     val currentRoadmap by roadmapViewModel.currentRoadmap.collectAsState()
@@ -56,7 +56,7 @@ fun RoadMapEditorScreen(
 
     var showBootyBag by remember { mutableStateOf(false) }
     var showDurationDialog by remember { mutableStateOf(false) }
-    var selectedTaskIndexForDuration by remember { mutableStateOf(-1) }
+    var selectedTaskIndexForDuration by remember { mutableIntStateOf(-1) }
 
     // Load persisted order+durations from Firestore, fall back to tasks-only if empty
     val currentItems = remember(currentRoadmap, tasks) {
@@ -107,7 +107,13 @@ fun RoadMapEditorScreen(
         containerColor = cream,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { showBootyBag = true },
+                onClick = {
+                    if (currentItems.count { it is RoadmapItem.Task } >= 6) {
+                        onFreemium()
+                    } else {
+                        showBootyBag = true
+                    }
+                },
                 containerColor = gold,
                 contentColor = brown,
                 shape = RoundedCornerShape(16.dp),
@@ -124,9 +130,14 @@ fun RoadMapEditorScreen(
                 roadmapViewModel = roadmapViewModel,
                 onDismiss = { showBootyBag = false },
                 onImportSelected = { selectedTasks ->
-                    currentItems.addAll(selectedTasks)
-                    showBootyBag = false
-                    roadmapViewModel.saveRoadmapItems(roadmapId, currentItems.toList()) {}
+                    val taskCount = currentItems.count { it is RoadmapItem.Task }
+                    val allowed = selectedTasks.take((6 - taskCount).coerceAtLeast(0))
+                    if (selectedTasks.size > allowed.size) onFreemium()
+                    if (allowed.isNotEmpty()) {
+                        currentItems.addAll(allowed)
+                        showBootyBag = false
+                        roadmapViewModel.saveRoadmapItems(roadmapId, currentItems.toList()) {}
+                    }
                 },
                 onCreateTask = onCreateTask
             )
@@ -204,7 +215,13 @@ fun RoadMapEditorScreen(
                                     )
                                 }
                                 is RoadmapItem.Duration -> {
-                                    TimerBadge(time = item.time)
+                                    TimerBadge(
+                                        time = item.time,
+                                        onDelete = {
+                                            currentItems.removeAt(index)
+                                            roadmapViewModel.saveRoadmapItems(roadmapId, currentItems.toList()) {}
+                                        }
+                                    )
                                 }
                             }
                         }
@@ -333,7 +350,7 @@ fun EditorTaskCard(
 }
 
 @Composable
-fun TimerBadge(time: String) {
+fun TimerBadge(time: String, onDelete: () -> Unit = {}) {
     val brown = colorResource(R.color.cigar)
     val gold = colorResource(R.color.gold)
 
@@ -341,15 +358,21 @@ fun TimerBadge(time: String) {
         color = gold,
         shape = RoundedCornerShape(20.dp),
         border = BorderStroke(2.dp, brown),
-        modifier = Modifier.padding(vertical = 8.dp)
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .clickable { onDelete() }
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(Icons.Default.Timer, contentDescription = null, tint = brown, modifier = Modifier.size(16.dp))
+            Icon(Icons.Default.Timer, contentDescription = null,
+                tint = brown, modifier = Modifier.size(16.dp))
             Spacer(modifier = Modifier.width(4.dp))
             Text(text = time, color = brown, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.width(8.dp))
+            Icon(Icons.Default.Close, contentDescription = "Remove",
+                tint = brown.copy(alpha = 0.6f), modifier = Modifier.size(14.dp))
         }
     }
 }
@@ -362,8 +385,8 @@ fun AddDurationDialog(onDismiss: () -> Unit, onConfirm: (String, Boolean) -> Uni
     val cheesecake = colorResource(R.color.cheesecake)
 
     var isBefore by remember { mutableStateOf(true) }
-    var selectedHour by remember { mutableStateOf(3) }
-    var selectedMin by remember { mutableStateOf(20) }
+    var selectedHour by remember { mutableIntStateOf(3) }
+    var selectedMin by remember { mutableIntStateOf(20) }
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -480,15 +503,23 @@ fun AddDurationDialog(onDismiss: () -> Unit, onConfirm: (String, Boolean) -> Uni
                             )
                         }
 
-                        // Reel Picker Emulation
+                        // Wheel Picker Integration
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            TimeReel("HOURS", selectedHour, listOf(1, 2, 3, 4, 5)) { selectedHour = it }
-                            Text(":", color = cigar, fontWeight = FontWeight.Bold, fontSize = 24.sp, modifier = Modifier.padding(horizontal = 24.dp))
-                            TimeReel("MINS", selectedMin, listOf(10, 15, 20, 25, 30)) { selectedMin = it }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text("HOURS", color = cigar.copy(alpha = 0.6f), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                HourPicker(value = selectedHour, onValueChange = { selectedHour = it })
+                            }
+                            
+                            Text(":", color = cigar, fontWeight = FontWeight.Bold, fontSize = 32.sp, modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 20.dp))
+
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text("MINS", color = cigar.copy(alpha = 0.6f), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                MinutePicker(value = selectedMin, onValueChange = { selectedMin = it })
+                            }
                         }
                     }
 
@@ -497,7 +528,7 @@ fun AddDurationDialog(onDismiss: () -> Unit, onConfirm: (String, Boolean) -> Uni
                     // Confirm Button
                     Button(
                         onClick = {
-                            val timeStr = if (selectedHour > 0) "${selectedHour}H ${selectedMin}M" else "${selectedMin} MIN"
+                            val timeStr = if (selectedHour > 0) "${selectedHour}H ${selectedMin}M" else "$selectedMin MIN"
                             onConfirm(timeStr, isBefore)
                         },
                         modifier = Modifier
@@ -564,28 +595,6 @@ fun MinutePicker(
             it.value = value
         }
     )
-}
-
-@Composable
-fun TimeReel(label: String, selectedValue: Int, options: List<Int>, onSelect: (Int) -> Unit) {
-    val cigar = colorResource(R.color.cigar)
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(label, color = cigar.copy(alpha = 0.4f), fontSize = 10.sp, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(8.dp))
-        
-        options.forEach { value ->
-            val isSelected = value == selectedValue
-            Text(
-                text = value.toString().padStart(2, '0'),
-                color = if (isSelected) cigar else cigar.copy(alpha = 0.2f),
-                fontSize = if (isSelected) 28.sp else 20.sp,
-                fontWeight = if (isSelected) FontWeight.ExtraBold else FontWeight.Bold,
-                modifier = Modifier
-                    .padding(vertical = 2.dp)
-                    .clickable { onSelect(value) }
-            )
-        }
-    }
 }
 
 @Composable
@@ -695,7 +704,7 @@ fun BootyBagDialog(
                         items(filteredTasks) { task ->
                             val isSelected = selectedTaskIds.contains(task.id)
                             val iconBgColor = try {
-                                Color(android.graphics.Color.parseColor(task.colorHex))
+                                Color(task.colorHex.toColorInt())
                             } catch (e: Exception) { Color(0xFFFFD700) }
 
                             BootyTaskCard(

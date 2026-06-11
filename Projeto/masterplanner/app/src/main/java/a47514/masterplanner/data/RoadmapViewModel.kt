@@ -1,12 +1,14 @@
 package a47514.masterplanner.data
 
 import a47514.masterplanner.ui.RoadmapItem
-import android.util.Log
+import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class RoadmapViewModel : ViewModel() {
     private val _roadmaps = MutableStateFlow<List<Roadmap>>(emptyList())
@@ -24,6 +26,16 @@ class RoadmapViewModel : ViewModel() {
     private val _currentRoadmap = MutableStateFlow<Roadmap?>(null)
     val currentRoadmap: StateFlow<Roadmap?> = _currentRoadmap
 
+    private val _suggestedTaskNames = MutableStateFlow<List<String>>(emptyList())
+    val suggestedTaskNames: StateFlow<List<String>> = _suggestedTaskNames
+
+    private val _isSuggesting = MutableStateFlow(false)
+    val isSuggesting: StateFlow<Boolean> = _isSuggesting
+    private val _hasSuggestionBeenAttempted = MutableStateFlow(false)
+    val hasSuggestionBeenAttempted: StateFlow<Boolean> = _hasSuggestionBeenAttempted
+
+    private val _isOnline = MutableStateFlow(true)
+    val isOnline: StateFlow<Boolean> = _isOnline
     fun listenToRoadmaps() {
         Utility.collectionReferenceForRoadmaps
             .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -74,6 +86,36 @@ class RoadmapViewModel : ViewModel() {
 
     fun deleteTask(roadmapId: String, taskId: String, onResult: (Boolean) -> Unit) {
         Utility.collectionReferenceForTasks(roadmapId)
+            .document(taskId)
+            .delete()
+            .addOnSuccessListener { onResult(true) }
+            .addOnFailureListener { onResult(false) }
+    }
+
+    // Delete all tasks inside a roadmap's sub-collection, then optionally the roadmap itself
+    fun deleteRoadmapWithTasks(roadmapId: String, deleteTasks: Boolean, onResult: (Boolean) -> Unit) {
+        if (!deleteTasks) {
+            deleteRoadmap(roadmapId, onResult)
+            return
+        }
+        // Fetch all tasks first, delete them, then delete the roadmap
+        Utility.collectionReferenceForTasks(roadmapId)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val batch = com.google.firebase.firestore.FirebaseFirestore.getInstance().batch()
+                snapshot.documents.forEach { doc -> batch.delete(doc.reference) }
+                batch.commit()
+                    .addOnSuccessListener {
+                        deleteRoadmap(roadmapId, onResult)
+                    }
+                    .addOnFailureListener { onResult(false) }
+            }
+            .addOnFailureListener { onResult(false) }
+    }
+
+    // Delete a task from the library
+    fun deleteLibraryTask(taskId: String, onResult: (Boolean) -> Unit) {
+        Utility.collectionReferenceForTaskLibrary
             .document(taskId)
             .delete()
             .addOnSuccessListener { onResult(true) }
@@ -142,5 +184,30 @@ class RoadmapViewModel : ViewModel() {
             .update("itemEntries", entries)
             .addOnSuccessListener { onResult(true) }
             .addOnFailureListener { onResult(false) }
+    }
+
+    fun fetchTaskSuggestions(roadmapTitle: String) {
+        if (roadmapTitle.isBlank()) return
+        viewModelScope.launch {
+            _isSuggesting.value = true
+            _hasSuggestionBeenAttempted.value = false
+            _suggestedTaskNames.value = emptyList()
+            _suggestedTaskNames.value = GeminiService.suggestTaskNames(roadmapTitle)
+            _hasSuggestionBeenAttempted.value = true  // ← mark attempt complete
+            _isSuggesting.value = false
+        }
+    }
+
+    fun clearSuggestions() {
+        _suggestedTaskNames.value = emptyList()
+        _hasSuggestionBeenAttempted.value = false  // ← reset so message disappears after picking
+    }
+
+    fun startMonitoringNetwork(context: Context) {
+        viewModelScope.launch {
+            NetworkMonitor.observe(context).collect { online ->
+                _isOnline.value = online
+            }
+        }
     }
 }

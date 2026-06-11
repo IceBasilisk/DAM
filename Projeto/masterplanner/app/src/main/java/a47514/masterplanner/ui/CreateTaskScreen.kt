@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import a47514.masterplanner.R
@@ -30,14 +29,14 @@ import a47514.masterplanner.R
 import a47514.masterplanner.Screen
 import a47514.masterplanner.data.RoadmapViewModel
 import a47514.masterplanner.data.Task
-import com.google.firebase.Timestamp
 
 @Composable
 fun CreateTaskScreen(
     roadmapId: String,
+    roadmapTitle: String = "",
     roadmapViewModel: RoadmapViewModel,
     onBack: () -> Unit = {},
-    onNavigate: (Screen) -> Unit = {}
+    onNavigate: (Screen) -> Unit = {},
 ) {
     val cream = colorResource(R.color.fresh_cream)
     val cigar = colorResource(R.color.cigar)
@@ -48,6 +47,11 @@ fun CreateTaskScreen(
 
     val iconNames = listOf("Waves","Flag","Ship","Gem","Compass","Anchor","Sails","Chest")
     val colorHexValues = listOf("#FFD700", "#3DBEFF", "#D92639", "#53C66A")
+
+    val suggestedNames by roadmapViewModel.suggestedTaskNames.collectAsState()
+    val isSuggesting by roadmapViewModel.isSuggesting.collectAsState()
+
+    val isInsideRoadmap = roadmapId != "library" && roadmapTitle.isNotBlank()
 
     Scaffold(
         topBar = {
@@ -85,6 +89,120 @@ fun CreateTaskScreen(
                 onValueChange = { taskName = it },
                 placeholder = stringResource(R.string.task_create_title_example)
             )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            if (isInsideRoadmap) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                        .clickable {
+                            if (!isSuggesting) roadmapViewModel.fetchTaskSuggestions(roadmapTitle)
+                        }
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .offset(x = 4.dp, y = 4.dp)
+                            .background(cigar, RoundedCornerShape(12.dp))
+                    )
+                    Surface(
+                        modifier = Modifier.matchParentSize(),
+                        color = colorResource(R.color.pale_apricot),
+                        shape = RoundedCornerShape(12.dp),
+                        border = BorderStroke(2.dp, cigar)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (isSuggesting) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(18.dp),
+                                    color = cigar,
+                                    strokeWidth = 2.dp
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Consulting the oracle...", color = cigar,
+                                    fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                            } else {
+                                Icon(Icons.Default.AutoAwesome, contentDescription = null,
+                                    tint = cigar, modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Suggest Task Names", color = cigar,
+                                    fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // After a suggestion attempt — show results or oracle failure message
+                val hasAttempted by roadmapViewModel.hasSuggestionBeenAttempted.collectAsState()
+                when {
+                    isSuggesting -> { /* spinner shown in button above, nothing extra needed */ }
+
+                    hasAttempted && suggestedNames.isEmpty() -> {
+                        Surface(
+                            modifier = Modifier.fillMaxWidth(),
+                            color = colorResource(R.color.cheesecake),
+                            shape = RoundedCornerShape(10.dp),
+                            border = BorderStroke(1.dp, cigar.copy(alpha = 0.3f))
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(Icons.Default.CloudOff, contentDescription = null,
+                                    tint = cigar.copy(alpha = 0.5f), modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(10.dp))
+                                Text(
+                                    "The Oracle was unable to suggest task names.",
+                                    color = cigar.copy(alpha = 0.7f),
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+                        }
+                    }
+
+                    suggestedNames.isNotEmpty() -> {
+                        Text("TAP A SUGGESTION", color = cigar.copy(alpha = 0.6f),
+                            fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            suggestedNames.forEach { suggestion ->
+                                Surface(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            taskName = suggestion
+                                            roadmapViewModel.clearSuggestions()
+                                        },
+                                    color = colorResource(R.color.cheesecake),
+                                    shape = RoundedCornerShape(10.dp),
+                                    border = BorderStroke(1.dp, cigar.copy(alpha = 0.4f))
+                                ) {
+                                    Row(
+                                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(Icons.Default.AddCircleOutline, contentDescription = null,
+                                            tint = cigar.copy(alpha = 0.5f), modifier = Modifier.size(16.dp))
+                                        Spacer(modifier = Modifier.width(10.dp))
+                                        Text(suggestion, color = cigar,
+                                            fontWeight = FontWeight.Medium, fontSize = 15.sp)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
 
             Spacer(modifier = Modifier.height(32.dp))
 
@@ -169,14 +287,18 @@ fun CreateTaskScreen(
                             iconName = iconNames.getOrElse(selectedMark) { "Flag" },
                             colorHex = colorHexValues.getOrElse(selectedColor) { "#FFD700" }
                         )
-                        
+
                         if (roadmapId == "library") {
                             roadmapViewModel.saveTaskToLibrary(newTask) { success ->
                                 if (success) onBack()
                             }
                         } else {
+                            // Save to both the roadmap's sub-collection AND the library
                             roadmapViewModel.saveTask(roadmapId, newTask) { success ->
-                                if (success) onBack()
+                                if (success) {
+                                    roadmapViewModel.saveTaskToLibrary(newTask) {}  // ← also save to library
+                                    onBack()
+                                }
                             }
                         }
                     }
@@ -191,7 +313,6 @@ fun CreateTaskScreen(
 @Composable
 fun ForgeTaskTopBar(onBack: () -> Unit) {
     val cigar = colorResource(R.color.cigar)
-    val cream = colorResource(R.color.fresh_cream)
 
     Row(
         modifier = Modifier
@@ -217,21 +338,6 @@ fun ForgeTaskTopBar(onBack: () -> Unit) {
             color = cigar,
             letterSpacing = 0.5.sp
         )
-
-        // Account Icon (Right side as requested, same style as RoadMapEditorScreen)
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(RoundedCornerShape(20.dp))
-                .background(cigar)
-        ) {
-            Icon(
-                Icons.Default.Person,
-                contentDescription = "Account",
-                tint = cream,
-                modifier = Modifier.align(Alignment.Center).size(24.dp)
-            )
-        }
     }
 }
 

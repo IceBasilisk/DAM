@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -181,57 +180,61 @@ fun TaskLibraryScreen(
     }
 }
 
-data class TaskItemData(val title: String, val color: Color, val icon: ImageVector)
-
 @Composable
-fun LibraryTaskCard(task: Task) {
+fun LibraryTaskCard(task: Task, onDelete: () -> Unit = {}) {
     val brown = colorResource(R.color.cigar)
     val cardBg = Color.White
     val lighterBrown = colorResource(R.color.old_rose)
-
+    var showMenu by remember { mutableStateOf(false) }
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(100.dp)
+        modifier = Modifier.fillMaxWidth().height(100.dp)
             .border(1.dp, lighterBrown, RoundedCornerShape(20.dp)),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = cardBg),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp),
+            modifier = Modifier.fillMaxSize().padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(RoundedCornerShape(16.dp))
+                modifier = Modifier.size(60.dp).clip(RoundedCornerShape(16.dp))
                     .background(Color(task.colorHex.toColorInt()))
                     .border(2.dp, lighterBrown, RoundedCornerShape(16.dp)),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(iconFromName(task.iconName), contentDescription = null, tint = brown, modifier = Modifier.size(32.dp))
+                Icon(iconFromName(task.iconName), contentDescription = null,
+                    tint = brown, modifier = Modifier.size(32.dp))
             }
 
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 16.dp)
-            ) {
-                Text(
-                    text = task.name,
-                    color = brown,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
-                )
+            Text(
+                text = task.name,
+                modifier = Modifier.weight(1f).padding(horizontal = 16.dp),
+                color = brown, fontWeight = FontWeight.Bold, fontSize = 18.sp
+            )
+
+            Box {
+                IconButton(onClick = { showMenu = true }) {
+                    Icon(Icons.Default.Edit, contentDescription = "Options",
+                        tint = brown, modifier = Modifier.size(20.dp))
+                }
+                DropdownMenu(
+                    expanded = showMenu,
+                    onDismissRequest = { showMenu = false },
+                    modifier = Modifier.background(cardBg)
+                        .border(1.dp, lighterBrown, RoundedCornerShape(8.dp))
+                ) {
+                    DropdownMenuItem(
+                        text = { Text("Delete Task", color = brown, fontWeight = FontWeight.Bold) },
+                        onClick = { onDelete(); showMenu = false },
+                        leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null, tint = brown) }
+                    )
+                }
             }
         }
     }
 }
-
 @Composable
 fun TaskLibraryTopBar(onLogoutClick: () -> Unit = {}) {
     val brown = colorResource(R.color.cigar)

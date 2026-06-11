@@ -11,9 +11,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.*
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.PersistentCacheSettings
 
 enum class Screen {
-    Splash, Login, SignUp, MainMenu, TaskLibrary, RoadMapEditor, CreateTask
+    Splash, Login, SignUp, MainMenu, TaskLibrary, RoadMapEditor, CreateTask, Freemium
 }
 
 class MainActivity : ComponentActivity() {
@@ -22,6 +25,18 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val settings = FirebaseFirestoreSettings.Builder()
+            .setLocalCacheSettings(
+                PersistentCacheSettings.newBuilder()
+                    .setSizeBytes(50L * 1024 * 1024) // 50MB cache
+                    .build()
+            )
+            .build()
+        FirebaseFirestore.getInstance().firestoreSettings = settings
+
+        MusicManager.start(this)
+
         setContent {
             MasterPlannerTheme {
                 var currentScreen by remember { mutableStateOf(Screen.Splash) }
@@ -66,7 +81,10 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     Screen.MainMenu -> {
-                        LaunchedEffect(Unit) { roadmapViewModel.listenToRoadmaps() }
+                        LaunchedEffect(Unit) {
+                            roadmapViewModel.listenToRoadmaps()
+                            roadmapViewModel.startMonitoringNetwork(applicationContext)
+                        }
 
                         MainMenuScreen(
                             roadmapViewModel = roadmapViewModel,
@@ -98,22 +116,43 @@ class MainActivity : ComponentActivity() {
                             roadmapViewModel = roadmapViewModel,
                             onCreateTask = { currentScreen = Screen.CreateTask },
                             onNavigate = navigate,
-                            onBack = { currentScreen = Screen.MainMenu }  // ← add this
+                            onBack = { currentScreen = Screen.MainMenu },
+                            onFreemium = { currentScreen = Screen.Freemium }
                         )
                     }
                     Screen.CreateTask -> {
                         CreateTaskScreen(
                             roadmapId = currentRoadmapId,
+                            roadmapTitle = roadmapViewModel.currentRoadmap.value?.title ?: "",  // ← add
                             roadmapViewModel = roadmapViewModel,
-                            onBack = { 
-                                currentScreen = if (currentRoadmapId == "library") Screen.TaskLibrary else Screen.RoadMapEditor
-                            },
+                            onBack = { currentScreen = Screen.RoadMapEditor },
                             onNavigate = navigate
+                        )
+                    }
+
+                    Screen.Freemium -> {
+                        FreemiumScreen(
+                            onDismiss = { currentScreen = Screen.MainMenu }
                         )
                     }
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        MusicManager.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MusicManager.pause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        MusicManager.release()
     }
 
     private fun loginUser(email: String, password: String, onComplete: (Boolean) -> Unit) {

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import a47514.masterplanner.R
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun SplashScreen(onTimeout: () -> Unit = {}) {
@@ -51,7 +52,7 @@ fun SplashScreen(onTimeout: () -> Unit = {}) {
         )
         entryAlpha.animateTo(1f, tween(1000))
         
-        delay(2500) // Total splash duration
+        delay(2500.milliseconds) // Total splash duration
         onTimeout()
     }
 
