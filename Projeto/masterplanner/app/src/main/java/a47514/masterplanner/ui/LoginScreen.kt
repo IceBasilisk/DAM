@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -25,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import a47514.masterplanner.R
+import a47514.masterplanner.ui.theme.LocalAppColors
 
 @Composable
 fun LoginScreen(
@@ -32,11 +32,13 @@ fun LoginScreen(
     onSignUpClick: () -> Unit = {},
     onResetPasswordClick: () -> Unit = {}
 ) {
-    val cream = colorResource(R.color.fresh_cream)
-    val cigar = colorResource(R.color.cigar)
-    val gold = colorResource(R.color.gold)
-    val seaBlue = colorResource(R.color.sea_blue)
-    val cheesecake = colorResource(R.color.cheesecake)
+    val colors = LocalAppColors.current
+    val cigar = colors.cigar
+    val cream = colors.cream
+    val gold = colors.gold
+    val cheesecake = colors.cheesecake
+    val seaBlue = colors.seaBlue
+    val darkBrown = colors.warmDarkBrown
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -153,7 +155,9 @@ fun LoginScreen(
                                 focusedContainerColor = cream,
                                 unfocusedContainerColor = cream,
                                 focusedBorderColor = cigar,
-                                unfocusedBorderColor = cigar.copy(alpha = 0.3f)
+                                unfocusedBorderColor = cigar.copy(alpha = 0.3f),
+                                focusedTextColor = darkBrown,
+                                unfocusedTextColor = darkBrown
                             )
                         )
                     }

@@ -19,7 +19,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -29,16 +28,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import a47514.masterplanner.R
+import a47514.masterplanner.ui.theme.LocalAppColors
 
 @Composable
 fun CreateAccountScreen(
     onCreateAccountClick: (String, String, String) -> Unit = { _, _, _ -> },
     onLoginClick: () -> Unit = {}
 ) {
-    val cream = colorResource(R.color.fresh_cream)
-    val cigar = colorResource(R.color.cigar)
-    val gold = colorResource(R.color.gold)
-    val cheesecake = colorResource(R.color.cheesecake)
+    val colors = LocalAppColors.current
+    val cream = colors.cream
+    val gold = colors.gold
+    val cigar = colors.cigar
+    val cheesecake = colors.cheesecake
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }

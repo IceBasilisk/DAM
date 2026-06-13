@@ -2,6 +2,7 @@ package a47514.masterplanner.ui
 
 import a47514.masterplanner.R
 import a47514.masterplanner.Screen
+import a47514.masterplanner.ui.theme.LocalAppColors
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -26,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,10 +37,11 @@ fun MasterPlannerBottomBar(
     currentScreen: Screen,
     onNavigate: (Screen) -> Unit
 ) {
-    val brown = colorResource(R.color.cigar)
-    val cream = colorResource(R.color.fresh_cream)
-    val gold = colorResource(R.color.gold)
-    val lighterBrown = colorResource(R.color.old_rose)
+    val colors = LocalAppColors.current
+    val brown = colors.brown
+    val cream = colors.cream
+    val gold = colors.gold
+    val lighterBrown = colors.lighterBrown
 
     NavigationBar(
         containerColor = cream,

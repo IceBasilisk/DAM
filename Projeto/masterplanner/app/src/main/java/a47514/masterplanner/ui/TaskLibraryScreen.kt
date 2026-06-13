@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,14 +26,16 @@ import a47514.masterplanner.Screen
 import a47514.masterplanner.data.RoadmapViewModel
 import a47514.masterplanner.data.Task
 import a47514.masterplanner.data.Utility.iconFromName
+import a47514.masterplanner.ui.theme.LocalAppColors
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.core.graphics.toColorInt
 
 @Composable
@@ -44,15 +45,20 @@ fun TaskLibraryScreen(
     onLogoutClick: () -> Unit = {},
     onNavigate: (Screen) -> Unit = {}
 ) {
-    val cream = colorResource(R.color.fresh_cream)
-    val brown = colorResource(R.color.cigar)
-    val gold = colorResource(R.color.gold)
-    val cheesecake = colorResource(R.color.cheesecake)
-    val lighterBrown = colorResource(R.color.old_rose)
+    val colors = LocalAppColors.current
+    val cream = colors.cream
+    val brown = colors.brown
+    val gold = colors.gold
+    val cheesecake = colors.cheesecake
+    val lighterBrown = colors.lighterBrown
+
+    var searchQuery by remember { mutableStateOf("") }
 
     val libraryTasks by roadmapViewModel.libraryTasks.collectAsState()
-
-    LaunchedEffect(Unit) { roadmapViewModel.listenToTaskLibrary() }
+    val filteredTasks = remember(libraryTasks, searchQuery) {
+        if (searchQuery.isBlank()) libraryTasks
+        else libraryTasks.filter { it.name.contains(searchQuery, ignoreCase = true) }
+    }
 
     Scaffold(
         topBar = { TaskLibraryTopBar(onLogoutClick = onLogoutClick) },
@@ -64,8 +70,18 @@ fun TaskLibraryScreen(
         },
         containerColor = cream
     ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
-            DottedBackground(color = lighterBrown)
+        Box(modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxSize()
+            .drawBehind {
+                val dotRadius = 2f
+                val spacing = 40f
+                for (x in 0..(size.width / spacing).toInt()) {
+                    for (y in 0..(size.height / spacing).toInt()) {
+                        drawCircle(color = lighterBrown, radius = dotRadius, center = Offset(x * spacing, y * spacing))
+                    }
+                }
+            }) {
 
             LazyColumn(
                 modifier = Modifier
@@ -78,8 +94,8 @@ fun TaskLibraryScreen(
                 // Search Bar
                 item {
                     OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
+                        value = searchQuery,
+                        onValueChange = {searchQuery = it},
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp)
@@ -113,7 +129,7 @@ fun TaskLibraryScreen(
                     }
                 }
 
-                items(libraryTasks) { task ->
+                items(filteredTasks) { task ->
                     LibraryTaskCard(task)
                 }
 
@@ -182,16 +198,18 @@ fun TaskLibraryScreen(
 
 @Composable
 fun LibraryTaskCard(task: Task, onDelete: () -> Unit = {}) {
-    val brown = colorResource(R.color.cigar)
-    val cardBg = Color.White
-    val lighterBrown = colorResource(R.color.old_rose)
+    val colors = LocalAppColors.current
+    val brown = colors.brown
+    val lighterBrown = colors.lighterBrown
+    val white = colors.white
+
     var showMenu by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier.fillMaxWidth().height(100.dp)
             .border(1.dp, lighterBrown, RoundedCornerShape(20.dp)),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = cardBg),
+        colors = CardDefaults.cardColors(containerColor = white),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -222,7 +240,7 @@ fun LibraryTaskCard(task: Task, onDelete: () -> Unit = {}) {
                 DropdownMenu(
                     expanded = showMenu,
                     onDismissRequest = { showMenu = false },
-                    modifier = Modifier.background(cardBg)
+                    modifier = Modifier.background(white)
                         .border(1.dp, lighterBrown, RoundedCornerShape(8.dp))
                 ) {
                     DropdownMenuItem(
@@ -237,8 +255,10 @@ fun LibraryTaskCard(task: Task, onDelete: () -> Unit = {}) {
 }
 @Composable
 fun TaskLibraryTopBar(onLogoutClick: () -> Unit = {}) {
-    val brown = colorResource(R.color.cigar)
-    val cream = colorResource(R.color.fresh_cream)
+    val colors = LocalAppColors.current
+    val cigar = colors.cigar
+    val cream = colors.cream
+
     var showMenu by remember { mutableStateOf(false) }
 
     Row(
@@ -254,7 +274,7 @@ fun TaskLibraryTopBar(onLogoutClick: () -> Unit = {}) {
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(brown)
+                .background(cigar)
                 .clickable { showMenu = true }
         ) {
             Icon(
@@ -267,13 +287,13 @@ fun TaskLibraryTopBar(onLogoutClick: () -> Unit = {}) {
             DropdownMenu(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false },
-                modifier = Modifier.background(cream).border(1.dp, brown, RoundedCornerShape(8.dp))
+                modifier = Modifier.background(cream).border(1.dp, cigar, RoundedCornerShape(8.dp))
             ) {
                 DropdownMenuItem(
                     text = {
                         Text(
                             "Logout",
-                            color = brown,
+                            color = cigar,
                             fontWeight = FontWeight.Bold
                         )
                     },
@@ -285,7 +305,7 @@ fun TaskLibraryTopBar(onLogoutClick: () -> Unit = {}) {
                         Icon(
                             Icons.Default.Logout,
                             contentDescription = null,
-                            tint = brown
+                            tint = cigar
                         )
                     }
                 )
@@ -296,7 +316,7 @@ fun TaskLibraryTopBar(onLogoutClick: () -> Unit = {}) {
             text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.ExtraBold,
-            color = brown,
+            color = cigar,
             letterSpacing = 1.sp
         )
     }

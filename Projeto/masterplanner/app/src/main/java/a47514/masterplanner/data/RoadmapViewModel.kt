@@ -36,6 +36,10 @@ class RoadmapViewModel : ViewModel() {
 
     private val _isOnline = MutableStateFlow(true)
     val isOnline: StateFlow<Boolean> = _isOnline
+
+    init {
+        listenToTaskLibrary()
+    }
     fun listenToRoadmaps() {
         Utility.collectionReferenceForRoadmaps
             .orderBy("timestamp", Query.Direction.DESCENDING)

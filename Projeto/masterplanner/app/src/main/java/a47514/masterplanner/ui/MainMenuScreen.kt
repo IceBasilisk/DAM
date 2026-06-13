@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,6 +26,7 @@ import a47514.masterplanner.R
 import a47514.masterplanner.Screen
 import a47514.masterplanner.data.Roadmap
 import a47514.masterplanner.data.RoadmapViewModel
+import a47514.masterplanner.ui.theme.LocalAppColors
 import androidx.compose.foundation.lazy.items
 import androidx.core.graphics.toColorInt
 
@@ -41,6 +41,11 @@ fun MainMenuScreen(
     val context = androidx.compose.ui.platform.LocalContext.current
     val isOnline by roadmapViewModel.isOnline.collectAsState()
 
+    val colors = LocalAppColors.current
+    val cream = colors.cream
+    val gold = colors.gold
+    val cigar = colors.cigar
+
     Scaffold(
         topBar = { MasterPlannerTopBar(onLogoutClick) },
         bottomBar = {
@@ -49,7 +54,7 @@ fun MainMenuScreen(
                 onNavigate = { screen -> onNavigate(screen, null) }
             )
         },
-        containerColor = colorResource(R.color.fresh_cream)
+        containerColor = cream
     ) { innerPadding ->
         if (showDialog) {
             CreateRoadmapDialog(
@@ -111,22 +116,22 @@ fun MainMenuScreen(
                             .fillMaxWidth()
                             .height(80.dp)
                             .padding(vertical = 8.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.gold)),
+                        colors = ButtonDefaults.buttonColors(containerColor = gold),
                         shape = RoundedCornerShape(16.dp),
                         elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
-                        border = BorderStroke(width = 2.dp, color = colorResource(R.color.cigar))
+                        border = BorderStroke(width = 2.dp, color = cigar)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 Icons.Default.AddLocationAlt,
                                 contentDescription = null,
-                                tint = colorResource(R.color.cigar),
+                                tint = cigar,
                                 modifier = Modifier.size(28.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = stringResource(R.string.create_roadmap_button),
-                                color = colorResource(R.color.cigar),
+                                color = cigar,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 18.sp
                             )
@@ -142,8 +147,10 @@ fun MainMenuScreen(
 
 @Composable
 fun MasterPlannerTopBar(onLogoutClick: () -> Unit = {}) {
-    val brown = colorResource(R.color.cigar)
-    val cream = colorResource(R.color.fresh_cream)
+    val colors = LocalAppColors.current
+    val cream = colors.cream
+    val brown = colors.brown
+
     var showMenu by remember { mutableStateOf(false) }
 
     Row(
@@ -224,12 +231,15 @@ fun RoadmapCard(
     onClick: () -> Unit = {},
     onDeleteRoadmap: (deleteTasks: Boolean) -> Unit = {}
 ) {
-    val brown = colorResource(R.color.cigar)
-    val cream = colorResource(R.color.fresh_cream)
+    val colors = LocalAppColors.current
+    val cream = colors.cream
+    val brown = colors.brown
+    val lauren = colors.lauren
+
     val cardBg = try {
         Color(colorHex.toColorInt())
     } catch (e: Exception) {
-        colorResource(R.color.lauren)
+        lauren
     }
 
     var showMenu by remember { mutableStateOf(false) }
@@ -370,16 +380,17 @@ fun CreateRoadmapDialog(
         Icons.Default.Anchor,
         Icons.Default.Explore
     )
-    val colorOptions = listOf(
-        colorResource(R.color.gold),
-        colorResource(R.color.highlighter_blue),
-        colorResource(R.color.pale_apricot)
-    )
+    val colors = LocalAppColors.current
+    val cigar = colors.cigar
+    val cream = colors.cream
+    val gold = colors.gold
+    val cheesecake = colors.cheesecake
 
-    val cigar = colorResource(R.color.cigar)
-    val cream = colorResource(R.color.fresh_cream)
-    val gold = colorResource(R.color.gold)
-    val cheesecake = colorResource(R.color.cheesecake)
+    val colorOptions = listOf(
+        gold,
+        colors.highlighterBlue,
+        colors.paleApricot
+    )
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(

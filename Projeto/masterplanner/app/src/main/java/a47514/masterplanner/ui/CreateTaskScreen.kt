@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,6 +28,7 @@ import a47514.masterplanner.R
 import a47514.masterplanner.Screen
 import a47514.masterplanner.data.RoadmapViewModel
 import a47514.masterplanner.data.Task
+import a47514.masterplanner.ui.theme.LocalAppColors
 
 @Composable
 fun CreateTaskScreen(
@@ -38,8 +38,11 @@ fun CreateTaskScreen(
     onBack: () -> Unit = {},
     onNavigate: (Screen) -> Unit = {},
 ) {
-    val cream = colorResource(R.color.fresh_cream)
-    val cigar = colorResource(R.color.cigar)
+    val colors = LocalAppColors.current
+    val cigar = colors.cigar
+    val cream = colors.cream
+    val paleApricot = colors.paleApricot
+    val cheesecake = colors.cheesecake
 
     var taskName by remember { mutableStateOf("") }
     var selectedMark by remember { mutableIntStateOf(0) }
@@ -109,7 +112,7 @@ fun CreateTaskScreen(
                     )
                     Surface(
                         modifier = Modifier.matchParentSize(),
-                        color = colorResource(R.color.pale_apricot),
+                        color = paleApricot,
                         shape = RoundedCornerShape(12.dp),
                         border = BorderStroke(2.dp, cigar)
                     ) {
@@ -148,7 +151,7 @@ fun CreateTaskScreen(
                     hasAttempted && suggestedNames.isEmpty() -> {
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
-                            color = colorResource(R.color.cheesecake),
+                            color = cheesecake,
                             shape = RoundedCornerShape(10.dp),
                             border = BorderStroke(1.dp, cigar.copy(alpha = 0.3f))
                         ) {
@@ -182,7 +185,7 @@ fun CreateTaskScreen(
                                             taskName = suggestion
                                             roadmapViewModel.clearSuggestions()
                                         },
-                                    color = colorResource(R.color.cheesecake),
+                                    color = cheesecake,
                                     shape = RoundedCornerShape(10.dp),
                                     border = BorderStroke(1.dp, cigar.copy(alpha = 0.4f))
                                 ) {
@@ -312,7 +315,7 @@ fun CreateTaskScreen(
 
 @Composable
 fun ForgeTaskTopBar(onBack: () -> Unit) {
-    val cigar = colorResource(R.color.cigar)
+    val cigar = LocalAppColors.current.cigar
 
     Row(
         modifier = Modifier
@@ -345,8 +348,9 @@ fun ForgeTaskTopBar(onBack: () -> Unit) {
 
 @Composable
 fun PirateTextField(value: String, onValueChange: (String) -> Unit, placeholder: String) {
-    val cigar = colorResource(R.color.cigar)
-    val cheesecake = colorResource(R.color.cheesecake)
+    val colors = LocalAppColors.current
+    val cigar = colors.cigar
+    val cheesecake = colors.cheesecake
 
     Box(modifier = Modifier.fillMaxWidth()) {
         // Hard Shadow
@@ -375,9 +379,10 @@ fun PirateTextField(value: String, onValueChange: (String) -> Unit, placeholder:
 
 @Composable
 fun MarkItem(label: String, icon: ImageVector, isSelected: Boolean, onClick: () -> Unit) {
-    val cigar = colorResource(R.color.cigar)
-    val cheesecake = colorResource(R.color.cheesecake)
-    val gold = colorResource(R.color.gold)
+    val colors = LocalAppColors.current
+    val cheesecake = colors.cheesecake
+    val gold = colors.gold
+    val cigar = colors.cigar
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
@@ -414,14 +419,15 @@ fun MarkItem(label: String, icon: ImageVector, isSelected: Boolean, onClick: () 
 
 @Composable
 fun ColorSelectorCard(selectedColorIndex: Int, onColorSelect: (Int) -> Unit) {
-    val cigar = colorResource(R.color.cigar)
-    val cheesecake = colorResource(R.color.cheesecake)
+    val colors = LocalAppColors.current
+    val cigar = colors.cigar
+    val cheesecake = colors.cheesecake
 
-    val colors = listOf(
-        colorResource(R.color.gold),
-        colorResource(R.color.highlighter_blue),
-        colorResource(R.color.cocoa_brown),
-        colorResource(R.color.paradise_green)
+    val colorsList = listOf(
+        colors.gold,
+        colors.highlighterBlue,
+        colors.cocoaBrown,
+        colors.paradiseGreen
     )
 
     Box(modifier = Modifier.fillMaxWidth().height(80.dp)) {
@@ -442,7 +448,7 @@ fun ColorSelectorCard(selectedColorIndex: Int, onColorSelect: (Int) -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            colors.forEachIndexed { index, color ->
+            colorsList.forEachIndexed { index, color ->
                 Box(
                     modifier = Modifier
                         .size(44.dp)
@@ -462,8 +468,9 @@ fun ColorSelectorCard(selectedColorIndex: Int, onColorSelect: (Int) -> Unit) {
 
 @Composable
 fun PirateButton(text: String, icon: ImageVector, onClick: () -> Unit) {
-    val cigar = colorResource(R.color.cigar)
-    val gold = colorResource(R.color.gold)
+    val colors = LocalAppColors.current
+    val cigar = colors.cigar
+    val gold = colors.gold
 
     Box(
         modifier = Modifier

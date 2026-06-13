@@ -21,19 +21,19 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import a47514.masterplanner.R
 
 import a47514.masterplanner.Screen
 import a47514.masterplanner.data.RoadmapViewModel
+import a47514.masterplanner.ui.theme.LocalAppColors
 import android.widget.NumberPicker
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.graphics.toColorInt
 
@@ -49,17 +49,18 @@ fun RoadMapEditorScreen(
     val tasks by roadmapViewModel.tasks.collectAsState()
     val currentRoadmap by roadmapViewModel.currentRoadmap.collectAsState()
 
-    val cream = colorResource(R.color.fresh_cream)
-    val brown = colorResource(R.color.cigar)
-    val gold = colorResource(R.color.gold)
-    val lighterBrown = colorResource(R.color.old_rose)
+    val colors = LocalAppColors.current
+    val cream = colors.cream
+    val brown = colors.brown
+    val gold = colors.gold
+    val lighterBrown = colors.lighterBrown
 
     var showBootyBag by remember { mutableStateOf(false) }
     var showDurationDialog by remember { mutableStateOf(false) }
     var selectedTaskIndexForDuration by remember { mutableIntStateOf(-1) }
 
     // Load persisted order+durations from Firestore, fall back to tasks-only if empty
-    val currentItems = remember(currentRoadmap, tasks) {
+    val currentItems = remember(currentRoadmap?.itemEntries) {
         val entries = currentRoadmap?.itemEntries ?: emptyList()
         if (entries.isNotEmpty()) {
             entries.map { entry ->
@@ -160,10 +161,16 @@ fun RoadMapEditorScreen(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
+                .drawBehind {
+                    val dotRadius = 2f
+                    val spacing = 40f
+                    for (x in 0..(size.width / spacing).toInt()) {
+                        for (y in 0..(size.height / spacing).toInt()) {
+                            drawCircle(color = lighterBrown, radius = dotRadius, center = Offset(x * spacing, y * spacing))
+                        }
+                    }
+                }
         ) {
-            // Dotted Background
-            DottedBackground(color = lighterBrown)
-
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -244,23 +251,6 @@ sealed class RoadmapItem {
 }
 
 @Composable
-fun DottedBackground(color: Color) {
-    Canvas(modifier = Modifier.fillMaxSize()) {
-        val dotRadius = 2f
-        val spacing = 40f
-        for (x in 0..(size.width / spacing).toInt()) {
-            for (y in 0..(size.height / spacing).toInt()) {
-                drawCircle(
-                    color = color,
-                    radius = dotRadius,
-                    center = Offset(x * spacing, y * spacing)
-                )
-            }
-        }
-    }
-}
-
-@Composable
 fun EditorTaskCard(
     title: String,
     iconName: String = "",
@@ -269,12 +259,15 @@ fun EditorTaskCard(
     onDelete: () -> Unit,
     onAddTime: () -> Unit
 ) {
-    val brown = colorResource(R.color.cigar)
-    val cardBg = colorResource(R.color.cheesecake)
+    val colors = LocalAppColors.current
+    val brown = colors.brown
+    val cheesecake = colors.cheesecake
+    val highlighterBlue = colors.highlighterBlue
+
     val iconBgColor = try {
         Color(colorHex.toColorInt())
     } catch (e: Exception) {
-        colorResource(R.color.highlighter_blue)
+        highlighterBlue
     }
 
     var showMenu by remember { mutableStateOf(false) }
@@ -285,7 +278,7 @@ fun EditorTaskCard(
             .height(80.dp)
             .border(2.dp, brown, RoundedCornerShape(16.dp)),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = cardBg)
+        colors = CardDefaults.cardColors(containerColor = cheesecake)
     ) {
         Row(
             modifier = Modifier
@@ -326,7 +319,7 @@ fun EditorTaskCard(
                 DropdownMenu(
                     expanded = showMenu,
                     onDismissRequest = { showMenu = false },
-                    modifier = Modifier.background(cardBg).border(1.dp, brown, RoundedCornerShape(8.dp))
+                    modifier = Modifier.background(cheesecake).border(1.dp, brown, RoundedCornerShape(8.dp))
                 ) {
                     DropdownMenuItem(
                         text = { Text("Duplicate Task", color = brown, fontWeight = FontWeight.Bold) },
@@ -351,8 +344,9 @@ fun EditorTaskCard(
 
 @Composable
 fun TimerBadge(time: String, onDelete: () -> Unit = {}) {
-    val brown = colorResource(R.color.cigar)
-    val gold = colorResource(R.color.gold)
+    val colors = LocalAppColors.current
+    val brown = colors.brown
+    val gold = colors.gold
 
     Surface(
         color = gold,
@@ -379,10 +373,11 @@ fun TimerBadge(time: String, onDelete: () -> Unit = {}) {
 
 @Composable
 fun AddDurationDialog(onDismiss: () -> Unit, onConfirm: (String, Boolean) -> Unit) {
-    val cigar = colorResource(R.color.cigar)
-    val gold = colorResource(R.color.gold)
-    val cream = colorResource(R.color.fresh_cream)
-    val cheesecake = colorResource(R.color.cheesecake)
+    val colors = LocalAppColors.current
+    val cigar = colors.cigar
+    val gold = colors.gold
+    val cream = colors.cream
+    val cheesecake = colors.cheesecake
 
     var isBefore by remember { mutableStateOf(true) }
     var selectedHour by remember { mutableIntStateOf(3) }
@@ -604,10 +599,11 @@ fun BootyBagDialog(
     onImportSelected: (List<RoadmapItem.Task>) -> Unit,
     onCreateTask: () -> Unit = {}
 ) {
-    val cigar = colorResource(R.color.cigar)
-    val gold = colorResource(R.color.gold)
-    val cream = colorResource(R.color.fresh_cream)
-    val cheesecake = colorResource(R.color.cheesecake)
+    val colors = LocalAppColors.current
+    val cigar = colors.cigar
+    val cream = colors.cream
+    val gold = colors.gold
+    val cheesecake = colors.cheesecake
 
     var searchQuery by remember { mutableStateOf("") }
     val selectedTaskIds = remember { mutableStateListOf<String>() }
@@ -617,8 +613,6 @@ fun BootyBagDialog(
         if (searchQuery.isBlank()) libraryTasks
         else libraryTasks.filter { it.name.contains(searchQuery, ignoreCase = true) }
     }
-
-    LaunchedEffect(Unit) { roadmapViewModel.listenToTaskLibrary() }
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -795,10 +789,10 @@ fun RoadMapEditorTopBar(
     title: String,
     onSaveAndBack: () -> Unit
 ) {
-    val brown = colorResource(R.color.cigar)
-    val cream = colorResource(R.color.fresh_cream)
-    val gold = colorResource(R.color.gold)
-
+    val colors = LocalAppColors.current
+    val brown = colors.brown
+    val cream = colors.cream
+    val gold = colors.gold
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -852,9 +846,10 @@ fun RoadMapEditorTopBar(
 
 @Composable
 fun BootyTaskCard(task: BootyTaskData, isSelected: Boolean, onToggle: () -> Unit) {
-    val cigar = colorResource(R.color.cigar)
-    val gold = colorResource(R.color.gold)
-    
+    val colors = LocalAppColors.current
+    val cigar = colors.cigar
+    val gold = colors.gold
+
     val cardBg = if (isSelected) cigar else Color.White
     val textColor = if (isSelected) Color.White else cigar
 
