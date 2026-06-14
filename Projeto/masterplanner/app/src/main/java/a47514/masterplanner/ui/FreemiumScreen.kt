@@ -1,5 +1,7 @@
 package a47514.masterplanner.ui
 
+import a47514.masterplanner.Screen
+import a47514.masterplanner.data.PremiumManager
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,16 +24,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import a47514.masterplanner.ui.theme.LocalAppColors
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun FreemiumScreen(
-    onDismiss: () -> Unit = {}
+    onDismiss: () -> Unit = {},
+    onNavigate: (Screen) -> Unit = {}
 ) {
     val colors = LocalAppColors.current
     val brown = colors.brown
     val cream = colors.cream
     val gold = colors.gold
     val cheesecake = colors.cheesecake
+
+    val context = LocalContext.current
+    val isPremium by PremiumManager.isPremium.collectAsState()
 
     Box(
         modifier = Modifier
@@ -49,6 +59,17 @@ fun FreemiumScreen(
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Row(
+                modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(8.dp)
+            ) {
+                IconButton(
+                    onClick = onDismiss,
+                    modifier = Modifier.size(44.dp).clip(RoundedCornerShape(12.dp)).background(gold)
+                ) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = brown)
+                }
+            }
+
             Spacer(modifier = Modifier.height(48.dp))
 
             // Treasure chest icon
@@ -88,6 +109,45 @@ fun FreemiumScreen(
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Medium
             )
+
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp),
+                color = if (isPremium) gold.copy(alpha = 0.2f) else cream.copy(alpha = 0.1f),
+                border = BorderStroke(2.dp, if (isPremium) gold else cream.copy(alpha = 0.3f))
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(20.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column {
+                        Text(
+                            text = if (isPremium) "⚔  CAPTAIN'S EDITION" else "⚓  FREE TIER",
+                            color = if (isPremium) gold else cream.copy(alpha = 0.7f),
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 14.sp,
+                            letterSpacing = 1.sp
+                        )
+                        Text(
+                            text = if (isPremium) "Unlimited roadmaps & tasks" else "3 roadmaps · 6 tasks each",
+                            color = if (isPremium) gold.copy(alpha = 0.7f) else cream.copy(alpha = 0.5f),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                    Switch(
+                        checked = isPremium,
+                        onCheckedChange = { PremiumManager.setPremium(context, it) },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = brown,
+                            checkedTrackColor = gold,
+                            uncheckedThumbColor = cream,
+                            uncheckedTrackColor = cream.copy(alpha = 0.3f)
+                        )
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.height(36.dp))
 

@@ -9,5 +9,6 @@ data class Task(
     val iconName: String = "",
     val colorHex: String = "",
     val durationMinutes: Int = 0,
+    val sortOrder: Int = 0,
     @ServerTimestamp val timestamp: Timestamp? = null
 )

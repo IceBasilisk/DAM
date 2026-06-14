@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import a47514.masterplanner.R
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.milliseconds
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun SplashScreen(onTimeout: () -> Unit = {}) {
@@ -91,7 +92,10 @@ fun SplashScreen(onTimeout: () -> Unit = {}) {
                 style = MaterialTheme.typography.displaySmall,
                 fontWeight = FontWeight.Black,
                 letterSpacing = 6.sp,
-                modifier = Modifier.scale(entryScale.value)
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .scale(entryScale.value)
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -103,7 +107,10 @@ fun SplashScreen(onTimeout: () -> Unit = {}) {
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.ExtraBold,
                 letterSpacing = 4.sp,
-                modifier = Modifier.scale(entryScale.value)
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .scale(entryScale.value)
             )
         }
     }

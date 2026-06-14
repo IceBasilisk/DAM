@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 object GeminiService {
 
-    private const val API_KEY = "AQ.Ab8RN6LCaLG00o5z36_Vp2p3HlBN3UPe8Kaygr5_lgmqUNt_fg"
+    private const val API_KEY = "AQ.Ab8RN6IyxORw6Cx3b7jsZXlWNP1Y-dDQfCGbKVahZDb4enuMbw"
     private const val MODEL = "gemini-2.5-flash-lite" // same model as AIAssistantGemini
 
     private val client = OkHttpClient.Builder()
@@ -35,7 +35,7 @@ object GeminiService {
             .toString()
 
         return Request.Builder()
-            .url("https://generativelanguage.googleapis.com/v1/models/$MODEL:generateContent?key=$API_KEY")
+            .url("https://generativelanguage.googleapis.com/v1beta/models/$MODEL:generateContent?key=$API_KEY")
             .addHeader("Content-Type", "application/json")
             .post(requestBody.toRequestBody("application/json".toMediaTypeOrNull()))
             .build()

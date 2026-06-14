@@ -1,7 +1,7 @@
 package a47514.masterplanner.ui
 
-import a47514.masterplanner.R
 import a47514.masterplanner.Screen
+import a47514.masterplanner.data.PremiumManager
 import a47514.masterplanner.ui.theme.LocalAppColors
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -21,8 +21,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.LibraryBooks
 import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,6 +45,8 @@ fun MasterPlannerBottomBar(
     val cream = colors.cream
     val gold = colors.gold
     val lighterBrown = colors.lighterBrown
+
+    val isPremium by PremiumManager.isPremium.collectAsState()
 
     NavigationBar(
         containerColor = cream,
@@ -72,6 +77,24 @@ fun MasterPlannerBottomBar(
                 indicatorColor = gold,
                 unselectedIconColor = lighterBrown,
                 unselectedTextColor = lighterBrown
+            )
+        )
+        NavigationBarItem(
+            selected = currentScreen == Screen.Freemium,
+            onClick = { onNavigate(Screen.Freemium) },
+            icon = {
+                Icon(
+                    Icons.Default.WorkspacePremium,
+                    contentDescription = null
+                )
+            },
+            label = { Text(if (isPremium) "PREMIUM" else "UPGRADE") },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = brown,
+                selectedTextColor = brown,
+                indicatorColor = if (isPremium) gold else lighterBrown.copy(alpha = 0.3f),
+                unselectedIconColor = if (isPremium) gold else lighterBrown,
+                unselectedTextColor = if (isPremium) gold else lighterBrown
             )
         )
     }

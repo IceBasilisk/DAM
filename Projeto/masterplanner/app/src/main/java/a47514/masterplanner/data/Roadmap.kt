@@ -9,5 +9,6 @@ data class Roadmap(
     val iconName: String = "",
     val colorHex: String = "",
     val itemEntries: List<RoadmapItemEntry> = emptyList(),
+    val sortOrder: Int = 0,
     @ServerTimestamp val timestamp: Timestamp? = null
 )

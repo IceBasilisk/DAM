@@ -1,5 +1,6 @@
 package a47514.masterplanner
 
+import a47514.masterplanner.data.PremiumManager
 import a47514.masterplanner.data.RoadmapViewModel
 import a47514.masterplanner.data.Utility
 import a47514.masterplanner.ui.*
@@ -36,11 +37,13 @@ class MainActivity : ComponentActivity() {
         FirebaseFirestore.getInstance().firestoreSettings = settings
 
         MusicManager.start(this)
+        PremiumManager.init(this)
 
         setContent {
             MasterPlannerTheme {
                 var currentScreen by remember { mutableStateOf(Screen.Splash) }
                 var currentRoadmapId by remember { mutableStateOf("") }
+                var previousScreen by remember { mutableStateOf(Screen.MainMenu) }
                 val auth = FirebaseAuth.getInstance()
 
                 val navigate: (Screen) -> Unit = { screen ->
@@ -100,6 +103,7 @@ class MainActivity : ComponentActivity() {
                             roadmapViewModel = roadmapViewModel,
                             onCreateTask = {
                                 currentRoadmapId = "library"
+                                previousScreen = Screen.TaskLibrary
                                 currentScreen = Screen.CreateTask
                             },
                             onLogoutClick = { auth.signOut(); currentScreen = Screen.Login },
@@ -114,7 +118,10 @@ class MainActivity : ComponentActivity() {
                         RoadMapEditorScreen(
                             roadmapId = currentRoadmapId,
                             roadmapViewModel = roadmapViewModel,
-                            onCreateTask = { currentScreen = Screen.CreateTask },
+                            onCreateTask = {
+                                currentScreen = Screen.CreateTask
+                                previousScreen = Screen.TaskLibrary
+                                           },
                             onNavigate = navigate,
                             onBack = { currentScreen = Screen.MainMenu },
                             onFreemium = { currentScreen = Screen.Freemium }
@@ -123,16 +130,16 @@ class MainActivity : ComponentActivity() {
                     Screen.CreateTask -> {
                         CreateTaskScreen(
                             roadmapId = currentRoadmapId,
-                            roadmapTitle = roadmapViewModel.currentRoadmap.value?.title ?: "",  // ← add
                             roadmapViewModel = roadmapViewModel,
-                            onBack = { currentScreen = Screen.RoadMapEditor },
+                            onBack = { currentScreen = previousScreen },
                             onNavigate = navigate
                         )
                     }
 
                     Screen.Freemium -> {
                         FreemiumScreen(
-                            onDismiss = { currentScreen = Screen.MainMenu }
+                            onDismiss = { currentScreen = Screen.MainMenu },
+                            onNavigate = navigate
                         )
                     }
                 }

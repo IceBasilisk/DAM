@@ -24,11 +24,15 @@ import androidx.compose.ui.window.Dialog
 import a47514.masterplanner.R
 
 import a47514.masterplanner.Screen
+import a47514.masterplanner.data.PremiumManager
 import a47514.masterplanner.data.Roadmap
 import a47514.masterplanner.data.RoadmapViewModel
 import a47514.masterplanner.ui.theme.LocalAppColors
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.core.graphics.toColorInt
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @Composable
 fun MainMenuScreen(
@@ -45,6 +49,35 @@ fun MainMenuScreen(
     val cream = colors.cream
     val gold = colors.gold
     val cigar = colors.cigar
+
+    val isPremium by PremiumManager.isPremium.collectAsState()
+
+    // Local mutable list for drag reordering
+    val roadmapList = remember { mutableStateListOf<Roadmap>() }
+
+    LaunchedEffect(roadmaps) {
+        val incomingIds = roadmaps.map { it.id }
+        val currentIds = roadmapList.map { it.id }
+        if (incomingIds != currentIds) {
+            roadmapList.clear()
+            roadmapList.addAll(roadmaps)
+        }
+    }
+
+    val lazyListState = rememberLazyListState()
+    val reorderState = rememberReorderableLazyListState(
+        lazyListState = lazyListState,
+        onMove = { from, to ->
+            roadmapList.add(to.index, roadmapList.removeAt(from.index))
+        }
+    )
+
+    val isDragging = reorderState.isAnyItemDragging
+    LaunchedEffect(isDragging) {
+        if (!isDragging && roadmapList.isNotEmpty()) {
+            roadmapViewModel.reorderRoadmaps(roadmapList.toList())
+        }
+    }
 
     Scaffold(
         topBar = { MasterPlannerTopBar(onLogoutClick) },
@@ -86,27 +119,32 @@ fun MainMenuScreen(
             OfflineBanner(isOnline = isOnline)
 
             LazyColumn(
+                state = lazyListState,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(roadmaps) { roadmap ->
-                    RoadmapCard(
-                        title = roadmap.title,
-                        iconName = roadmap.iconName,
-                        colorHex = roadmap.colorHex,
-                        onClick = { onNavigate(Screen.RoadMapEditor, roadmap.id) },
-                        onDeleteRoadmap = { deleteTasks ->
-                            roadmapViewModel.deleteRoadmapWithTasks(roadmap.id, deleteTasks) {}
-                        }
-                    )
+                items(roadmapList, key = { it.id }) { roadmap ->
+                    ReorderableItem(reorderState, key = roadmap.id) { isDraggingItem ->
+                        RoadmapCard(
+                            title = roadmap.title,
+                            iconName = roadmap.iconName,
+                            colorHex = roadmap.colorHex,
+                            isDragging = isDraggingItem,
+                            dragHandleModifier = Modifier.draggableHandle(),
+                            onClick = { onNavigate(Screen.RoadMapEditor, roadmap.id) },
+                            onDeleteRoadmap = { deleteTasks ->
+                                roadmapViewModel.deleteRoadmapWithTasks(roadmap.id, deleteTasks) {}
+                            }
+                        )
+                    }
                 }
 
                 item {
                     Button(
                         onClick = {
-                            if (roadmaps.size >= 3) {
+                            if (roadmaps.size >= PremiumManager.roadmapLimit) {
                                 onNavigate(Screen.Freemium, null)
                             } else {
                                 showDialog = true
@@ -213,13 +251,6 @@ fun MasterPlannerTopBar(onLogoutClick: () -> Unit = {}) {
             color = brown,
             letterSpacing = 1.sp
         )
-
-        Icon(
-            Icons.Default.Search,
-            contentDescription = "Search",
-            tint = brown,
-            modifier = Modifier.size(28.dp)
-        )
     }
 }
 
@@ -228,6 +259,8 @@ fun RoadmapCard(
     title: String,
     iconName: String = "",
     colorHex: String = "#A3BF95",
+    isDragging: Boolean = false,
+    dragHandleModifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onDeleteRoadmap: (deleteTasks: Boolean) -> Unit = {}
 ) {
@@ -279,6 +312,8 @@ fun RoadmapCard(
         )
     }
 
+    val elevation = if (isDragging) 12.dp else 2.dp
+
     Box(modifier = Modifier.clickable { onClick() }) {
         // Hard shadow
         Box(
@@ -293,15 +328,24 @@ fun RoadmapCard(
                 .height(120.dp),
             shape = RoundedCornerShape(28.dp),
             colors = CardDefaults.cardColors(containerColor = cardBg),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = elevation),
             border = BorderStroke(width = 2.dp, color = brown)
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(20.dp),
+                    .padding(horizontal = 12.dp, vertical = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                Icon(
+                    Icons.Default.DragHandle,
+                    contentDescription = "Drag to reorder",
+                    tint = brown.copy(alpha = 0.35f),
+                    modifier = dragHandleModifier
+                        .size(28.dp)
+                        .padding(end = 4.dp)
+                )
+
                 Box(
                     modifier = Modifier
                         .size(60.dp)
@@ -317,7 +361,7 @@ fun RoadmapCard(
                     )
                 }
 
-                Spacer(modifier = Modifier.width(20.dp))
+                Spacer(modifier = Modifier.width(16.dp))
 
                 Text(
                     text = title,

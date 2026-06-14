@@ -54,7 +54,14 @@ fun CreateTaskScreen(
     val suggestedNames by roadmapViewModel.suggestedTaskNames.collectAsState()
     val isSuggesting by roadmapViewModel.isSuggesting.collectAsState()
 
-    val isInsideRoadmap = roadmapId != "library" && roadmapTitle.isNotBlank()
+    val currentRoadmap by roadmapViewModel.currentRoadmap.collectAsState()
+    val effectiveTitle = when {
+        roadmapTitle.isNotBlank() -> roadmapTitle          // passed in directly
+        currentRoadmap?.title?.isNotBlank() == true -> currentRoadmap!!.title  // loaded after nav
+        roadmapId == "library" -> "general productivity"   // from Task Library
+        else -> ""
+    }
+    val isInsideRoadmap = effectiveTitle.isNotBlank()
 
     Scaffold(
         topBar = {
@@ -101,7 +108,7 @@ fun CreateTaskScreen(
                         .fillMaxWidth()
                         .height(48.dp)
                         .clickable {
-                            if (!isSuggesting) roadmapViewModel.fetchTaskSuggestions(roadmapTitle)
+                            if (!isSuggesting) roadmapViewModel.fetchTaskSuggestions(effectiveTitle)
                         }
                 ) {
                     Box(

@@ -9,6 +9,7 @@ import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import com.google.firebase.firestore.FirebaseFirestore
 
 class RoadmapViewModel : ViewModel() {
     private val _roadmaps = MutableStateFlow<List<Roadmap>>(emptyList())
@@ -42,16 +43,11 @@ class RoadmapViewModel : ViewModel() {
     }
     fun listenToRoadmaps() {
         Utility.collectionReferenceForRoadmaps
-            .orderBy("timestamp", Query.Direction.DESCENDING)
-            .addSnapshotListener { snapshot, error ->
+            .addSnapshotListener { snapshot, error ->      // ← remove orderBy, sort client-side
                 if (error != null || snapshot == null) return@addSnapshotListener
-
                 val list = snapshot.documents
-                    .mapNotNull { doc ->
-                        doc.toObject<Roadmap>()?.copy(id = doc.id)
-                    }
-                    .sortedByDescending { it.timestamp?.seconds ?: 0L } // fallback for null timestamps
-
+                    .mapNotNull { doc -> doc.toObject<Roadmap>()?.copy(id = doc.id) }
+                    .sortedWith(compareBy({ it.sortOrder }, { -(it.timestamp?.seconds ?: 0L) }))
                 _roadmaps.value = list
             }
     }
@@ -119,10 +115,35 @@ class RoadmapViewModel : ViewModel() {
 
     // Delete a task from the library
     fun deleteLibraryTask(taskId: String, onResult: (Boolean) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+
+        // Step 1: Delete from task_library
         Utility.collectionReferenceForTaskLibrary
             .document(taskId)
             .delete()
-            .addOnSuccessListener { onResult(true) }
+            .addOnFailureListener { onResult(false) }
+
+        // Step 2: Fetch all roadmaps and remove the task from their itemEntries
+        Utility.collectionReferenceForRoadmaps
+            .get()
+            .addOnSuccessListener { roadmapSnapshot ->
+                val batch = db.batch()
+
+                for (roadmapDoc in roadmapSnapshot.documents) {
+                    val roadmap = roadmapDoc.toObject<Roadmap>() ?: continue
+                    val updatedEntries = roadmap.itemEntries.filter { entry ->
+                        entry.taskId != taskId
+                    }
+                    // Only update if something actually changed
+                    if (updatedEntries.size != roadmap.itemEntries.size) {
+                        batch.update(roadmapDoc.reference, "itemEntries", updatedEntries)
+                    }
+                }
+
+                batch.commit()
+                    .addOnSuccessListener { onResult(true) }
+                    .addOnFailureListener { onResult(false) }
+            }
             .addOnFailureListener { onResult(false) }
     }
 
@@ -145,13 +166,11 @@ class RoadmapViewModel : ViewModel() {
 
     fun listenToTaskLibrary() {
         Utility.collectionReferenceForTaskLibrary
-            .orderBy("timestamp", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, _ ->
                 val list = snapshot?.documents
                     ?.mapNotNull { doc ->
                         doc.toObject<Task>()?.copy(id = doc.id)
                     }
-                    ?.sortedByDescending { it.timestamp?.seconds ?: 0L } // fallback for null timestamps
                     ?: emptyList()
 
                 _libraryTasks.value = list
@@ -213,5 +232,27 @@ class RoadmapViewModel : ViewModel() {
                 _isOnline.value = online
             }
         }
+    }
+
+    fun reorderRoadmaps(reordered: List<Roadmap>) {
+        _roadmaps.value = reordered   // update UI immediately (optimistic)
+        val db = FirebaseFirestore.getInstance()
+        val batch = db.batch()
+        reordered.forEachIndexed { index, roadmap ->
+            val ref = Utility.collectionReferenceForRoadmaps.document(roadmap.id)
+            batch.update(ref, "sortOrder", index)
+        }
+        batch.commit()   // fire-and-forget — Firestore handles retry
+    }
+
+    fun reorderLibraryTasks(reordered: List<Task>) {
+        _libraryTasks.value = reordered
+        val db = FirebaseFirestore.getInstance()
+        val batch = db.batch()
+        reordered.forEachIndexed { index, task ->
+            val ref = Utility.collectionReferenceForTaskLibrary.document(task.id)
+            batch.update(ref, "sortOrder", index)
+        }
+        batch.commit()
     }
 }
