@@ -55,13 +55,13 @@ fun CreateTaskScreen(
     val isSuggesting by roadmapViewModel.isSuggesting.collectAsState()
 
     val currentRoadmap by roadmapViewModel.currentRoadmap.collectAsState()
+    // True only when this screen was opened from inside a Roadmap (not the Task Library).
+    val isInsideRoadmap = roadmapId != "library" && roadmapId.isNotBlank()
     val effectiveTitle = when {
         roadmapTitle.isNotBlank() -> roadmapTitle          // passed in directly
         currentRoadmap?.title?.isNotBlank() == true -> currentRoadmap!!.title  // loaded after nav
-        roadmapId == "library" -> "general productivity"   // from Task Library
         else -> ""
     }
-    val isInsideRoadmap = effectiveTitle.isNotBlank()
 
     Scaffold(
         topBar = {

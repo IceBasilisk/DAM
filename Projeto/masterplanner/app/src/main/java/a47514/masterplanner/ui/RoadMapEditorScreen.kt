@@ -932,6 +932,7 @@ fun BootyBagDialog(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
+                            Spacer(modifier = Modifier.width(28.dp))
                             Text(
                                 text = "Create\nNew\nTask",
                                 color = cigar,

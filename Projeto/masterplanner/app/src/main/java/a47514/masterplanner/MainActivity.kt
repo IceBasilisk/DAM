@@ -43,6 +43,7 @@ class MainActivity : ComponentActivity() {
             MasterPlannerTheme {
                 var currentScreen by remember { mutableStateOf(Screen.Splash) }
                 var currentRoadmapId by remember { mutableStateOf("") }
+                var currentRoadmapTitle by remember { mutableStateOf("") }
                 var previousScreen by remember { mutableStateOf(Screen.MainMenu) }
                 val auth = FirebaseAuth.getInstance()
 
@@ -116,6 +117,13 @@ class MainActivity : ComponentActivity() {
                             onDispose { roadmapViewModel.stopListeningToTasks() }
                         }
 
+                        val liveRoadmap by roadmapViewModel.currentRoadmap.collectAsState()
+                        // Keep a snapshot of the title that survives stopListeningToTasks()
+                        // resetting currentRoadmap to null when we navigate away.
+                        LaunchedEffect(liveRoadmap?.title) {
+                            liveRoadmap?.title?.let { if (it.isNotBlank()) currentRoadmapTitle = it }
+                        }
+
                         RoadMapEditorScreen(
                             roadmapId = currentRoadmapId,
                             roadmapViewModel = roadmapViewModel,
@@ -131,6 +139,7 @@ class MainActivity : ComponentActivity() {
                     Screen.CreateTask -> {
                         CreateTaskScreen(
                             roadmapId = currentRoadmapId,
+                            roadmapTitle = if (currentRoadmapId == "library") "" else currentRoadmapTitle,
                             roadmapViewModel = roadmapViewModel,
                             onBack = { currentScreen = previousScreen },
                             onNavigate = navigate
