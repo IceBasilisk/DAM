@@ -65,7 +65,7 @@ fun RoadMapEditorScreen(
     val isPremium by PremiumManager.isPremium.collectAsState()
 
     // Load persisted order+durations from Firestore, fall back to tasks-only if empty
-    val currentItems = remember(currentRoadmap?.itemEntries) {
+    val currentItems = remember(roadmapId, currentRoadmap?.itemEntries) {
         val entries = currentRoadmap?.itemEntries ?: emptyList()
         if (entries.isNotEmpty()) {
             entries.map { entry ->

@@ -419,10 +419,10 @@ fun CreateRoadmapDialog(
     var selectedColor by remember { mutableStateOf(0) }
 
     val marks = listOf(
-        Icons.Default.DirectionsBoat,
-        Icons.Default.Map,
-        Icons.Default.Anchor,
-        Icons.Default.Explore
+        "Ship" to Icons.Default.DirectionsBoat,
+        "Map" to Icons.Default.Map,
+        "Anchor" to Icons.Default.Anchor,
+        "Compass" to Icons.Default.Explore
     )
     val colors = LocalAppColors.current
     val cigar = colors.cigar
@@ -526,7 +526,7 @@ fun CreateRoadmapDialog(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        marks.forEachIndexed { index, icon ->
+                        marks.forEachIndexed { index, mark ->
                             val isSelected = selectedMark == index
                             Box(
                                 modifier = Modifier
@@ -542,7 +542,7 @@ fun CreateRoadmapDialog(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Icon(
-                                    imageVector = icon,
+                                    imageVector = mark.second,
                                     contentDescription = null,
                                     tint = cigar,
                                     modifier = Modifier.size(32.dp)
@@ -603,11 +603,10 @@ fun CreateRoadmapDialog(
                     Button(
                         onClick = {
                             if (title.isNotBlank()) {
-                                val iconNames = listOf("Ship", "Flag", "Anchor", "Compass")
                                 val colorHexValues = listOf("#FFD700", "#3DBEFF", "#FFD0BF")
                                 onConfirm(
                                     title,
-                                    iconNames.getOrElse(selectedMark) { "Flag" },
+                                    marks.getOrElse(selectedMark) { marks[0] }.first,
                                     colorHexValues.getOrElse(selectedColor) { "#FFFFD700" }
                                 )
                             }

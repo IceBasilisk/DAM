@@ -38,6 +38,12 @@ class RoadmapViewModel : ViewModel() {
     private val _isOnline = MutableStateFlow(true)
     val isOnline: StateFlow<Boolean> = _isOnline
 
+    // Keep track of the active per-roadmap listeners so we can detach them
+    // when switching to a different roadmap (or away from the editor).
+    private var roadmapDocListener: com.google.firebase.firestore.ListenerRegistration? = null
+    private var tasksListener: com.google.firebase.firestore.ListenerRegistration? = null
+    private var listeningToRoadmapId: String? = null
+
     init {
         listenToTaskLibrary()
     }
@@ -55,15 +61,32 @@ class RoadmapViewModel : ViewModel() {
     // Call this when RoadMapEditorScreen opens for a specific roadmap
     // Pattern: same as listenToRoadmaps() but on the tasks sub-collection
     fun listenToTasks(roadmapId: String) {
+        // Already listening to this roadmap — nothing to do. Without this guard,
+        // recomposition (e.g. LaunchedEffect re-running) would tear down and
+        // re-attach listeners unnecessarily.
+        if (listeningToRoadmapId == roadmapId) return
+
+        // Detach any listeners from the previously open roadmap so its data
+        // can't keep flowing into _tasks / _currentRoadmap after we've moved on.
+        roadmapDocListener?.remove()
+        tasksListener?.remove()
+        listeningToRoadmapId = roadmapId
+
+        // Clear stale state immediately rather than waiting for the new
+        // snapshot — otherwise the previous roadmap's tasks (and title) are
+        // briefly, or persistently, shown under the new roadmap.
+        _currentRoadmap.value = null
+        _tasks.value = emptyList()
+
         // Also fetch the roadmap document itself for the title
-        Utility.collectionReferenceForRoadmaps
+        roadmapDocListener = Utility.collectionReferenceForRoadmaps
             .document(roadmapId)
             .addSnapshotListener { snapshot, error ->
                 if (error != null || snapshot == null) return@addSnapshotListener
                 _currentRoadmap.value = snapshot.toObject<Roadmap>()?.copy(id = snapshot.id)
             }
 
-        Utility.collectionReferenceForTasks(roadmapId)
+        tasksListener = Utility.collectionReferenceForTasks(roadmapId)
             .orderBy("timestamp", Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, error ->
                 if (error != null || snapshot == null) return@addSnapshotListener
@@ -72,6 +95,18 @@ class RoadmapViewModel : ViewModel() {
                     .sortedBy { it.timestamp?.seconds ?: 0L }
                 _tasks.value = list
             }
+    }
+
+    // Call this when leaving the RoadMapEditor (e.g. on back) so listeners
+    // don't keep running, and so the next roadmap opened starts from a clean slate.
+    fun stopListeningToTasks() {
+        roadmapDocListener?.remove()
+        tasksListener?.remove()
+        roadmapDocListener = null
+        tasksListener = null
+        listeningToRoadmapId = null
+        _currentRoadmap.value = null
+        _tasks.value = emptyList()
     }
 
 

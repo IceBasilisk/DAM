@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.DirectionsBoat
 import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Inventory
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Sailing
 import androidx.compose.material.icons.filled.Waves
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -61,6 +62,7 @@ object Utility {
         "Anchor"  -> Icons.Default.Anchor
         "Sails"   -> Icons.Default.Sailing
         "Chest"   -> Icons.Default.Inventory
+        "Map"     -> Icons.Default.Map
         else      -> Icons.Default.Flag
     }
 }

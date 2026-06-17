@@ -111,17 +111,18 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     Screen.RoadMapEditor -> {
-                        LaunchedEffect(currentRoadmapId) {
+                        DisposableEffect(currentRoadmapId) {
                             roadmapViewModel.listenToTasks(currentRoadmapId)
+                            onDispose { roadmapViewModel.stopListeningToTasks() }
                         }
 
                         RoadMapEditorScreen(
                             roadmapId = currentRoadmapId,
                             roadmapViewModel = roadmapViewModel,
                             onCreateTask = {
+                                previousScreen = Screen.RoadMapEditor
                                 currentScreen = Screen.CreateTask
-                                previousScreen = Screen.TaskLibrary
-                                           },
+                            },
                             onNavigate = navigate,
                             onBack = { currentScreen = Screen.MainMenu },
                             onFreemium = { currentScreen = Screen.Freemium }
