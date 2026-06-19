@@ -465,3 +465,47 @@ Explained that Firestore does not automatically delete subcollections and recomm
 **Assessment:** Accepted.
 
 ---
+
+### #p31 — Tie per-roadmap Firestore listener lifecycle to the screen, not just the roadmap ID
+
+- Tool: Claude (Sonnet 4.6)
+- Date: 2026-06-18
+- Context given to the AI: `masterplanner.zip` (full source) — `RoadmapViewModel.kt`, `MainActivity.kt`, `RoadMapEditorScreen.kt`
+
+**Prompt:**
+> Roadmap 2 was just created, so it's supposed to be empty. The Roadmap 2 has already the same two tasks as Roadmap 1.
+
+**Result:** Diagnosed as a state-ownership problem rather than a UI bug: `_tasks`/`_currentRoadmap` in `RoadmapViewModel` are shared singletons fed by `listenToTasks(roadmapId)`, but nothing ever detached the listener from the previously open roadmap or reset the StateFlows before attaching new ones. Introduced explicit listener-registration tracking (`ListenerRegistration` fields) and a paired `stopListeningToTasks()` lifecycle method, then moved the attach/detach decision out of the screen's `LaunchedEffect` and into a `DisposableEffect` in `MainActivity` keyed on `currentRoadmapId`, so the listener's lifetime is now explicitly scoped to "this roadmap is the one currently open in the editor" rather than implicitly relying on recomposition timing. As a secondary defensive measure, also keyed `RoadMapEditorScreen`'s `currentItems` `remember` block on `roadmapId` itself, so the UI recomputes on roadmap switch even in the edge case where two roadmaps both have empty `itemEntries`.
+
+**Assessment:** Accepted — but produced a follow-up regression (see `debugging_prompts.md` #p17): resetting `_currentRoadmap` to `null` on dispose broke `CreateTaskScreen`'s reliance on that same StateFlow for its title, since navigating to Create Task also disposes the editor. Resolved by having `MainActivity` snapshot the title into its own state before the listener tears down, rather than relying on a single shared ViewModel field to outlive the screen that populated it.
+
+---
+
+### #p32 — Make a task created inside a Roadmap append to that Roadmap's persisted order automatically
+
+- Tool: Claude (Sonnet 4.6)
+- Date: 2026-06-19
+- Context given to the AI: `RoadmapViewModel.kt`, `CreateTaskScreen.kt`, `RoadMapEditorScreen.kt`
+
+**Prompt:**
+> First Roadmap Task is added automatically to the roadmap, but the others need to be imported. If a task is created inside a Roadmap, make it be added automatically.
+
+**Result:** Traced the gap to a missing write path: `saveTask()` only ever wrote to the roadmap's `tasks` sub-collection, never to `Roadmap.itemEntries` — the field `RoadMapEditorScreen.currentItems` actually renders once non-empty. The very first task "worked" only because `currentItems` falls back to the raw `tasks` StateFlow while `itemEntries` is still empty (see #p31); any task created after the first Booty Bag import silently landed in the sub-collection only. Added `addTaskToRoadmapItems(roadmapId, task)` to `RoadmapViewModel`, using Firestore's `FieldValue.arrayUnion` for an atomic append rather than a read-then-overwrite, and called it from `CreateTaskScreen` right after a successful `saveTask()`. This in turn required changing `saveTask`'s callback from `(Boolean) -> Unit` to `(Task?) -> Unit`, since the appended `RoadmapItemEntry` needs the task's real Firestore-generated id (previously discarded by the boolean-only callback) to remain deletable later from the editor.
+
+**Assessment:** Accepted — chose `arrayUnion` over reading and rewriting the full `itemEntries` list to avoid a race with any concurrent reorder/delete already in flight from the editor screen.
+
+---
+---
+
+### #p33 — Centralize free-tier total task gating at navigation and save boundaries
+
+- Tool: ChatGPT (GPT-5.5 Thinking)
+- Date: 2026-06-19
+- Context given to the AI: `MainActivity.kt`, `CreateTaskScreen.kt`, `FreemiumScreen.kt`, `PremiumManager.kt`, `RoadmapViewModel.kt`
+
+**Prompt:**
+> The number of tasks based on the free trial mode are not being limited. What I mean is, when the number of total tasks is 7, the freemium screen is not showing whenever the user attempts to create a new task via RoadmapEditor screen create new task button or via the TaskLibraryScreen create new task button.
+
+**Result:** Reframed the task cap as an account-level total task limit rather than a per-roadmap-only check. `MainActivity` now observes `roadmapViewModel.libraryTasks` and `PremiumManager.isPremium` at the app routing layer and computes `hasReachedTaskLimit` from the global library task count. Both task-creation entry points — Task Library's "Create New Task" button and the Roadmap Editor / Booty Bag "Create New Task" path — now route directly to `Screen.Freemium` when a free user has already reached `PremiumManager.taskLimit`. `CreateTaskScreen` keeps a second guard at the write boundary using the same global library count, so stale navigation state or future entry points cannot bypass the cap.
+
+**Assessment:** Accepted — library tasks are the correct single source of truth because every forged task, whether created from a roadmap or directly from the Task Library, is saved to the global task library.

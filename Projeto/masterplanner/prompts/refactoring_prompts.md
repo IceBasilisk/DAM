@@ -252,3 +252,35 @@ Prompts to improve existing code **without changing behavior**.
 **Assessment:** Accepted.
 
 ---
+
+### #p15 — Widen `saveTask`'s callback to return the saved Task instead of a bare Boolean
+
+- Tool: Claude (Sonnet 4.6)
+- Date: 2026-06-19
+- Context: `RoadmapViewModel.kt`, `CreateTaskScreen.kt` (sole call site)
+
+**Prompt:**
+> (raised as a supporting change while fixing the "tasks created in a roadmap aren't added automatically" bug — see `architecture_prompts.md` #p32)
+> The appended `itemEntries` entry needs the task's real Firestore-generated id, which the boolean-only callback was discarding.
+
+**Result:** Changed `saveTask(roadmapId, task, onResult: (Boolean) -> Unit)` to `saveTask(roadmapId, task, onResult: (Task?) -> Unit)`, returning the `taskToSave` (with its `docRef.id` already copied in) on success and `null` on failure, instead of `true`/`false`. Checked for other call sites first — `CreateTaskScreen.kt` was the only one — so the signature could be changed directly rather than needing an overload or a deprecation shim.
+
+**Did the tests stay green?** No automated test suite exists; verified by confirming the appended `RoadmapItemEntry.taskId` was non-empty after creating a task from inside a roadmap, and that deleting that task afterward from the editor correctly removed the underlying Firestore document (which depends on `taskId` being populated).
+
+**Assessment:** Accepted — a callback that only reports success/failure is insufficient once a caller needs data generated during the write (the document id); returning the saved entity itself is more useful than adding a second out-parameter or a follow-up read.
+
+---
+### #p18 — Replace duplicated task-limit checks with a shared total-count gate
+
+- Tool: ChatGPT (GPT-5.5 Thinking)
+- Date: 2026-06-19
+- Context: `MainActivity.kt`, `CreateTaskScreen.kt`, `PremiumManager.kt`, `RoadmapViewModel.kt`
+
+**Prompt:**
+> The number of tasks based on the free trial mode are not being limited. What I mean is, when the number of total tasks is 7, the freemium screen is not showing whenever the user attempts to create a new task via RoadmapEditor screen create new task button or via the TaskLibraryScreen create new task button.
+
+**Result:** Moved the total-task limit decision into `MainActivity`, where both task-creation navigation paths are wired, by observing the global `libraryTasks` list and `PremiumManager.isPremium`. Removed `CreateTaskScreen`'s previous roadmap-local `currentTaskCount` calculation and replaced it with a single `hasReachedTaskLimit` value derived from `libraryTasks.size`. This keeps the entry gate and the save gate aligned with the same source of truth.
+
+**Did the tests stay green?** Automated compilation could not be completed in the sandbox because Gradle attempted to download its distribution from `services.gradle.org`, but network access was unavailable. Static inspection confirmed the changed symbols are imported through existing `androidx.compose.runtime.*` wildcard imports and that removed variables are no longer referenced.
+
+---

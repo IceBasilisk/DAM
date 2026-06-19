@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import a47514.masterplanner.R
 
 import a47514.masterplanner.Screen
+import a47514.masterplanner.data.PremiumManager
 import a47514.masterplanner.data.RoadmapViewModel
 import a47514.masterplanner.data.Task
 import a47514.masterplanner.ui.theme.LocalAppColors
@@ -55,6 +56,8 @@ fun CreateTaskScreen(
     val isSuggesting by roadmapViewModel.isSuggesting.collectAsState()
 
     val currentRoadmap by roadmapViewModel.currentRoadmap.collectAsState()
+    val libraryTasks by roadmapViewModel.libraryTasks.collectAsState()
+    val isPremium by PremiumManager.isPremium.collectAsState()
     // True only when this screen was opened from inside a Roadmap (not the Task Library).
     val isInsideRoadmap = roadmapId != "library" && roadmapId.isNotBlank()
     val effectiveTitle = when {
@@ -62,6 +65,11 @@ fun CreateTaskScreen(
         currentRoadmap?.title?.isNotBlank() == true -> currentRoadmap!!.title  // loaded after nav
         else -> ""
     }
+    // Current total task count for this account, used to enforce the freemium task limit
+    // consistently for task creation from both the roadmap editor and the task library.
+    // Every newly forged task is saved to the global library, so libraryTasks is the
+    // single source of truth for the free-tier total task cap.
+    val hasReachedTaskLimit = !isPremium && libraryTasks.size >= PremiumManager.taskLimit
 
     Scaffold(
         topBar = {
@@ -292,22 +300,29 @@ fun CreateTaskScreen(
                 icon = Icons.Default.AutoFixHigh,
                 onClick = {
                     if (taskName.isNotBlank()) {
-                        val newTask = Task(
-                            name = taskName,
-                            iconName = iconNames.getOrElse(selectedMark) { "Flag" },
-                            colorHex = colorHexValues.getOrElse(selectedColor) { "#FFD700" }
-                        )
-
-                        if (roadmapId == "library") {
-                            roadmapViewModel.saveTaskToLibrary(newTask) { success ->
-                                if (success) onBack()
-                            }
+                        if (hasReachedTaskLimit) {
+                            onNavigate(Screen.Freemium)
                         } else {
-                            // Save to both the roadmap's sub-collection AND the library
-                            roadmapViewModel.saveTask(roadmapId, newTask) { success ->
-                                if (success) {
-                                    roadmapViewModel.saveTaskToLibrary(newTask) {}  // ← also save to library
-                                    onBack()
+                            val newTask = Task(
+                                name = taskName,
+                                iconName = iconNames.getOrElse(selectedMark) { "Flag" },
+                                colorHex = colorHexValues.getOrElse(selectedColor) { "#FFD700" }
+                            )
+
+                            if (roadmapId == "library") {
+                                roadmapViewModel.saveTaskToLibrary(newTask) { success ->
+                                    if (success) onBack()
+                                }
+                            } else {
+                                // Save to both the roadmap's sub-collection AND the library
+                                roadmapViewModel.saveTask(roadmapId, newTask) { savedTask ->
+                                    if (savedTask != null) {
+                                        roadmapViewModel.saveTaskToLibrary(savedTask) {}  // ← also save to library
+                                        // Append to the roadmap's persisted order so it shows up
+                                        // immediately, matching what importing from the Booty Bag does.
+                                        roadmapViewModel.addTaskToRoadmapItems(roadmapId, savedTask) {}
+                                        onBack()
+                                    }
                                 }
                             }
                         }

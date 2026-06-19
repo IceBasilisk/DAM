@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FieldValue
 
 class RoadmapViewModel : ViewModel() {
     private val _roadmaps = MutableStateFlow<List<Roadmap>>(emptyList())
@@ -110,13 +111,13 @@ class RoadmapViewModel : ViewModel() {
     }
 
 
-    fun saveTask(roadmapId: String, task: Task, onResult: (Boolean) -> Unit) {
+    fun saveTask(roadmapId: String, task: Task, onResult: (Task?) -> Unit) {
         val colRef = Utility.collectionReferenceForTasks(roadmapId)
         val docRef = if (task.id.isEmpty()) colRef.document() else colRef.document(task.id)
         val taskToSave = if (task.id.isEmpty()) task.copy(id = docRef.id) else task
         docRef.set(taskToSave)
-            .addOnSuccessListener { onResult(true) }
-            .addOnFailureListener { onResult(false) }
+            .addOnSuccessListener { onResult(taskToSave) }
+            .addOnFailureListener { onResult(null) }
     }
 
     fun deleteTask(roadmapId: String, taskId: String, onResult: (Boolean) -> Unit) {
@@ -240,6 +241,25 @@ class RoadmapViewModel : ViewModel() {
         Utility.collectionReferenceForRoadmaps
             .document(roadmapId)
             .update("itemEntries", entries)
+            .addOnSuccessListener { onResult(true) }
+            .addOnFailureListener { onResult(false) }
+    }
+
+    // Append a single newly-created task to the roadmap's persisted item order.
+    // Used when a task is created from inside a Roadmap (via "Forge New Task"), so it
+    // shows up immediately without requiring a manual import from the Booty Bag —
+    // mirrors what BootyBagDialog's "Import Selected" already does for existing tasks.
+    fun addTaskToRoadmapItems(roadmapId: String, task: Task, onResult: (Boolean) -> Unit) {
+        val entry = RoadmapItemEntry(
+            type = "task",
+            taskId = task.id,
+            taskName = task.name,
+            iconName = task.iconName,
+            colorHex = task.colorHex
+        )
+        Utility.collectionReferenceForRoadmaps
+            .document(roadmapId)
+            .update("itemEntries", FieldValue.arrayUnion(entry))
             .addOnSuccessListener { onResult(true) }
             .addOnFailureListener { onResult(false) }
     }

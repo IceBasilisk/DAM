@@ -325,3 +325,78 @@ Format: see `prompts/README.md`. Record UI prompts (Composables, state, theme, n
 **Assessment:** Accepted.
 
 ---
+
+### #p22 — Fix Roadmap mark picker showing one icon while saving a different name
+
+- Tool: Claude (Sonnet 4.6)
+- Date: 2026-06-18
+- Context given to the AI: `MainMenuScreen.kt` (`CreateRoadmapDialog`), `Utility.kt`
+
+**Prompt:**
+> The second icon for the Roadmap creation dialog is return a flag, not the pictured map.
+
+**Result:** `CreateRoadmapDialog` previously declared `marks: List<ImageVector>` (used for the rendered grid) and a separate `iconNames: List<String>` (used only inside the confirm button's `onClick`, to build the saved `iconName`), with the two lists ordered independently — `Map` was 2nd in one, `"Flag"` was 2nd in the other. Replaced both with a single `marks: List<Pair<String, ImageVector>>`, so the grid renders `mark.second` and the confirm handler reads the name from the very same list (`marks.getOrElse(selectedMark) { marks[0] }.first`) instead of a parallel array that could silently drift. Also added the missing `"Map" -> Icons.Default.Map` branch to `Utility.iconFromName`, since even a correctly-saved `"Map"` name had nowhere to resolve to and would have fallen through to the default `Flag` icon everywhere else the roadmap's icon is displayed.
+
+**Assessment:** Accepted — matches the pattern already used correctly in `CreateTaskScreen`'s own mark picker (`"Waves" to Icons.Default.Waves`, etc.), where name and icon are paired together rather than kept in two lists.
+
+---
+
+### #p23 — Scope the AI "suggest names" affordance to roadmap-context only, not Task Library
+
+- Tool: Claude (Sonnet 4.6)
+- Date: 2026-06-18
+- Context given to the AI: `CreateTaskScreen.kt`
+
+**Prompt:**
+> I want the AI suggestion button to show up on the Forge New Task page resulting from pressing the "Create New Task" inside a Roadmap, but remove it from the page resulting from pressing the "Create New Task" button on the Task Library page.
+
+**Result:** The existing `isInsideRoadmap` flag was derived from `effectiveTitle.isNotBlank()`, but `effectiveTitle` had a `roadmapId == "library" -> "general productivity"` fallback baked in, which made the flag `true` from both entry points — the button was actually already showing everywhere, just not working from one of them (see `debugging_prompts.md` #p17 for the related non-functional-button report). Replaced the derivation with a direct check independent of any title string: `val isInsideRoadmap = roadmapId != "library" && roadmapId.isNotBlank()`, and removed the now-unnecessary `"general productivity"` fallback from `effectiveTitle` entirely.
+
+**Assessment:** Accepted — visibility now depends on the actual navigation source (`roadmapId`) rather than being inferred indirectly from a display string that had its own special-cased fallback for the Library case.
+
+---
+
+### #p24 — Reposition the "Create New Task" link within the Booty Bag dialog footer
+
+- Tool: Claude (Sonnet 4.6)
+- Date: 2026-06-18
+- Context given to the AI: `RoadMapEditorScreen.kt` (`BootyBagDialog` footer)
+
+**Prompt:**
+> Move the Create New Task button a little more to the right on the "The Booty Bag" dialog from the Roadmap Editor page.
+
+**Result:** The footer `Row` uses `Arrangement.SpaceBetween`, which pinned the "Create New Task" text flush to the dialog's left edge and the "IMPORT SELECTED" button to the right edge. Added a `Spacer(modifier = Modifier.width(28.dp))` immediately before the `Text`, nudging it inward while leaving the `SpaceBetween` arrangement and the import button's position untouched.
+
+**Assessment:** Accepted — minimal, easily-tunable change (adjust the single `28.dp` value) that didn't require restructuring the row's arrangement.
+
+---
+
+### #p25 — Remove inaccurate feature-comparison rows from the Freemium screen
+
+- Tool: Claude (Sonnet 4.6)
+- Date: 2026-06-19
+- Context given to the AI: `FreemiumScreen.kt`, `PremiumManager.kt`, `MusicManager.kt`, `CreateTaskScreen.kt`
+
+**Prompt:**
+> In the freemium page, delete the mentions of no background music or Ai task Suggestions on free tier.
+
+**Result:** Verified against the actual gating logic before editing: AI Task Suggestions are gated purely by `isInsideRoadmap` (not by `PremiumManager.isPremium`), and `MusicManager` has no premium check anywhere — so both the "✗ AI Task Suggestions" / "✗ Background Music" rows on the Free tier card, and the mirrored "✓" rows listing them as Captain's Edition perks, were factually wrong in both directions. Removed `FreemiumFeatureRow("AI Task Suggestions", ...)` and `FreemiumFeatureRow("Background Music"/"Background Music Controls", ...)` from both the free-tier `Surface` and the premium `Surface`, leaving only the rows that correspond to real `PremiumManager`-gated limits (roadmap count, task count).
+
+**Assessment:** Accepted — confirmed each removed row against the actual gating code rather than just deleting whatever was asked, since the premium card's rows needed the same correction for the same underlying reason.
+
+---
+
+### #p26 — Align Freemium copy with total task cap
+
+- Tool: ChatGPT (GPT-5.5 Thinking)
+- Date: 2026-06-19
+- Context given to the AI: `FreemiumScreen.kt`, `PremiumManager.kt`
+
+**Prompt:**
+> The number of tasks based on the free trial mode are not being limited. What I mean is, when the number of total tasks is 7, the freemium screen is not showing whenever the user attempts to create a new task via RoadmapEditor screen create new task button or via the TaskLibraryScreen create new task button.
+
+**Result:** Updated the Freemium screen's displayed free-tier summary from `3 roadmaps · 6 tasks each` to `3 roadmaps · 6 total tasks`, and changed the free-plan feature row from `Up to 6 Tasks per Roadmap` to `Up to 6 Total Tasks`. This keeps the paywall copy consistent with the implemented total-task gate based on the global Task Library count.
+
+**Assessment:** Accepted — avoids promising a per-roadmap allowance while the actual creation gate is account-wide.
+
+---

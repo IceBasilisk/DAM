@@ -130,7 +130,7 @@ fun FreemiumScreen(
                             letterSpacing = 1.sp
                         )
                         Text(
-                            text = if (isPremium) "Unlimited roadmaps & tasks" else "3 roadmaps · 6 tasks each",
+                            text = if (isPremium) "Unlimited roadmaps & tasks" else "3 roadmaps · 6 total tasks",
                             color = if (isPremium) gold.copy(alpha = 0.7f) else cream.copy(alpha = 0.5f),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium
@@ -166,12 +166,10 @@ fun FreemiumScreen(
                         letterSpacing = 2.sp)
                     Spacer(modifier = Modifier.height(12.dp))
                     FreemiumFeatureRow("Up to 3 Roadmaps", true, cream)
-                    FreemiumFeatureRow("Up to 6 Tasks per Roadmap", true, cream)
+                    FreemiumFeatureRow("Up to 6 Total Tasks", true, cream)
                     FreemiumFeatureRow("Task Library", true, cream)
-                    FreemiumFeatureRow("AI Task Suggestions", false, cream)
                     FreemiumFeatureRow("Unlimited Roadmaps", false, cream)
                     FreemiumFeatureRow("Unlimited Tasks", false, cream)
-                    FreemiumFeatureRow("Background Music", false, cream)
                 }
             }
 
@@ -206,8 +204,6 @@ fun FreemiumScreen(
                     Spacer(modifier = Modifier.height(12.dp))
                     FreemiumFeatureRow("Unlimited Roadmaps", true, gold)
                     FreemiumFeatureRow("Unlimited Tasks", true, gold)
-                    FreemiumFeatureRow("AI Task Suggestions", true, gold)
-                    FreemiumFeatureRow("Background Music Controls", true, gold)
                     FreemiumFeatureRow("Priority Support", true, gold)
 
                     Spacer(modifier = Modifier.height(20.dp))

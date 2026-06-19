@@ -46,6 +46,9 @@ class MainActivity : ComponentActivity() {
                 var currentRoadmapTitle by remember { mutableStateOf("") }
                 var previousScreen by remember { mutableStateOf(Screen.MainMenu) }
                 val auth = FirebaseAuth.getInstance()
+                val libraryTasks by roadmapViewModel.libraryTasks.collectAsState()
+                val isPremium by PremiumManager.isPremium.collectAsState()
+                val hasReachedTaskLimit = !isPremium && libraryTasks.size >= PremiumManager.taskLimit
 
                 val navigate: (Screen) -> Unit = { screen ->
                     currentScreen = screen
@@ -103,9 +106,13 @@ class MainActivity : ComponentActivity() {
                         TaskLibraryScreen(
                             roadmapViewModel = roadmapViewModel,
                             onCreateTask = {
-                                currentRoadmapId = "library"
-                                previousScreen = Screen.TaskLibrary
-                                currentScreen = Screen.CreateTask
+                                if (hasReachedTaskLimit) {
+                                    currentScreen = Screen.Freemium
+                                } else {
+                                    currentRoadmapId = "library"
+                                    previousScreen = Screen.TaskLibrary
+                                    currentScreen = Screen.CreateTask
+                                }
                             },
                             onLogoutClick = { auth.signOut(); currentScreen = Screen.Login },
                             onNavigate = navigate
@@ -128,8 +135,12 @@ class MainActivity : ComponentActivity() {
                             roadmapId = currentRoadmapId,
                             roadmapViewModel = roadmapViewModel,
                             onCreateTask = {
-                                previousScreen = Screen.RoadMapEditor
-                                currentScreen = Screen.CreateTask
+                                if (hasReachedTaskLimit) {
+                                    currentScreen = Screen.Freemium
+                                } else {
+                                    previousScreen = Screen.RoadMapEditor
+                                    currentScreen = Screen.CreateTask
+                                }
                             },
                             onNavigate = navigate,
                             onBack = { currentScreen = Screen.MainMenu },
@@ -204,6 +215,10 @@ class MainActivity : ComponentActivity() {
         val auth = FirebaseAuth.getInstance()
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
+                // New users always start on the free trial, regardless of whether a
+                // previous account on this device had enabled premium — PremiumManager's
+                // flag lives in device-wide SharedPreferences, not per-account storage.
+                PremiumManager.setPremium(this, false)
                 Utility.showToast(this, "Account created. Check email to verify.")
                 auth.currentUser?.sendEmailVerification()
                 auth.signOut()

@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 object GeminiService {
 
-    private const val API_KEY = "AQ.Ab8RN6IyxORw6Cx3b7jsZXlWNP1Y-dDQfCGbKVahZDb4enuMbw"
+    private const val API_KEY = "AQ.Ab8RN6I5MOfeNU7Il09jZjwFeIjQzJThA0iweYdZxeyCrK_KUA"
     private const val MODEL = "gemini-2.5-flash-lite" // same model as AIAssistantGemini
 
     private val client = OkHttpClient.Builder()
