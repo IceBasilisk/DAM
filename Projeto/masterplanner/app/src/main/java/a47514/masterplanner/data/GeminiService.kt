@@ -12,17 +12,32 @@ import java.util.concurrent.TimeUnit
 
 object GeminiService {
 
+    /**
+     * API key for Google Generative AI.
+     */
     private const val API_KEY = "AQ.Ab8RN6I5MOfeNU7Il09jZjwFeIjQzJThA0iweYdZxeyCrK_KUA"
+
+    /**
+     * Gemini model to use.
+     */
     private const val MODEL = "gemini-2.5-flash-lite" // same model as AIAssistantGemini
 
+    /**
+     * HTTP client for making API requests.
+     */
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
         .writeTimeout(30, TimeUnit.SECONDS)
         .build()
 
-    // Mirrors AIAssistantGemini.buildRequest()
+    /**
+     * Builds an HTTP request for the Gemini API. Mirrors AIAssistantGemini.buildRequest().
+     */
     private fun buildRequest(prompt: String): Request {
+        /**
+         * Prompt.
+         */
         val messagesArray = JSONArray()
             .put(
                 JSONObject()
@@ -30,6 +45,9 @@ object GeminiService {
                     .put("parts", JSONArray().put(JSONObject().put("text", prompt)))
             )
 
+        /**
+         * Request body.
+         */
         val requestBody = JSONObject()
             .put("contents", messagesArray)
             .toString()
@@ -41,7 +59,9 @@ object GeminiService {
             .build()
     }
 
-    // Mirrors AIAssistant.makeApiCall() — parses the Gemini "candidates" response structure
+    /**
+     * Parses the Gemini "candidates" response structure. Mirrors AIAssistant.makeApiCall().
+     */
     private fun parseResponse(responseBody: String): String {
         val json = JSONObject(responseBody)
         if (!json.has("candidates") || json.getJSONArray("candidates").length() == 0)
@@ -55,7 +75,7 @@ object GeminiService {
 
     /**
      * Given a roadmap title, returns a list of suggested task name strings.
-     * Follows the same flow as AIAssistant.processInput() → buildPrompt() → makeApiCall()
+     * Follows the same flow as AIAssistant.processInput() → buildPrompt() → makeApiCall().
      */
     suspend fun suggestTaskNames(roadmapTitle: String): List<String> = withContext(Dispatchers.IO) {
         try {
