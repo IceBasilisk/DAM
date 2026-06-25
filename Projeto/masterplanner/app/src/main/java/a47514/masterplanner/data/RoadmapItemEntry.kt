@@ -1,12 +1,22 @@
 package a47514.masterplanner.data
 
-// Firestore-friendly flat representation of one row in the editor
-// type = "task" or "duration"
+/**
+ * Represents a roadmap item, either a task or a duration.
+ */
 data class RoadmapItemEntry(
-    val type: String = "task",   // "task" | "duration"
-    val taskId: String = "",     // only for type="task"
+    /**
+     * Type of item (task or duration).
+     */
+    val type: String = "task",
+    /**
+     * ID of the task (only for type="task").
+     */
+    val taskId: String = "",
     val taskName: String = "",
     val iconName: String = "",
     val colorHex: String = "",
-    val durationLabel: String = "" // only for type="duration", e.g. "3H 20M"
+    /**
+     * Duration value (e.g. "3H 20M") (only for type="duration").
+     */
+    val durationLabel: String = ""
 )

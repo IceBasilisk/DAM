@@ -20,14 +20,26 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 
-
+/**
+ * Utility functions for Toast messages, Firebase collection paths, timestamp formatting and icon conversion.
+ */
 object Utility {
+    /**
+     * Shows a simple, quick message on screen.
+     */
     fun showToast(context: Context?, message: String?) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
+    /**
+     * Returns current user's roadmap collection.
+     */
     val collectionReferenceForRoadmaps: CollectionReference
+        // Custom getter
         get() {
+            /**
+             * Current user's UID.
+             */
             val uid = checkNotNull(FirebaseAuth.getInstance().currentUser).uid
             return FirebaseFirestore.getInstance()
                 .collection("users")
@@ -35,12 +47,18 @@ object Utility {
                 .collection("roadmaps")
         }
 
+    /**
+     * Returns roadmap's task collection (path users/{uid}/roadmaps/{roadmapId}/tasks).
+     */
     fun collectionReferenceForTasks(roadmapId: String): CollectionReference {
         return collectionReferenceForRoadmaps
             .document(roadmapId)
             .collection("tasks")
     }
 
+    /**
+     * Returns current user's task library collection (path users/{uid}/task_library).
+     */
     val collectionReferenceForTaskLibrary: CollectionReference
         get() {
             val uid = checkNotNull(FirebaseAuth.getInstance().currentUser).uid
@@ -49,10 +67,9 @@ object Utility {
                 .collection("task_library")
         }
 
-    fun timestampToString(timestamp: Timestamp): String {
-        return SimpleDateFormat("MM/dd/yyyy").format(timestamp.toDate())
-    }
-
+    /**
+     * Returns a Compose icon from a string.
+     */
     fun iconFromName(name: String): ImageVector = when (name) {
         "Waves"   -> Icons.Default.Waves
         "Flag"    -> Icons.Default.Flag
