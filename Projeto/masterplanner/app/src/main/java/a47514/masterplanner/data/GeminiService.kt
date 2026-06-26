@@ -15,7 +15,7 @@ object GeminiService {
     /**
      * API key for Google Generative AI.
      */
-    private const val API_KEY = "AQ.Ab8RN6I5MOfeNU7Il09jZjwFeIjQzJThA0iweYdZxeyCrK_KUA"
+    private const val API_KEY = "AQ.Ab8RN6IQZbyqshAY3yqnZgwh9xrCXHU5rXxjfdDVOFt-8nUaKw"
 
     /**
      * Gemini model to use.
